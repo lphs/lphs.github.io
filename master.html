@@ -468,9 +468,18 @@ function mup(e){
 }
 
 function mmove(e){
+  var ex, ey;
+  if(e.type == 'touchmove'){
+    var touch = event.touches[0];
+    ex = touch.pageX;
+    ey = touch.pageY;
+  } else if (e.type == 'mousemove') {
+    ex = e.clientX;
+    ey = e.clientY;
+  }
   e.preventDefault();
   if(isDown){
-    var x = Math.min(Math.max(e.clientX, initWidth), parseInt(document.body.offsetWidth)-350);
+    var x = Math.min(Math.max(ex, initWidth), parseInt(document.body.offsetWidth)-350);
     document.getElementById("dragbar").style.left = x+"px";
     document.getElementsByClassName("left")[0].style.width = x+"px";
     var size = parseInt(document.body.offsetWidth)-x-50;
@@ -489,15 +498,14 @@ function initDragBar(){
   document.getElementsByClassName("left")[0].style.width = initWidth+"px";
   document.getElementsByClassName("right")[0].style.width = parseInt(document.body.offsetWidth)-initWidth-50+"px";
   
-  document.getElementById("dragbar").addEventListener('mousedown', mdown(e), true);
-  document.getElementById("dragbar").addEventListener('touchstart', mdown(e), true);
+  document.getElementById("dragbar").addEventListener('mousedown', (e) => {mdown(e)}, true);
+  document.getElementById("dragbar").addEventListener('touchstart', (e) => {mdown(e)}, true);
   
-  document.body.addEventListener('mouseup', mup(e), true);
-  document.body.addEventListener('touchend', mup(e), true);
-  document.body.addEventListener('touchcancel', mup(e), true);
+  document.addEventListener('mouseup', (e) => {mup(e)}, true);
+  document.addEventListener('touchend', (e) => {mup(e)}, true);
   
-  document.addEventListener('mousemove', mmove(e), true);
-  document.addEventListener('touchmove', mmove(e), true);
+  document.addEventListener('mousemove', (e) => {mmove(e)}, true);
+  document.addEventListener('touchmove', (e) => {mmove(e)}, true);
   
   document.getElementById("dragbar").click();
 }
