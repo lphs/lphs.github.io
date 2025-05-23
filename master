@@ -458,34 +458,47 @@ input[type=text]:focus, input[type=email]:focus{
 <script>
 var isDown = false;
 var initWidth = parseInt(document.getElementsByClassName("left")[0].clientWidth)+30;
+
+function mdown(e){
+  isDown = true;
+}
+
+function mup(e){
+  isDown = false;
+}
+
+function mmove(e){
+  e.preventDefault();
+  if(isDown){
+    var x = Math.min(Math.max(e.clientX, initWidth), parseInt(document.body.offsetWidth)-350);
+    document.getElementById("dragbar").style.left = x+"px";
+    document.getElementsByClassName("left")[0].style.width = x+"px";
+    var size = parseInt(document.body.offsetWidth)-x-50;
+    document.getElementsByClassName("right")[0].style.width = size+"px";
+    document.getElementById("qrcode").innerHTML = "";
+    new QRCode(document.getElementById("qrcode"), {
+      text: window.location.href+"?code="+generateCode(),
+      width: size,
+      height: size
+    });
+  }
+}
+
 function initDragBar(){
   document.getElementById("dragbar").style.left = initWidth+"px";
   document.getElementsByClassName("left")[0].style.width = initWidth+"px";
   document.getElementsByClassName("right")[0].style.width = parseInt(document.body.offsetWidth)-initWidth-50+"px";
-  document.getElementById("dragbar").addEventListener('mousedown', function(e) {
-    isDown = true;
-  }, true);
   
-  document.body.addEventListener('mouseup', function() {
-    isDown = false;
-  }, true);
+  document.getElementById("dragbar").addEventListener('mousedown', mdown(e), true);
+  document.getElementById("dragbar").addEventListener('touchstart', mdown(e), true);
   
-  document.addEventListener('mousemove', function(e) {
-    e.preventDefault();
-    if(isDown){
-      var x = Math.min(Math.max(e.clientX, initWidth), parseInt(document.body.offsetWidth)-350);
-      document.getElementById("dragbar").style.left = x+"px";
-      document.getElementsByClassName("left")[0].style.width = x+"px";
-      var size = parseInt(document.body.offsetWidth)-x-50;
-      document.getElementsByClassName("right")[0].style.width = size+"px";
-      document.getElementById("qrcode").innerHTML = "";
-      new QRCode(document.getElementById("qrcode"), {
-        text: window.location.href+"?code="+generateCode(),
-        width: size,
-        height: size
-      });
-    }
-  }, true);
+  document.body.addEventListener('mouseup', mup(e), true);
+  document.body.addEventListener('touchend', mup(e), true);
+  document.body.addEventListener('touchcancel', mup(e), true);
+  
+  document.addEventListener('mousemove', mmove(e), true);
+  document.addEventListener('touchmove', mmove(e), true);
+  
   document.getElementById("dragbar").click();
 }
 
