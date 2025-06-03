@@ -10,7 +10,7 @@ function setCookie(cname,cvalue,exdays) {
 }
 
 function checkCookie() {
-  pass = prompt("Please enter a name:","");
+  pass = prompt("Please enter the password:","");
   if (pass != "" && pass != null) {
     setCookie("pass", pass, 365);
   }
