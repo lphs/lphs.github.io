@@ -1,0 +1,90 @@
+Monday/Wednesday/Friday
+8:50-"School"
+8:55-"Period 1 start"
+55 min
+9:50-"Period 1 end"
+
+9:55-"Group start"
+20 min
+10:05-"Group end"
+
+10:10-"Period 2 start"
+55 min
+11:05-"Period 2 end/Interval"
+15 min
+10:20-"Interval end"
+
+10:25-"Period 3 start"
+55 min
+12:20-"Period 3 end/Lunch"
+45 min
+1:05-"Lunch end"
+
+1:10-"Period 4 start"
+50 min
+2:00-"Period 4 end"
+
+2:05-"Period 5 start"
+55 min
+3:00-"Period 5 end/Home"
+
+------------------------
+
+Tuesday
+8:50-"School"
+8:55-"Period 1 start"
+45 min
+9:40-"Period 1 end"
+
+9:45-"Group start"
+30 min
+10:15-"Group end"
+
+10:20-"Period 2 start"
+50 min
+11:10-"Period 2 end/Interval"
+15 min
+11:25-"Interval end"
+
+11:30-"Period 3 start"
+50 min
+12:20-"Period 3 end/Lunch"
+45 min
+1:05-"Lunch end"
+
+1:10-"Period 4 start"
+50 min
+2:00-"Period 4 end"
+
+2:05-"Period 5 start"
+55 min
+3:00-"Period 5 end/Home"
+
+------------------------
+
+Thursday
+8:50-"School"
+8:55-"Period 1 start"
+9:40-"Period 1 end"
+
+9:45-"Group start"
+10:00-"Group end"
+
+10:05-"Period 2 start"
+10:50-"Period 2 end/Interval"
+
+11:05-"Interval end"
+
+11:10-"Period 3 start"
+11:50-"Period 3 end"
+
+11:55-"Period 4 start"
+12:40-"Period 4 end/Lunch"
+
+1:25-"Lunch end"
+
+1:30-"Period 5 start"
+2:15-"Period 5 end"
+
+2:20-"Period 6 start"
+3:00-"Period 6 end/Home"
