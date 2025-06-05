@@ -2,6 +2,7 @@
 <html>
 <head>
 <script>
+const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 var timings;
 function load(){
   var xhr = new XMLHttpRequest();
@@ -15,6 +16,13 @@ function load(){
 }
 function update(){
   console.log(timings);
+  var now = new Date();
+  var day = days[now.getDay()];
+  var TimeTableRE = new RegExp("\\|"+day+"\\|.*\n([\\S\\s]*)\\|.*\\|", "g");
+  if(TimeTableRE.test(timings)){
+  	console.log(TimeTableRE);
+    console.log(timings.match(TimeTableRE));
+  }
 }
 </script>
 </head>
