@@ -4,13 +4,11 @@ Monday/Wednesday/Friday
 55 min
 9:50-"Period 1 end/Group start"
 20 min
-10:05-"Group end"
-
-10:10-"Period 2 start"
+10:10-"Group end/Period 1 start"
 55 min
 11:05-"Period 2 end/Interval"
-15 min
-10:20-"Interval end"
+20 min
+10:25-"Interval end"
 
 10:25-"Period 3 start"
 55 min
