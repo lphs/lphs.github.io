@@ -2,9 +2,7 @@ Monday/Wednesday/Friday
 8:50-"School"
 8:55-"Period 1 start"
 55 min
-9:50-"Period 1 end"
-
-9:55-"Group start"
+9:50-"Period 1 end/Group start"
 20 min
 10:05-"Group end"
 
