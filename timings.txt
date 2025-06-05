@@ -1,4 +1,4 @@
-Monday/Wednesday/Friday
+|MON| |WED| |FRI|
 8:50-"School"
 ###########################
 8:55-"Period 1 start"
@@ -29,7 +29,7 @@ Monday/Wednesday/Friday
 
 ------------------------
 
-Tuesday
+|TUE|
 8:50-"School"
 ###########################
 8:55-"Period 1 start"
@@ -62,7 +62,7 @@ Tuesday
 
 ------------------------
 
-Thursday
+|THU|
 8:50-"School"
 ###########################
 8:55-"Period 1 start"
