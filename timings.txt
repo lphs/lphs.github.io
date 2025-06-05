@@ -2,15 +2,13 @@ Monday/Wednesday/Friday
 8:50-"School"
 ###########################
 8:55-"Period 1 start"
-50 min
-9:45-"Period 1 end"
-###########################
+55 min
+9:50-"Period 1 end"
 9:50-"Group start"
 20 min
 10:10-"Group end"
-###########################
-10:15-"Period 2 start"
-50 min
+10:10-"Period 2 start"
+55 min
 11:05-"Period 2 end/Interval"
 20 min
 11:25-"Interval end"
