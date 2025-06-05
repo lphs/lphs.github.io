@@ -2,9 +2,19 @@
 <html>
 <head>
 <script>
+function load(){
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "/timings.txt", true);
+  xhr.onreadystatechange = function() {
+    if(xhr.readyState == 4 && xhr.status == 200){
+      document.getElementById("time").innerHTML = xhr.responseText;
+    }
+  };
+  xhr.send(null);
+}
 </script>
 </head>
-<body>
-<p>Timing: </p>  
+<body onload="load()">
+<p>Timing: <br><span id="time"></span></p>  
 </body>
 </html>
