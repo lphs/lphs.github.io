@@ -6,27 +6,40 @@ const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 var timings;
 function load(){
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "/timings.txt", true);
+  xhr.open("GET", "https://lphs.github.io/timings.txt", true);
   xhr.onreadystatechange = function() {
     if(xhr.readyState == 4 && xhr.status == 200){
       timings = xhr.responseText;
+      update();
     }
   };
   xhr.send(null);
 }
 function update(){
   console.log(timings);
-  var now = new Date();
+  var now = new Date(); // new Date(Date.now()-1*24*60*60*1000)
   var day = days[now.getDay()];
-  var TimeTableRE = new RegExp("\\|"+day+"\\|.*\n([\\S\\s]*)\\|.*\\|", "g");
-  if(TimeTableRE.test(timings)){
-  	console.log(TimeTableRE);
-    console.log(timings.match(TimeTableRE));
+  var timeTableRE = new RegExp("\\|"+day+"\\|.*\n([\\S\\s]*?)\\|.*\\|");
+  if(timeTableRE.test(timings)){
+  	var timeTable = timings.match(timeTableRE)[1];
+    document.getElementById("time").innerText = timeTable;
+    var timeRE = /(\d+):(\d+)(AM|PM)/g;
+    const timeArray = [...timeTable.matchAll(timeRE)];
+    console.log(timeArray);
+    for(let i = 0; i < timeArray.length; i++){
+      var lTime = new Date(0, 0, 0, (timeArray[i][3].toLowerCase() == "pm") ? (Number(timeArray[i][1])+12):(Number(timeArray[i][1])), Number(timeArray[i][2]), 0);
+      var nTime = new Date(0, 0, 0, now.getHours(), now.getSeconds(), 0);
+      if(nTime > lTime){
+        console.log(i);
+      }
+    }
+  }else{
+    document.getElementById("time").innerText = "No timetable for today";
   }
 }
 </script>
 </head>
-<body onload="load(); update();">
-<p>Timing: <br><span id="time"></span></p>  
+<body onload="load()">
+<span id="time">Loading...</span>  
 </body>
 </html>
