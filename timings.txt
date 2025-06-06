@@ -16,10 +16,10 @@ HH:mm-"PERIOD" - Use this for the start or end of a period. Replace PERIOD with 
 55 min
 11:05-"Period 2 end/Interval"
 20 min
-11:25-"Interval end"
+11:20-"Interval end"
 ###########################
-11:30-"Period 3 start"
-50 min
+11:25-"Period 3 start"
+55 min
 12:20-"Period 3 end/Lunch"
 45 min
 1:05-"Lunch end"
@@ -27,9 +27,8 @@ HH:mm-"PERIOD" - Use this for the start or end of a period. Replace PERIOD with 
 1:10-"Period 4 start"
 55 min
 2:05-"Period 4 end"
-###########################
-2:10-"Period 5 start"
-50 min
+2:05-"Period 5 start"
+55 min
 3:00-"Period 5 end/Home"
 
 
