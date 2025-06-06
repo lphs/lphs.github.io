@@ -702,7 +702,7 @@ async function getData() {
 
 var height = parseInt(document.body.offsetWidth)-initWidth-50;
 new QRCode(document.getElementById("qrcode"), {
-  text: window.location.href+"?code="+generateCode(),
+  text: window.location.origin+"/?code=",
   width: height,
   height: height
 });
