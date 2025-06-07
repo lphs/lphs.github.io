@@ -17,20 +17,26 @@ function load(){
 }
 function update(){
   console.log(timings);
-  var now = new Date(); // new Date(Date.now()-1*24*60*60*1000)
+  var now = new Date(0, 0, 1, 12, 0, 0); // new Date(0, 0, D(SUN, MUN), H, M, 0)
   var day = days[now.getDay()];
   var timeTableRE = new RegExp("\\|"+day+"\\|.*\n([\\S\\s]*?)\\|.*\\|");
   if(timeTableRE.test(timings)){
   	var timeTable = timings.match(timeTableRE)[1];
     document.getElementById("time").innerText = timeTable;
-    var timeRE = /(\d+):(\d+)(AM|PM)/g;
+    var timeRE = /.*?(\d+):(\d+).*?(AM|PM).*?-.*?"(.*)"/g;
     const timeArray = [...timeTable.matchAll(timeRE)];
     console.log(timeArray);
     for(let i = 0; i < timeArray.length; i++){
-      var lTime = new Date(0, 0, 0, (timeArray[i][3].toLowerCase() == "pm") ? (Number(timeArray[i][1])+12):(Number(timeArray[i][1])), Number(timeArray[i][2]), 0);
-      var nTime = new Date(0, 0, 0, now.getHours(), now.getSeconds(), 0);
-      if(nTime > lTime){
-        console.log(i);
+      if(timeArray[i][3].toLowerCase()=="pm" && Number(timeArray[i][1]) != 12){
+        var timeHour = Number(timeArray[i][1])+12;
+      }else{
+        var timeHour = Number(timeArray[i][1]);
+      }
+      var timeMin = Number(timeArray[i][2]);
+      var lTime = new Date(0, 0, 0, timeHour, timeMin, 0);
+      var nTime = new Date(0, 0, 0, now.getHours(), now.getMinutes(), 0);
+      if(nTime <= lTime){
+        console.log(timeArray[i][4]);
       }
     }
   }else{
