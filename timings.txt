@@ -3,102 +3,48 @@
 HH:mm AM/PM-"PERIOD" - Use this for the start or end of a period. Replace PERIOD with what the period of time will be called(e.g. "Period 1"). Replace HH with the hours, mm with the minutes and AM/PM with AM or PM (e.g. 8:50AM, 12:00PM, etc.).
 
 |START|
+
 |MON| |WED| |FRI|
-8:50AM-"School"
-###########################
-8:55AM-"Period 1 start"
-55 min
-9:50AM-"Period 1 end"
-9:50AM-"Group start"
-20 min
-10:10AM-"Group end"
-10:10AM-"Period 2 start"
-55 min
-11:05AM-"Period 2 end/Interval"
-20 min
-11:20AM-"Interval end"
-###########################
-11:25AM-"Period 3 start"
-55 min
-12:20PM-"Period 3 end/Lunch"
-45 min
-1:05PM-"Lunch end"
-###########################
-1:10PM-"Period 4 start"
-55 min
-2:05PM-"Period 4 end"
+8:50AM-"5 minute break"
+8:55AM-"Period 1"
+9:50AM-"Group"
+10:10AM-"Period 2"
+11:05AM-"Interval"
+11:20AM-"5 minute break"
+11:25AM-"Period 3"
+12:20PM-"Lunch"
+1:05PM-"5 minute break"
+1:10PM-"Period 4"
 2:05PM-"Period 5 start"
-55 min
-3:00PM-"Period 5 end/Home"
-
-
-
+3:00PM-"Home"
 
 |TUE|
-8:50AM-"School"
-###########################
-8:55AM-"Period 1 start"
-----------P1: 45 min----------
-9:40AM-"Period 1 end"
-###########################
-9:45AM-"Group start"
-----------Group: 30 min----------
-10:15AM-"Group end"
-###########################
-10:20AM-"Period 2 start"
-----------P2: 50 min----------
-11:10AM-"Period 2 end/Interval"
-----------Interval: 15 min----------
-11:25AM-"Interval end"
-###########################
-11:30AM-"Period 3 start"
-----------P3: 50 min----------
-12:20PM-"Period 3 end/Lunch"
-----------Interval: 40 min----------
-1:00PM-"Lunch end"
-###########################
-1:05PM-"Period 4 start"
-----------P4: 55 min----------
-2:00PM-"Period 4 end"
-###########################
-2:05PM-"Period 5 start"
-----------P5: 55 min----------
-3:00PM-"Period 5 end/Home"
-
-------------------------
+8:50AM-"5 minute break"
+8:55AM-"Period 1"
+9:40AM-"Group/Assembly"
+10:20AM-"Period 2"
+11:10AM-"Interval"
+11:25AM-"5 minute break"
+11:30AM-"Period 3"
+12:20PM-"Lunch"
+1:00PM-"5 minute break"
+1:05PM-"Period 4"
+2:05PM-"Period 5"
+3:00PM-"Home"
 
 |THU|
-8:50AM-"School"
-###########################
-8:55AM-"Period 1 start"
-----------P1: 50 min----------
-9:45AM-"Period 1 end"
-###########################
-9:50AM-"Group start"
-----------Group: 15 min----------
-10:05AM-"Group end"
-###########################
-10:10AM-"Period 2 start"
-----------P2: 45 min----------
-10:55AM-"Period 2 end/Interval"
-----------Interval: 10 min----------
-11:05AM-"Interval end"
-###########################
-11:10AM-"Period 3 start"
-----------P3: 45 min----------
-11:55AM-"Period 3 end"
-###########################
-12:00PM-"Period 4 start"
-----------P4: 45 min----------
-12:40PM-"Period 4 end/Lunch"
+8:50AM-"5 minute break"
+8:55AM-"Period 1"
+9:45AM-"Group"
+10:05AM-"Period 2"
+10:50AM-"Interval"
+11:05AM-"5 minute break"
+11:10AM-"Period 3"
+11:55AM-"Period 4"
+12:40PM-"Lunch"
+1:25PM-"5 minute break"
+1:30PM-"Period 5"
+2:15PM-"Period 6"
+3:00PM-"Home"
 
-1:25PM-"Lunch end"
-###########################
-1:30PM-"Period 5 start"
-----------P5: 45 min----------
-2:15PM-"Period 5 end"
-###########################
-2:20PM-"Period 6 start"
-----------P6: 40 min----------
-3:00PM-"Period 6 end/Home"
 |END|
