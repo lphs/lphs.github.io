@@ -5,6 +5,7 @@ HH:mm AM/PM-"PERIOD" - Use this for the start or end of a period. Replace PERIOD
 |START|
 
 |MON| |WED| |FRI|
+8:35AM-"Staff Briefing"
 8:50AM-"5 minute break"
 8:55AM-"Period 1"
 9:50AM-"Group"
@@ -19,6 +20,7 @@ HH:mm AM/PM-"PERIOD" - Use this for the start or end of a period. Replace PERIOD
 3:00PM-"Home"
 
 |TUE|
+8:35AM-"Department Meetings"
 8:50AM-"5 minute break"
 8:55AM-"Period 1"
 9:40AM-"Group/Assembly"
@@ -33,9 +35,10 @@ HH:mm AM/PM-"PERIOD" - Use this for the start or end of a period. Replace PERIOD
 3:00PM-"Home"
 
 |THU|
+8:35AM-"House Meeting"
 8:50AM-"5 minute break"
 8:55AM-"Period 1"
-9:45AM-"Group"
+9:45AM-"Group/Assembly"
 10:05AM-"Period 2"
 10:50AM-"Interval"
 11:05AM-"5 minute break"
