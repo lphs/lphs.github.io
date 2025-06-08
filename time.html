@@ -12,7 +12,6 @@ progress::-moz-progress-bar {background-color: #34B233; border-radius: 20px;}
 progress {color: #34B233; border-radius: 20px;}
 </style>
 <script>
-var i = 60*8;
 const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 var timings;
 function load(){
@@ -27,14 +26,15 @@ function load(){
   xhr.send(null);
   document.getElementById("prog").style.width = (parseInt(document.body.offsetWidth)-parseInt(document.getElementById("percent").clientWidth)-50)+"px";
 }
+
 function getHour(ampm, hour){
   if(ampm.toLowerCase() == "pm" && Number(hour) != 12){
     return Number(hour)+12;
   }
   return Number(hour);
 }
+
 function update(){
-  i++;
   var now = new Date(); // new Date(0, 0, D(SUN, MUN), H, M, 0)
   var day = days[now.getDay()];
   var timeTableRE = new RegExp("\\|"+day+"\\|.*\n([\\S\\s]*?)\\|.*\\|");
