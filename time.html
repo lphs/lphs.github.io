@@ -1,12 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+<style>
+/* background: */
+progress::-webkit-progress-bar {background-color: #EE0000; width: 100%; border-radius: 20px;}
+progress {background-color: #EE0000;}
+
+/* value: */
+progress::-webkit-progress-value {background-color: #34B233; border-radius: 20px;}
+progress::-moz-progress-bar {background-color: #34B233; border-radius: 20px;}
+progress {color: #34B233; border-radius: 20px;}
+</style>
 <script>
+var i = 60*8;
 const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"]
 var timings;
 function load(){
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "https://lphs.github.io/timings.txt", true);
+  xhr.open("GET", "/timings.txt", true);
   xhr.onreadystatechange = function() {
     if(xhr.readyState == 4 && xhr.status == 200){
       timings = xhr.responseText;
@@ -14,6 +25,7 @@ function load(){
     }
   };
   xhr.send(null);
+  document.getElementById("prog").style.width = (parseInt(document.body.offsetWidth)-parseInt(document.getElementById("percent").clientWidth)-50)+"px";
 }
 function getHour(ampm, hour){
   if(ampm.toLowerCase() == "pm" && Number(hour) != 12){
@@ -22,50 +34,64 @@ function getHour(ampm, hour){
   return Number(hour);
 }
 function update(){
-  console.log(timings);
-  var now = new Date(0, 0, 1, 8, 0, 0); // new Date(0, 0, D(SUN, MUN), H, M, 0)
+  i++;
+  var now = new Date(); // new Date(0, 0, D(SUN, MUN), H, M, 0)
   var day = days[now.getDay()];
   var timeTableRE = new RegExp("\\|"+day+"\\|.*\n([\\S\\s]*?)\\|.*\\|");
   if(timeTableRE.test(timings)){
+    var status = 0;
   	var timeTable = timings.match(timeTableRE)[1];
     document.getElementById("time").innerText = timeTable;
     var timeRE = /.*?(\d+):(\d+).*?(AM|PM).*?-.*?"(.*)"/g;
     const timeArray = [...timeTable.matchAll(timeRE)];
-    console.log(timeArray);
     for(let i = 0; i < timeArray.length; i++){
       var etimeHour = getHour(timeArray[i][3], timeArray[i][1]);
       var etimeMin = Number(timeArray[i][2]);
       var eTime = new Date(0, 0, 0, etimeHour, etimeMin, 0);
-      var nTime = new Date(0, 0, 0, now.getHours(), now.getMinutes(), 0);
+      var nTime = new Date(0, 0, 0, now.getHours(), now.getMinutes(), now.getSeconds());
       if(nTime <= eTime){
+        status = 1;
         if(i == 0){
-          var netimeHour = getHour(timeArray[1][3], timeArray[1][1]);
-          var netimeMin = Number(timeArray[1][2]);
-          var neTime = new Date(0, 0, 0, netimeHour, netimeMin, 0);
-          var timeTo = (neTime-nTime)/(60*1000);
-          document.write("Nothing happening yet. "+timeArray[1][4]+" is starting in "+timeTo+" minutes");
+          var timeTo = ((eTime-nTime)/(60*1000)).toFixed(2);
+          document.getElementById("time").innerText = "Nothing happening yet. "+timeArray[0][4]+" is starting in "+timeTo+" minutes.";
+          document.getElementById("prog").value = 0;
+          document.getElementById("percent").innerText = "0%";
           break;
-        }
-        if(i == timeArray.length){
-          document.write("End of school.");
+        }else if(i == timeArray.length-1){
+          document.getElementById("time").innerText = "End of school!";
+          document.getElementById("prog").value = 100;
+          document.getElementById("percent").innerText = "100%";
           break;
+        }else{
+          var stimeHour = getHour(timeArray[i-1][3], timeArray[i-1][1]);
+          var stimeMin = Number(timeArray[i-1][2]);
+          var sTime = new Date(0, 0, 0, stimeHour, stimeMin, 0);
+          var timeLeft = ((eTime-nTime)/(60*1000)).toFixed(2);
+          var periodLength = ((eTime-sTime)/(60*1000));
+          document.getElementById("time").innerText = timeArray[i-1][4]+" ending in "+timeLeft+" minutes.";
+          document.getElementById("prog").value = ((periodLength-timeLeft)/periodLength*100);
+          document.getElementById("percent").innerText = Math.round((periodLength-timeLeft)/periodLength*100)+"%";
         }
-        var stimeHour = getHour(timeArray[i-1][3], timeArray[i-1][1]);
-        var stimeMin = Number(timeArray[i-1][2]);
-        var sTime = new Date(0, 0, 0, stimeHour, stimeMin, 0);
-        var timeLeft = (eTime-nTime)/(60*1000);
-        var periodLength = (eTime-sTime)/(60*1000);
-        document.write(timeArray[i-1][4]+" ending in "+timeLeft+" minutes. Period length: "+periodLength+" minutes. You are "+Math.round((periodLength-timeLeft)/periodLength*100)+"% of the way through.");
         break;
       }
     }
+    if(status == 0){
+      document.getElementById("time").innerText = "End of school!";
+      document.getElementById("prog").value = 100;
+      document.getElementById("percent").innerText = "100%";
+    }
   }else{
     document.getElementById("time").innerText = "No timetable for today";
+    document.getElementById("prog").value = 100;
+    document.getElementById("percent").innerText = "100%";
   }
 }
+setInterval(update, 100);
 </script>
 </head>
 <body onload="load()">
+<label id="percent" for="prog"></label>
+<progress id="prog" name="prog" value="0" max="100"></progress><br>
 <span id="time">Loading...</span>  
 </body>
 </html>
