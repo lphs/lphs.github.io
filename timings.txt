@@ -16,7 +16,7 @@ HH:mm AM/PM-"PERIOD" - Use this for the start or end of a period. Replace PERIOD
 12:20PM-"Lunch"
 1:05PM-"5 minute break"
 1:10PM-"Period 4"
-2:05PM-"Period 5 start"
+2:05PM-"Period 5"
 3:00PM-"Home"
 
 |TUE|
