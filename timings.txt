@@ -2,6 +2,7 @@
 |DAY| - Use this to indicate a start of a new day's timetable. Put multiple on the same line for the same timetable for multiple days. Use 3 letter codes for days(e.g. MON, TUE, etc.)
 HH:mm AM/PM-"PERIOD" - Use this for the start or end of a period. Replace PERIOD with what the period of time will be called(e.g. "Period 1"). Replace HH with the hours, mm with the minutes and AM/PM with AM or PM (e.g. 8:50AM, 12:00PM, etc.).
 
+
 |START|
 
 |MON| |WED| |FRI|
