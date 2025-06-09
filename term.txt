@@ -1,0 +1,26 @@
+|FORMAT|
+dd/MM-"TERM" - Use this for the start or end of a term/holiday. Replace TERM with what it will be called(e.g. "Term 1"). Replace dd with the days and MM with the month(e.g. 3/4, 26/1, etc.).
+
+
+|START|
+
+27/1-"Term 1"
+11/4-"Term 1 Holidays"
+28/4-"Term 2"
+27/6-"Term 2 Holidays"
+14/7-"Term 3"
+19/9-"Term 3 Holidays"
+6/10-"Term 4"
+19/12-"Term 4 Holidays"
+
+|END|
+
+2026
+26/1-"Term 1"
+2/4-"Term 1 Holidays"
+20/4-"Term 2"
+3/7-"Term 2 Holidays"
+20/7-"Term 3"
+25/9-"Term 3 Holidays"
+12/10-"Term 4"
+18/12-"Term 4 Holidays"
