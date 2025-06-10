@@ -1,26 +1,48 @@
 |FORMAT|
-dd/MM-"TERM" - Use this for the start or end of a term/holiday. Replace TERM with what it will be called(e.g. "Term 1"). Replace dd with the days and MM with the month(e.g. 3/4, 26/1, etc.).
+|YEAR| - Use this to indicate start of year. Change YEAR to the year the following terms are in(e.g. 2026).
+DATE MONTH-"TERM" - Use this for the start or end of a term/holiday. Replace TERM with what it will be called(e.g. "Term 1"). Replace DATE with the date and MONTH with the month name(e.g. 1 January, 3 March, etc.). The date is the first Monday of the term or the Friday just before the term holiday. Get it from https://www.education.govt.nz/school-terms-and-holidays-dates and using https://regex101.com/r/Uf9cal/1 to parse it.
 
 
 |START|
 
-27/1-"Term 1"
-11/4-"Term 1 Holidays"
-28/4-"Term 2"
-27/6-"Term 2 Holidays"
-14/7-"Term 3"
-19/9-"Term 3 Holidays"
-6/10-"Term 4"
-19/12-"Term 4 Holidays"
+|2025|
+27 January-"Term 1"
+11 April-"Term 1 Holidays"
+28 April-"Term 2"
+27 June-"Term 2 Holidays"
+14 July-"Term 3"
+19 September-"Term 3 Holidays"
+6 October-"Term 4"
+19 December-"Term 4 Holidays"
+
+|2026|
+26 January-"Term 1"
+2 April-"Term 1 Holidays"
+20 April-"Term 2"
+3 July-"Term 2 Holidays"
+20 July-"Term 3"
+25 September-"Term 3 Holidays"
+12 October-"Term 4"
+18 December-"Term 4 Holidays"
+
+|2027|
+28 January-"Term 1"
+9 April-"Term 1 Holidays"
+27 April-"Term 2"
+2 July-"Term 2 Holidays"
+19 July-"Term 3"
+24 September-"Term 3 Holidays"
+11 October-"Term 4"
+17 December-"Term 4 Holidays"
+
+|2028|
+31 January-"Term 1"
+13 April-"Term 1 Holidays"
+1 May-"Term 2"
+7 July-"Term 2 Holidays"
+24 July-"Term 3"
+29 September-"Term 3 Holidays"
+16 October-"Term 4"
+15 December-"Term 4 Holidays"
 
 |END|
-
-2026
-26/1-"Term 1"
-2/4-"Term 1 Holidays"
-20/4-"Term 2"
-3/7-"Term 2 Holidays"
-20/7-"Term 3"
-25/9-"Term 3 Holidays"
-12/10-"Term 4"
-18/12-"Term 4 Holidays"
