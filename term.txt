@@ -1,6 +1,6 @@
 |FORMAT|
 |YEAR| - Use this to indicate start of year. Change YEAR to the year the following terms are in(e.g. 2026).
-DATE MONTH-"TERM" - Use this for the start or end of a term/holiday. Replace TERM with what it will be called(e.g. "Term 1"). Replace DATE with the date and MONTH with the month name(e.g. 1 January, 3 March, etc.). The date is the first Monday of the term or the Friday just before the term holiday. Get it from https://www.education.govt.nz/school-terms-and-holidays-dates and using https://regex101.com/r/Uf9cal/1 to parse it.
+DATE MONTH-"TERM" - Use this for the start or end of a term/holiday. Replace TERM with what it will be called(e.g. "Term 1"). Replace DATE with the date and MONTH with the month name(e.g. 1 January, 3 March, etc.). The date is the first Monday of the term or the Friday just before the term holiday. Get it from https://www.education.govt.nz/school-terms-and-holidays-dates and using https://regex101.com/r/Uf9cal/1 to parse it(Use regex '/Term (\d+).*\n.*?(\d+ \S+).*?(\d+ \S+) \d{4}/g' to match and '$2-"Term $1"\n$3-"Term $1 Holidays"\n' to list).
 
 
 |START|
