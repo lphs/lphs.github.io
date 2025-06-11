@@ -57,8 +57,8 @@ function update(){
         }else{
           var termStart = Date.parse(termArray[i-1][1]+" "+year);
           var termWeeks = ((termEnd-termStart)-(termEnd-termStart)%week_len)/week_len+1;
-          var weeksFrom = ((nowDate-termStart)-(nowDate-termStart)%week_len)/week_len;
-          document.getElementById("time").innerHTML = termArray[i-1][2]+" ending in "+weeksTo+" weeks and "+daysTo+" days. <br>"+days[now.getDay()]+", Week "+weeksFrom+".";
+          var weeksFrom = ((nowDate-termStart)-(nowDate-termStart)%week_len)/week_len+1;
+          document.getElementById("time").innerHTML = termArray[i-1][2]+" ending in "+weeksTo+" weeks and "+daysTo+" days. <br>"+days[now.getDay()]+", Week "+weeksFrom+".<br>There are "+termWeeks+" weeks in this term.";
           document.getElementById("prog").value = (nowDate-termStart)/(termEnd-termStart)*100;
           document.getElementById("percent").innerText = Math.round((nowDate-termStart)/(termEnd-termStart)*100)+"%";
         }
