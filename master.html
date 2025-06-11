@@ -490,7 +490,6 @@ function getCard(){
   xhr.onreadystatechange = function() {
     if(xhr.readyState == 4 && xhr.status == 200){
       address = xhr.responseText;
-      setTimeout(getCard, 100);
     }
   };
   xhr.send(null);
@@ -709,7 +708,7 @@ new QRCode(document.getElementById("qrcode"), {
 });
 document.getElementById("verifycode").innerHTML = "Verification code: "+generateCode();
 initDragBar();
-getCard();
+setTimeout(getCard, 300);
 </script>
   
 </body>
