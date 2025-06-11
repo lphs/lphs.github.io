@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta name="viewport">
 <style>
 /* background: */
 progress::-webkit-progress-bar {background-color: #EE0000; width: 100%; border-radius: 20px;}
@@ -12,26 +13,68 @@ progress::-moz-progress-bar {background-color: #34B233; border-radius: 20px;}
 progress {color: #34B233; border-radius: 20px;}
 </style>
 <script>
-var timings;
+const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+var terms;
 function load(){
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "/term.txt", true);
   xhr.onreadystatechange = function() {
     if(xhr.readyState == 4 && xhr.status == 200){
-      timings = xhr.responseText;
-      setInterval(update, 500);
+      terms = xhr.responseText;
+      update();
+      setInterval(update, 10000);
     }
   };
   xhr.send(null);
-  document.getElementById("prog").style.width = (parseInt(document.body.offsetWidth)-parseInt(document.getElementById("percent").clientWidth)-50)+"px";
+  document.getElementById("percent").innerText = "100%";
+  document.getElementById("prog").style.width = (parseInt(document.body.getBoundingClientRect().width)-parseInt(document.getElementById("percent").getBoundingClientRect().width)-10)+"px";
+  document.getElementById("percent").innerText = "";
 }
 
 function update(){
   var now = new Date();
-  console.log(now.getFullYear());
-  document.getElementById("time").innerText = "No timetable for today";
-  document.getElementById("prog").value = 100;
-  document.getElementById("percent").innerText = "100%";
+  var year = now.getFullYear();
+  var termRE = new RegExp("\\|"+year+"\\|\\n([\\S\\s]*?)\\|.+?\\|");
+  if(termRE.test(terms)){
+    var status = 0;
+    var day_len = (24*60*60*1000);
+    var week_len = 7*day_len;
+  	var termDates = terms.match(termRE)[1];
+    var termRE = /(\d+.+?)-.*?"(.*)"/g;
+    const termArray = [...termDates.matchAll(termRE)];
+    console.log(termArray);
+    for(let i = 0; i < termArray.length; i++){
+      var termEnd = Date.parse(termArray[i][1]+" "+year);
+      var nowDate = Date.parse(now.toDateString());
+      if(nowDate <= termEnd){
+        status = 1;
+        var weeksTo = ((termEnd-nowDate)-(termEnd-nowDate)%week_len)/week_len;
+        var daysTo = Math.round(((termEnd-nowDate)%week_len)/day_len);
+        if(i == 0){
+          document.getElementById("time").innerText = "School hasn't started yet. "+weeksTo+" weeks and "+daysTo+" days until "+termArray[0][2];
+          document.getElementById("prog").value = 0;
+          document.getElementById("percent").innerText = "0%";
+        }else{
+          var termStart = Date.parse(termArray[i-1][1]+" "+year);
+          var termWeeks = ((termEnd-termStart)-(termEnd-termStart)%week_len)/week_len+1;
+          var weeksFrom = ((nowDate-termStart)-(nowDate-termStart)%week_len)/week_len;
+          document.getElementById("time").innerHTML = termArray[i-1][2]+" ending in "+weeksTo+" weeks and "+daysTo+" days. <br>"+days[now.getDay()]+", Week "+weeksFrom+".";
+          document.getElementById("prog").value = (nowDate-termStart)/(termEnd-termStart)*100;
+          document.getElementById("percent").innerText = Math.round((nowDate-termStart)/(termEnd-termStart)*100)+"%";
+        }
+        break;
+      }
+    }
+    if(status == 0){
+      document.getElementById("time").innerText = "End of school!";
+      document.getElementById("prog").value = 100;
+      document.getElementById("percent").innerText = "100%";
+    }
+  }else{
+  	document.getElementById("time").innerText = "No schedule found for this year";
+    document.getElementById("prog").value = 100;
+    document.getElementById("percent").innerText = "100%";
+  }
 }
 </script>
 </head>
