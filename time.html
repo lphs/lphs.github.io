@@ -20,7 +20,7 @@ function load(){
   xhr.onreadystatechange = function() {
     if(xhr.readyState == 4 && xhr.status == 200){
       timings = xhr.responseText;
-      update();
+      setInterval(update, 500);
     }
   };
   xhr.send(null);
@@ -91,7 +91,6 @@ function update(){
     document.getElementById("percent").innerText = "100%";
   }
 }
-setInterval(update, 500);
 </script>
 </head>
 <body onload="load()">
