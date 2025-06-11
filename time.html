@@ -24,7 +24,9 @@ function load(){
     }
   };
   xhr.send(null);
-  document.getElementById("prog").style.width = (parseInt(document.body.offsetWidth)-parseInt(document.getElementById("percent").clientWidth)-50)+"px";
+  document.getElementById("percent").innerText = "100%";
+  document.getElementById("prog").style.width = (parseInt(document.body.offsetWidth)-parseInt(document.getElementById("percent").clientWidth)-10)+"px";
+  document.getElementById("percent").innerText = "";
 }
 
 function getHour(ampm, hour){
