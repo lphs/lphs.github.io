@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+/* background: */
+progress::-webkit-progress-bar {background-color: #EE0000; width: 100%; border-radius: 20px;}
+progress {background-color: #EE0000;}
+
+/* value: */
+progress::-webkit-progress-value {background-color: #34B233; border-radius: 20px;}
+progress::-moz-progress-bar {background-color: #34B233; border-radius: 20px;}
+progress {color: #34B233; border-radius: 20px;}
+</style>
+<script>
+var timings;
+function load(){
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "/term.txt", true);
+  xhr.onreadystatechange = function() {
+    if(xhr.readyState == 4 && xhr.status == 200){
+      timings = xhr.responseText;
+      setInterval(update, 500);
+    }
+  };
+  xhr.send(null);
+  document.getElementById("prog").style.width = (parseInt(document.body.offsetWidth)-parseInt(document.getElementById("percent").clientWidth)-50)+"px";
+}
+
+function update(){
+  var now = new Date();
+  console.log(now.getFullYear());
+  document.getElementById("time").innerText = "No timetable for today";
+  document.getElementById("prog").value = 100;
+  document.getElementById("percent").innerText = "100%";
+}
+</script>
+</head>
+<body onload="load()">
+<label id="percent" for="prog"></label>
+<progress id="prog" name="prog" value="0" max="100"></progress><br>
+<span id="time">Loading...</span>  
+</body>
+</html>
