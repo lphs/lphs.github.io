@@ -20,6 +20,7 @@ function load(){
   xhr.onreadystatechange = function() {
     if(xhr.readyState == 4 && xhr.status == 200){
       timings = xhr.responseText;
+      update();
       setInterval(update, 500);
     }
   };
