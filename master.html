@@ -708,7 +708,7 @@ new QRCode(document.getElementById("qrcode"), {
 });
 document.getElementById("verifycode").innerHTML = "Verification code: "+generateCode();
 initDragBar();
-setTimeout(getCard, 300);
+setInterval(getCard, 300);
 </script>
   
 </body>
