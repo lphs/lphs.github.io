@@ -63,11 +63,6 @@ function update(){
           document.getElementById("prog").value = 0;
           document.getElementById("percent").innerText = "0%";
           break;
-        }else if(i == timeArray.length){
-          document.getElementById("time").innerText = "End of school!";
-          document.getElementById("prog").value = 100;
-          document.getElementById("percent").innerText = "100%";
-          break;
         }else{
           var stimeHour = getHour(timeArray[i-1][3], timeArray[i-1][1]);
           var stimeMin = Number(timeArray[i-1][2]);
