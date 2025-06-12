@@ -30,8 +30,8 @@ HH:mm AM/PM-"PERIOD" - Use this for the start or end of a period. Replace PERIOD
 11:25AM-"5 minute break"
 11:30AM-"Period 3"
 12:20PM-"Lunch"
-1:00PM-"5 minute break"
-1:05PM-"Period 4"
+1:05PM-"5 minute break"
+1:10PM-"Period 4"
 2:05PM-"Period 5"
 3:00PM-"Home"
 
@@ -42,7 +42,6 @@ HH:mm AM/PM-"PERIOD" - Use this for the start or end of a period. Replace PERIOD
 9:45AM-"Group/Assembly"
 10:05AM-"Period 2"
 10:50AM-"Interval"
-11:05AM-"5 minute break"
 11:10AM-"Period 3"
 11:55AM-"Period 4"
 12:40PM-"Lunch"
