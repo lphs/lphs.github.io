@@ -486,7 +486,7 @@ var address;
 
 function getCard(){
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "https://info.local/address", true);
+  xhr.open("GET", "/address", true);
   xhr.onreadystatechange = function() {
     if(xhr.readyState == 4 && xhr.status == 200){
       address = xhr.responseText;
