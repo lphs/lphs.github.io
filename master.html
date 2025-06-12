@@ -702,14 +702,16 @@ async function getData() {
   }
 }
 
-var height = parseInt(document.body.offsetWidth)-initWidth-50;
-new QRCode(document.getElementById("qrcode"), {
-  text: window.location.origin+"/?code=",
-  width: height,
-  height: height
-});
-document.getElementById("verifycode").innerHTML = "Verification code: "+generateCode();
-initDragBar();
+setTimeout(function(){
+	var height = parseInt(document.body.offsetWidth)-initWidth-50;
+	new QRCode(document.getElementById("qrcode"), {
+	  text: window.location.origin+"/?code=",
+	  width: height,
+	  height: height
+	});
+	document.getElementById("verifycode").innerHTML = "Verification code: "+generateCode();
+	initDragBar();
+}, 100);
 setInterval(getCard, 300);
 </script>
   
