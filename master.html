@@ -482,6 +482,10 @@ var isDown = false;
 var initWidth = parseInt(document.getElementsByClassName("left")[0].clientWidth)+30;
 var address;
 
+var tag = document.createElement("script");
+tag.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
+document.getElementsByTagName("head")[0].appendChild(tag);
+
 function getCard(){
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "/address", true);
@@ -707,9 +711,6 @@ new QRCode(document.getElementById("qrcode"), {
 document.getElementById("verifycode").innerHTML = "Verification code: "+generateCode();
 initDragBar();
 setInterval(getCard, 300);
-var tag = document.createElement("script");
-tag.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
-document.getElementsByTagName("head")[0].appendChild(tag);
 </script>
   
 </body>
