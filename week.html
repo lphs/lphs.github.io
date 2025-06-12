@@ -13,7 +13,6 @@ progress::-moz-progress-bar {background-color: #34B233; border-radius: 20px;}
 progress {color: #34B233; border-radius: 20px;}
 </style>
 <script>
-const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var terms;
 function load(){
   var xhr = new XMLHttpRequest();
@@ -58,7 +57,7 @@ function update(){
           var termStart = Date.parse(termArray[i-1][1]+" "+year);
           var termWeeks = ((termEnd-termStart)-(termEnd-termStart)%week_len)/week_len+1;
           var weeksFrom = ((nowDate-termStart)-(nowDate-termStart)%week_len)/week_len+1;
-          document.getElementById("time").innerHTML = termArray[i-1][2]+" ending in "+weeksTo+" weeks and "+daysTo+" days. <br>"+days[now.getDay()]+", Week "+weeksFrom+".<br>There are "+termWeeks+" weeks in this term.";
+          document.getElementById("time").innerHTML = termArray[i-1][2]+" ending in "+weeksTo+" weeks and "+daysTo+" days. <br>Week "+weeksFrom+", Day "+((now.getDay()-1)%7+1)+".<br>There are "+termWeeks+" weeks in this term.";
           document.getElementById("prog").value = (nowDate-termStart)/(termEnd-termStart)*100;
           document.getElementById("percent").innerText = Math.round((nowDate-termStart)/(termEnd-termStart)*100)+"%";
         }
