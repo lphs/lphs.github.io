@@ -12,18 +12,19 @@ progress::-moz-progress-bar {background-color: #34B233; border-radius: 20px;}
 progress {color: #34B233; border-radius: 20px;}
 </style>
 <script>
-function load(){
-  while(document.getElementById('checkvis').getBoundingClientRect().top < window.innerHeight){
+function heightAdjust(){
+  while(document.getElementById('checkvis').getBoundingClientRect().top < window.innerHeight-50){
     document.getElementById("space").innerHTML += "<br>";
   }
 }
+setInterval(heightAdjust, 300);
 </script>
 </head>
-<body onload="load()">
+<body onload="heightAdjust()">
 <label id="percent" for="prog"></label>
 <progress id="prog" name="prog" value="0" max="100"></progress><br>
 <span id="time">Loading...</span>
-<div id="space"><br><br><br></div><span id="ads">ADS</span><br>
+<div id="space"><br><br><br><br><br></div><span id="ads">ADS</span><br>
 <hr><script>
 const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 var timings;
