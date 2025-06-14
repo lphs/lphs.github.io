@@ -13,10 +13,8 @@ progress {color: #34B233; border-radius: 20px;}
 </style>
 <script>
 function load(){
-  var top = document.getElementById('checkvis').getBoundingClientRect().top;
-  while(!(top >= 0)){
+  while(document.getElementById('checkvis').getBoundingClientRect().top < window.innerHeight){
     document.getElementById("space").innerHTML += "<br>";
-    top = document.getElementById('checkvis').getBoundingClientRect().top;
   }
 }
 </script>
