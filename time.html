@@ -14,6 +14,7 @@ progress {color: #34B233; border-radius: 20px;}
 <script>
 function heightAdjust(){
   if(document.getElementById('checkvis')){
+    document.getElementById("space").innerHTML = "<br>";
     while(document.getElementById('checkvis').getBoundingClientRect().top < window.innerHeight-50){
       document.getElementById("space").innerHTML += "<br>";
     }
