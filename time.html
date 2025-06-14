@@ -28,11 +28,16 @@ function load(){
   document.getElementById("percent").innerText = "100%";
   document.getElementById("prog").style.width = (parseInt(document.body.getBoundingClientRect().width)-parseInt(document.getElementById("percent").getBoundingClientRect().width)-10)+"px";
   document.getElementById("percent").innerText = "";
-  var width = parseInt(document.getElementById('ads').offsetWidth);
-  var docwidth = parseInt(document.body.getBoundingClientRect().width)-30;
+  var width = document.getElementById('ads').getBoundingClientRect().width;
+  var docwidth = document.body.getBoundingClientRect().width-30;
   while(width < docwidth){
     document.getElementById("ads").innerText += " ADS";
-    width = parseInt(document.getElementById('ads').offsetWidth);
+    width = document.getElementById('ads').getBoundingClientRect().width;
+  }
+  var top = document.getElementById('checkvis').getBoundingClientRect().top;
+  while(!(top >= 0)){
+    document.getElementById("space").inerHTML += "<br>";
+    top = document.getElementById('checkvis').getBoundingClientRect().top;
   }
 }
 
@@ -100,10 +105,11 @@ function update(){
 <label id="percent" for="prog"></label>
 <progress id="prog" name="prog" value="0" max="100"></progress><br>
 <span id="time">Loading...</span>
-<br><br><br><br><span id="ads">ADS</span><br>
+<div id="space"></div><span id="ads">ADS</span><br>
 <hr>
-<script async="async" data-cfasync="false" src="//pl26908995.profitableratecpm.com/1f221903808ce17bf6dbef7757449b2f/invoke.js"></script>
+<script async data-cfasync="false" src="//pl26908995.profitableratecpm.com/1f221903808ce17bf6dbef7757449b2f/invoke.js"></script>
 <div id="container-1f221903808ce17bf6dbef7757449b2f"></div>
-<script type='text/javascript' src='//pl26909069.profitableratecpm.com/29/b7/4d/29b74dff76738cd771647559ea9fec61.js'></script>
+<script async type='text/javascript' src='//pl26909069.profitableratecpm.com/29/b7/4d/29b74dff76738cd771647559ea9fec61.js'></script>
+<br><br><br><br><br><div id="checkvis">  </div>
 </body>
 </html>
