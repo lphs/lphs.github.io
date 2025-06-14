@@ -13,11 +13,13 @@ progress {color: #34B233; border-radius: 20px;}
 </style>
 <script>
 function heightAdjust(){
-  while(document.getElementById('checkvis').getBoundingClientRect().top < window.innerHeight-50){
-    document.getElementById("space").innerHTML += "<br>";
+  if(document.getElementById('checkvis')){
+    while(document.getElementById('checkvis').getBoundingClientRect().top < window.innerHeight-50){
+      document.getElementById("space").innerHTML += "<br>";
+    }
   }
 }
-setInterval(heightAdjust, 300);
+setInterval(heightAdjust, 100);
 </script>
 </head>
 <body onload="heightAdjust()">
