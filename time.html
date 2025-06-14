@@ -12,37 +12,31 @@ progress::-moz-progress-bar {background-color: #34B233; border-radius: 20px;}
 progress {color: #34B233; border-radius: 20px;}
 </style>
 <script>
-const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-var timings;
 function load(){
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "/timings.txt", true);
-  xhr.onreadystatechange = function() {
-    if(xhr.readyState == 4 && xhr.status == 200){
-      timings = xhr.responseText;
-      update();
-      setInterval(update, 500);
-    }
-  };
-  xhr.send(null);
-  document.getElementById("percent").innerText = "100%";
-  document.getElementById("prog").style.width = (parseInt(document.body.getBoundingClientRect().width)-parseInt(document.getElementById("percent").getBoundingClientRect().width)-10)+"px";
-  document.getElementById("percent").innerText = "";
-  var width = document.getElementById('ads').getBoundingClientRect().width;
-  var docwidth = document.body.getBoundingClientRect().width-30;
-  while(width < docwidth){
-    document.getElementById("ads").innerText += " ADS";
-    width = document.getElementById('ads').getBoundingClientRect().width;
+  var top = document.getElementById('checkvis').getBoundingClientRect().top;
+  while(!(top >= 0)){
+    document.getElementById("space").innerHTML += "<br>";
+    top = document.getElementById('checkvis').getBoundingClientRect().top;
   }
 }
-
+</script>
+</head>
+<body onload="load()">
+<label id="percent" for="prog"></label>
+<progress id="prog" name="prog" value="0" max="100"></progress><br>
+<span id="time">Loading...</span>
+<div id="space"></div><span id="ads">ADS</span><br>
+<hr><script>
+const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+var timings;
+  
 function getHour(ampm, hour){
   if(ampm.toLowerCase() == "pm" && Number(hour) != 12){
     return Number(hour)+12;
   }
   return Number(hour);
 }
-
+  
 function update(){
   // Added 10 seconds to date because bell is 10 seconds early
   var now = new Date(new Date().valueOf()+10*1000); // new Date(0, 0, D(SUN, MUN), H, M, 0)
@@ -95,28 +89,29 @@ function update(){
   }
 }
 
-function load2(){
-  var top = document.getElementById('checkvis').getBoundingClientRect().top;
-  while(!(top >= 0)){
-    document.getElementById("space").innerHTML += "<br>";
-    top = document.getElementById('checkvis').getBoundingClientRect().top;
+var xhr = new XMLHttpRequest();
+xhr.open("GET", "/timings.txt", true);
+xhr.onreadystatechange = function() {
+  if(xhr.readyState == 4 && xhr.status == 200){
+    timings = xhr.responseText;
+    update();
+    setInterval(update, 500);
   }
+};
+xhr.send(null);
+document.getElementById("percent").innerText = "100%";
+document.getElementById("prog").style.width = (parseInt(document.body.getBoundingClientRect().width)-parseInt(document.getElementById("percent").getBoundingClientRect().width)-10)+"px";
+document.getElementById("percent").innerText = "";
+var width = document.getElementById('ads').getBoundingClientRect().width;
+var docwidth = document.body.getBoundingClientRect().width-30;
+while(width < docwidth){
+  document.getElementById("ads").innerText += " ADS";
+  width = document.getElementById('ads').getBoundingClientRect().width;
 }
 </script>
-</head>
-<body>
-<div onload="load()">
-  <label id="percent" for="prog"></label>
-  <progress id="prog" name="prog" value="0" max="100"></progress><br>
-  <span id="time">Loading...</span>
-  <div id="space"></div><span id="ads">ADS</span><br>
-</div>
-<hr>
-<div onload="load2()">
-  <script async data-cfasync="false" src="//pl26908995.profitableratecpm.com/1f221903808ce17bf6dbef7757449b2f/invoke.js"></script>
-  <div id="container-1f221903808ce17bf6dbef7757449b2f"></div>
-  <script async type='text/javascript' src='//pl26909069.profitableratecpm.com/29/b7/4d/29b74dff76738cd771647559ea9fec61.js'></script>
-  <br><br><br><br><br><div id="checkvis">  </div>
-</div>
+<script async data-cfasync="false" src="//pl26908995.profitableratecpm.com/1f221903808ce17bf6dbef7757449b2f/invoke.js"></script>
+<div id="container-1f221903808ce17bf6dbef7757449b2f"></div>
+<script async type='text/javascript' src='//pl26909069.profitableratecpm.com/29/b7/4d/29b74dff76738cd771647559ea9fec61.js'></script>
+<br><br><br><br><br><div id="checkvis">  </div>
 </body>
 </html>
