@@ -6,7 +6,6 @@
 /* background: */
 progress::-webkit-progress-bar {background-color: #EE0000; width: 100%; border-radius: 20px;}
 progress {background-color: #EE0000;}
-
 /* value: */
 progress::-webkit-progress-value {background-color: #34B233; border-radius: 20px;}
 progress::-moz-progress-bar {background-color: #34B233; border-radius: 20px;}
@@ -29,6 +28,12 @@ function load(){
   document.getElementById("percent").innerText = "100%";
   document.getElementById("prog").style.width = (parseInt(document.body.getBoundingClientRect().width)-parseInt(document.getElementById("percent").getBoundingClientRect().width)-10)+"px";
   document.getElementById("percent").innerText = "";
+  var width = parseInt(document.getElementById('ads').offsetWidth);
+  var docwidth = parseInt(document.body.getBoundingClientRect().width)-30;
+  while(width < docwidth){
+    document.getElementById("ads").innerText += " ADS";
+    width = parseInt(document.getElementById('ads').offsetWidth);
+  }
 }
 
 function getHour(ampm, hour){
@@ -95,8 +100,10 @@ function update(){
 <label id="percent" for="prog"></label>
 <progress id="prog" name="prog" value="0" max="100"></progress><br>
 <span id="time">Loading...</span>
-<br><br>
+<br><br><br><br><span id="ads">ADS</span><br>
+<hr>
 <script async="async" data-cfasync="false" src="//pl26908995.profitableratecpm.com/1f221903808ce17bf6dbef7757449b2f/invoke.js"></script>
 <div id="container-1f221903808ce17bf6dbef7757449b2f"></div>
+<script type='text/javascript' src='//pl26909069.profitableratecpm.com/29/b7/4d/29b74dff76738cd771647559ea9fec61.js'></script>
 </body>
 </html>
