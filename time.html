@@ -98,7 +98,7 @@ function update(){
 function load2(){
   var top = document.getElementById('checkvis').getBoundingClientRect().top;
   while(!(top >= 0)){
-    document.getElementById("space").inerHTML += "<br>";
+    document.getElementById("space").innerHTML += "<br>";
     top = document.getElementById('checkvis').getBoundingClientRect().top;
   }
 }
