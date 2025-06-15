@@ -2,6 +2,8 @@
 <html>
 <head>
 <meta name="viewport">
+<title id="title">Loading...</title>
+<meta name="description" content="Loading...">
 <style>
 /* background: */
 progress::-webkit-progress-bar {background-color: #EE0000; width: 100%; border-radius: 20px;}
@@ -89,6 +91,8 @@ function update(){
     document.getElementById("prog").value = 100;
     document.getElementById("percent").innerText = "100%";
   }
+  document.getElementsByTagName('meta')["description"].content = document.getElementById("time").innerText;
+  document.getElementById("title").innerText = document.getElementById("percent").innerText;
 }
 
 var xhr = new XMLHttpRequest();
