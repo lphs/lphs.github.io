@@ -424,17 +424,6 @@ var isDown = false;
 var initWidth = parseInt(document.getElementsByClassName("left")[0].clientWidth)+30;
 var address;
 
-function getCard(){
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "/address", true);
-  xhr.onreadystatechange = function() {
-    if(xhr.readyState == 4 && xhr.status == 200){
-      address = xhr.responseText;
-    }
-  };
-  xhr.send(null);
-}
-
 function mdown(e){
   isDown = true;
 }
@@ -634,10 +623,29 @@ async function getData() {
       console.error("Error occured form google sheets api when calling function getData");
       return;
     }
-    document.getElementById("content").innerHTML = tex;
+		const cards = JSON.parse(tex);
+    return cards;
   } catch (error) {
     console.error(error.message);
   }
+}
+
+async function getCard(){
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "/address", true);
+  xhr.onreadystatechange = function() {
+    if(xhr.readyState == 4 && xhr.status == 200){
+      address = xhr.responseText;
+			var cards = await getData();
+			for(var i = 0; i < cards.length; i++){
+				var card = cards[i].split("|||");
+				if(card[0] != ""){
+					console.log(card[0]);
+				}
+			}
+    }
+  };
+  xhr.send(null);
 }
 
 var height = parseInt(document.body.offsetWidth)-initWidth-50;
