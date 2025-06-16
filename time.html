@@ -65,6 +65,7 @@ function update(){
           document.getElementById("time").innerText = "Nothing happening yet. "+timeArray[0][4]+" is starting in "+minLeft+"min "+secLeft+"s.";
           document.getElementById("prog").value = 0;
           document.getElementById("percent").innerText = "0%";
+          document.getElementById("title").innerText = minLeft+"min "+secLeft+"s";
         }else{
           var stimeHour = getHour(timeArray[i-1][3], timeArray[i-1][1]);
           var stimeMin = Number(timeArray[i-1][2]);
@@ -76,6 +77,7 @@ function update(){
           document.getElementById("time").innerText = timeArray[i-1][4]+" ending in "+minLeft+"min "+secLeft+"s.";
           document.getElementById("prog").value = ((periodLength-timeLeft)/periodLength*100);
           document.getElementById("percent").innerText = Math.round((periodLength-timeLeft)/periodLength*100)+"%";
+          document.getElementById("title").innerText = minLeft+"min "+secLeft+"s";
         }
         break;
       }
@@ -84,13 +86,14 @@ function update(){
       document.getElementById("time").innerText = "End of school!";
       document.getElementById("prog").value = 100;
       document.getElementById("percent").innerText = "100%";
+    document.getElementById("title").innerText = "End of school!";
     }
   }else{
     document.getElementById("time").innerText = "No timetable for today";
     document.getElementById("prog").value = 100;
     document.getElementById("percent").innerText = "100%";
+    document.getElementById("title").innerText = "No timetable for today";
   }
-  document.getElementById("title").innerText = document.getElementById("time").innerText;
 }
 
 var xhr = new XMLHttpRequest();
