@@ -641,7 +641,7 @@ async function getCard(){
   }
   try{
     const response = await fetch("/address");
-    const address = await response.text();
+    address = await response.text();
     var card;
     for(var i = 0; i < cards.length; i++){
       card = cards[i].split("|||");
