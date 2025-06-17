@@ -615,28 +615,25 @@ async function cardLog(name, data){
   return false;
 }
 
-async function getData() {
-  try{
-    const response = await fetch(SCRIPT_URL+"?met=0");
-    const tex = await response.text();
-    if(tex == "ERROR"){
-      console.error("Error occured form google sheets api when calling function getData");
-      return;
-    }
-		const cards = JSON.parse(tex);
-    return cards;
-  } catch (error) {
-    console.error(error.message);
-  }
-}
-
 async function getCard(){
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "/address", true);
-  xhr.onreadystatechange = function() {
-    if(xhr.readyState == 4 && xhr.status == 200){
-      address = xhr.responseText;
-			var cards = await getData();
+  xhr.onreadystatechange = async function() {
+    if(xhr.readyState === XMLHttpRequest.DONE && (xhr.status === 0 || (xhr.status >= 200 && xhr.status < 400))){
+			address = xhr.responseText;
+			const card;
+      try{
+		    const response = await fetch(SCRIPT_URL+"?met=0");
+		    const tex = await response.text();
+		    if(tex == "ERROR"){
+		      console.error("Error occured form google sheets api when calling function getData");
+		      return;
+		    }
+				cards = JSON.parse(tex);
+		    return cards;
+		  } catch (error) {
+		    console.error(error.message);
+		  }
 			for(var i = 0; i < cards.length; i++){
 				var card = cards[i].split("|||");
 				if(card[0] != ""){
