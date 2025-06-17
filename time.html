@@ -13,26 +13,25 @@ progress::-moz-progress-bar {background-color: #34B233; border-radius: 20px;}
 progress {color: #34B233; border-radius: 20px;}
 </style>
 <script>
-function heightAdjust(){
-  if(document.getElementById('checkvis')){
-    document.getElementById("space").innerHTML = "<br>";
-    while(document.getElementById('checkvis').getBoundingClientRect().top < window.innerHeight-50){
-      document.getElementById("space").innerHTML += "<br>";
-    }
-  }
-}
-setInterval(heightAdjust, 100);
-</script>
-</head>
-<body onload="heightAdjust()">
-<label id="percent" for="prog"></label>
-<progress id="prog" name="prog" value="0" max="100"></progress><br>
-<span id="time">Loading...</span>
-<div id="space"><br><br><br><br><br></div><span id="ads"></span><br>
-<hr><script>
 const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 var timings;
-  
+
+function load(){
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", "/timings.txt", true);
+  xhr.onreadystatechange = function() {
+    if(xhr.readyState == 4 && xhr.status == 200){
+      timings = xhr.responseText;
+      update();
+      setInterval(update, 500);
+    }
+  };
+  xhr.send(null);
+  document.getElementById("percent").innerText = "100%";
+  document.getElementById("prog").style.width = (parseInt(document.body.getBoundingClientRect().width)-parseInt(document.getElementById("percent").getBoundingClientRect().width)-30)+"px";
+  document.getElementById("percent").innerText = "";
+}
+
 function getHour(ampm, hour){
   if(ampm.toLowerCase() == "pm" && Number(hour) != 12){
     return Number(hour)+12;
@@ -65,7 +64,7 @@ function update(){
           document.getElementById("time").innerText = "Nothing happening yet. "+timeArray[0][4]+" is starting in "+minLeft+"min "+secLeft+"s.";
           document.getElementById("prog").value = 0;
           document.getElementById("percent").innerText = "0%";
-          document.getElementById("title").innerText = minLeft+"min "+secLeft+"s";
+          document.getElementById("title").innerText = minLeft+"min "+secLeft+"s; 0%";
         }else{
           var stimeHour = getHour(timeArray[i-1][3], timeArray[i-1][1]);
           var stimeMin = Number(timeArray[i-1][2]);
@@ -77,7 +76,7 @@ function update(){
           document.getElementById("time").innerText = timeArray[i-1][4]+" ending in "+minLeft+"min "+secLeft+"s.";
           document.getElementById("prog").value = ((periodLength-timeLeft)/periodLength*100);
           document.getElementById("percent").innerText = Math.round((periodLength-timeLeft)/periodLength*100)+"%";
-          document.getElementById("title").innerText = minLeft+"min "+secLeft+"s";
+          document.getElementById("title").innerText = minLeft+"min "+secLeft+"s; "+Math.round((periodLength-timeLeft)/periodLength*100)+"%";
         }
         break;
       }
@@ -95,37 +94,11 @@ function update(){
     document.getElementById("title").innerText = "No timetable for today";
   }
 }
-
-var xhr = new XMLHttpRequest();
-xhr.open("GET", "/timings.txt", true);
-xhr.onreadystatechange = function() {
-  if(xhr.readyState == 4 && xhr.status == 200){
-    timings = xhr.responseText;
-    update();
-    setInterval(update, 500);
-  }
-};
-xhr.send(null);
-document.getElementById("percent").innerText = "100%";
-document.getElementById("prog").style.width = (parseInt(document.body.getBoundingClientRect().width)-parseInt(document.getElementById("percent").getBoundingClientRect().width)-30)+"px";
-document.getElementById("percent").innerText = "";
-var width = document.getElementById('ads').getBoundingClientRect().width;
-var docwidth = document.body.getBoundingClientRect().width-50;
-// while(width < docwidth){
-//   document.getElementById("ads").innerText += " ADS";
-//   width = document.getElementById('ads').getBoundingClientRect().width;
-// }
 </script>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4755292751509872"
-   crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-   style="display:block"
-   data-ad-format="autorelaxed"
-   data-ad-client="ca-pub-4755292751509872"
-   data-ad-slot="1427155328"></ins>
-<script>
-   (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-<div id="checkvis">  </div>
+</head>
+<body onload="load()">
+<label id="percent" for="prog"></label>
+<progress id="prog" name="prog" value="0" max="100"></progress><br>
+<span id="time">Loading...</span>
 </body>
 </html>
