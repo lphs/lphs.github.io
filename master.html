@@ -600,7 +600,7 @@ async function sheetLog(inout, name, reason){
 }
 
 async function cardLog(name, data){
-  try {
+  try{
     const response = await fetch(SCRIPT_URL+"?met=2&name="+name+"&data="+data, {mode: 'no-cors'});
     const tex = await response.text();
     if(tex == "ERROR"){
@@ -616,7 +616,7 @@ async function cardLog(name, data){
 }
 
 async function getData() {
-  try {
+  try{
     const response = await fetch(SCRIPT_URL+"?met=0");
     const tex = await response.text();
     if(tex == "ERROR"){
@@ -641,6 +641,7 @@ async function getCard(){
 				var card = cards[i].split("|||");
 				if(card[0] != ""){
 					console.log(card[0]);
+					console.log(card[1]);
 				}
 			}
     }
