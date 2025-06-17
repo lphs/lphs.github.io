@@ -423,7 +423,8 @@ input[type=text]:focus, input[type=email]:focus{
 var isDown = false;
 var initWidth = parseInt(document.getElementsByClassName("left")[0].clientWidth)+30;
 var address;
-
+var cards = null;
+  
 function mdown(e){
   isDown = true;
 }
@@ -615,35 +616,42 @@ async function cardLog(name, data){
   return false;
 }
 
+async function getCardList(){
+  try{
+    const response = await fetch(SCRIPT_URL+"?met=0");
+    const tex = await response.text();
+    if(tex == "ERROR"){
+      console.error("Error occured form google sheets api when calling function getData");
+      return;
+    }
+    cards = JSON.parse(tex);
+    return true;
+  } catch (error) {
+    console.error(error.message);
+  }
+  return false;
+}
+  
 async function getCard(){
-  var xhr = new XMLHttpRequest();
-  xhr.open("GET", "/address", true);
-  xhr.onreadystatechange = async function() {
-    if(xhr.readyState === XMLHttpRequest.DONE && (xhr.status === 0 || (xhr.status >= 200 && xhr.status < 400))){
-      address = xhr.responseText;
-      const card;
-      try{
-        const response = await fetch(SCRIPT_URL+"?met=0");
-        const tex = await response.text();
-        if(tex == "ERROR"){
-          console.error("Error occured form google sheets api when calling function getData");
-          return;
-        }
-        cards = JSON.parse(tex);
-        return cards;
-      } catch (error) {
-        console.error(error.message);
-      }
-      for(var i = 0; i < cards.length; i++){
-        var card = cards[i].split("|||");
-        if(card[0] != ""){
-          console.log(card[0]);
-          console.log(card[1]);
-        }
+  if(cards == null){
+    var success = await getCardList();
+    while(success){
+      success = await getCardList();
+    }
+  }
+  try{
+    const response = await fetch("/address");
+    const address = await response.text();
+    var card;
+    for(var i = 0; i < cards.length; i++){
+      card = cards[i].split("|||");
+      if(card[1] == address){
+        console.log(card[0]);
       }
     }
-  };
-  xhr.send(null);
+  }catch(error){
+    console.error(error.message);
+  }
 }
 
 var height = parseInt(document.body.offsetWidth)-initWidth-50;
