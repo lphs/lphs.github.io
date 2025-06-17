@@ -336,14 +336,14 @@ select:focus {
   padding: 3px;
 }
 
-input[type=submit]:hover:not(:focus) {
+input[type=submit]:hover:not(:focus), input[type=button]:hover:not(:focus) {
   background: #DDDDDD;
   box-shadow: 0px 0px 10px 1.5px #555555;
   border-radius: 10px;
   padding: 5px;
 }
 
-input[type=submit] {
+input[type=submit], input[type=button] {
   outline: none;
   margin: 3px 0px 3px 0px;
   padding: 1px;
@@ -392,6 +392,8 @@ input[type=text]:focus, input[type=email]:focus{
 <h1>Sign-in/sign-out</h1>
 <div id="contain" style="width: 95%;"></div>
 <form onsubmit="event.preventDefault(); submitcode();">
+  <input type="button" id="link" hidden value="Link Card">
+  
   <select name="sign" id="sign" onchange="signChange()" required>
     <option value="" selected disabled hidden>-- Signin or signout --</option>
     <option value="in">Sign in</option>
@@ -424,6 +426,7 @@ var isDown = false;
 var initWidth = parseInt(document.getElementsByClassName("left")[0].clientWidth)+30;
 var address;
 var cards = null;
+var linkCard;
   
 function mdown(e){
   isDown = true;
@@ -643,11 +646,19 @@ async function getCard(){
     const response = await fetch("/address");
     address = await response.text();
     var card;
+    var found = 0;
     for(var i = 0; i < cards.length; i++){
-      card = cards[i].split("|||");
-      if(card[1] == address){
-        console.log(card[0]);
+      if(cards[i].includes("|||")){
+        card = cards[i].split("|||");
+        if(card[1] == address){
+          found = 1;
+          document.getElementById("email").value = card[0];
+        }
       }
+    }
+    if(found == 0){
+      document.getElementById("link").hidden = false;
+      setTimeout(function(){}, 100);
     }
   }catch(error){
     console.error(error.message);
