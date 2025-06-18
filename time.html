@@ -23,7 +23,7 @@ function load(){
     if(xhr.readyState == 4 && xhr.status == 200){
       timings = xhr.responseText;
       update();
-      setInterval(update, 500);
+      setInterval(update, 50);
     }
   };
   xhr.send(null);
@@ -70,11 +70,12 @@ function update(){
           var stimeMin = Number(timeArray[i-1][2]);
           var sTime = new Date(0, 0, 0, stimeHour, stimeMin, 0);
           var timeLeft = (eTime-nTime)/(60*1000);
+          var accTimeLeft = (eTime-now)/(60*1000);
           var periodLength = ((eTime-sTime)/(60*1000));
           var minLeft = (((eTime-nTime)-(eTime-nTime)%(60*1000))/(60*1000));
           var secLeft = Math.round(((eTime-nTime)%(60*1000))/(1000));
           document.getElementById("time").innerText = timeArray[i-1][4]+" ending in "+minLeft+"min "+secLeft+"s.";
-          document.getElementById("prog").value = ((periodLength-timeLeft)/periodLength*100);
+          document.getElementById("prog").value = ((periodLength-accTimeLeft)/periodLength*100);
           document.getElementById("percent").innerText = Math.round((periodLength-timeLeft)/periodLength*100)+"%";
           document.getElementById("title").innerText = minLeft+"min "+secLeft+"s; "+Math.round((periodLength-timeLeft)/periodLength*100)+"%";
         }
