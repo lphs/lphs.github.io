@@ -15,7 +15,8 @@ progress {color: #34B233; border-radius: 20px;}
 <script>
 const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 var timings;
-
+var timeRE = /.*?(\d+):(\d+).*?(AM|PM).*?-.*?"(.*)"/g;
+  
 function load(){
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "/timings.txt", true);
@@ -23,7 +24,7 @@ function load(){
     if(xhr.readyState == 4 && xhr.status == 200){
       timings = xhr.responseText;
       update();
-      setInterval(update, 50);
+      setInterval(update, 10);
     }
   };
   xhr.send(null);
@@ -48,7 +49,6 @@ function update(){
     var status = 0;
   	var timeTable = timings.match(timeTableRE)[1];
     document.getElementById("time").innerText = timeTable;
-    var timeRE = /.*?(\d+):(\d+).*?(AM|PM).*?-.*?"(.*)"/g;
     const timeArray = [...timeTable.matchAll(timeRE)];
     for(let i = 0; i < timeArray.length; i++){
       var etimeHour = getHour(timeArray[i][3], timeArray[i][1]);
