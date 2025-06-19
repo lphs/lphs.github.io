@@ -665,14 +665,14 @@ async function getCard(){
       document.getElementById("link").hidden = false;
       document.getElementById("linknote").hidden = false;
       document.getElementById("linkingemail").hidden = false;
-      document.getElementById("link").onclick = function(){
+      document.getElementById("link").onclick = async function(){
         if(document.getElementById("linkingemail").checkValidity()){
           emailink = document.getElementById("linkingemail").value;
           var aler = document.createElement("div");
           aler.className = "sendingalert";
           aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span><strong>Linking...</strong>';
           document.getElementById("contain").appendChild(aler);
-          if(await logCard(emailink, linkAddress))){
+          if(await logCard(emailink, linkAddress)){
             removeElemDelay(aler, 0);
             aler = document.createElement("div");
             aler.className = "alert";
