@@ -392,7 +392,9 @@ input[type=text]:focus, input[type=email]:focus{
 <h1>Sign-in/sign-out</h1>
 <div id="contain" style="width: 95%;"></div>
 <form onsubmit="event.preventDefault(); submitcode();">
-  <input type="button" id="link" hidden value="Link Card">
+  <span id="linknote">Note: Please leave card on reader to link it.</span>
+  <input type="button" id="link" hidden value="Link Card to Email">
+  <input id="linkingemail" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" hidden oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')"><br>
   
   <select name="sign" id="sign" onchange="signChange()" required>
     <option value="" selected disabled hidden>-- Signin or signout --</option>
@@ -426,7 +428,9 @@ var isDown = false;
 var initWidth = parseInt(document.getElementsByClassName("left")[0].clientWidth)+30;
 var address;
 var cards = null;
-var linkCard;
+var linkTimeout;
+var linkAddress;
+var emailink;
   
 function mdown(e){
   isDown = true;
@@ -455,7 +459,7 @@ function mmove(e){
     document.getElementsByClassName("right")[0].style.width = parseInt(document.body.offsetWidth)-x+"px";
     document.getElementById("qrcode").innerHTML = "";
     new QRCode(document.getElementById("qrcode"), {
-      text: window.location.href+"?code="+generateCode(),
+      text: "https://lphs.github.io/?code="+generateCode(),
       width: size,
       height: size
     });
@@ -603,7 +607,7 @@ async function sheetLog(inout, name, reason){
   return true;
 }
 
-async function cardLog(name, data){
+async function logCard(name, data){
   try{
     const response = await fetch(SCRIPT_URL+"?met=2&name="+name+"&data="+data, {mode: 'no-cors'});
     const tex = await response.text();
@@ -657,8 +661,45 @@ async function getCard(){
       }
     }
     if(found == 0){
+      linkAddress = address;
       document.getElementById("link").hidden = false;
-      setTimeout(function(){}, 100);
+      document.getElementById("linknote").hidden = false;
+      document.getElementById("linkingemail").hidden = false;
+      document.getElementById("link").onclick = function(){
+        if(document.getElementById("linkingemail").checkValidity()){
+          emailink = document.getElementById("linkingemail").value;
+          var aler = document.createElement("div");
+          aler.className = "sendingalert";
+          aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span><strong>Linking...</strong>';
+          document.getElementById("contain").appendChild(aler);
+          if(await logCard(emailink, linkAddress))){
+            removeElemDelay(aler, 0);
+            aler = document.createElement("div");
+            aler.className = "alert";
+            aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span><strong>Successfully linked card to '+emailink+'.';
+            document.getElementById("contain").appendChild(aler);
+            removeElemDelay(aler, 4000);
+            document.getElementById("link").hidden = true;
+            document.getElementById("linknote").hidden = true;
+            document.getElementById("linkingemail").hidden = true;
+          }else{
+            removeElemDelay(aler, 0);
+            aler = document.createElement("div");
+            aler.className = "failalert";
+            aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span><strong>Failed to link card! Please try again.';
+            document.getElementById("contain").appendChild(aler);
+            removeElemDelay(aler, 4000);
+          }
+        }else{
+          document.getElementById("linkingemail").setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz');
+        }
+      };
+      clearTimeout(linkTimeout);
+      linkTimeout = setTimeout(function(){
+        document.getElementById("link").hidden = true;
+        document.getElementById("linknote").hidden = true;
+        document.getElementById("linkingemail").hidden = true;
+      }, 2000);
     }
   }catch(error){
     console.error(error.message);
@@ -667,7 +708,7 @@ async function getCard(){
 
 var height = parseInt(document.body.offsetWidth)-initWidth-50;
 new QRCode(document.getElementById("qrcode"), {
-  text: window.location.origin+"/?code=",
+  text: "https://lphs.github.io/?code="+generateCode(),
   width: height,
   height: height
 });
