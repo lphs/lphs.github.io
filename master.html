@@ -666,7 +666,7 @@ async function getCard(){
       document.getElementById("linknote").hidden = false;
       document.getElementById("linkingemail").hidden = false;
       document.getElementById("link").onclick = async function(){
-        if(document.getElementById("linkingemail").checkValidity()){
+        if(document.getElementById("linkingemail").reportValidity()){
           emailink = document.getElementById("linkingemail").value;
           var aler = document.createElement("div");
           aler.className = "sendingalert";
