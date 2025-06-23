@@ -392,7 +392,7 @@ input[type=text]:focus, input[type=email]:focus{
 <h1>Sign-in/sign-out</h1>
 <div id="contain" style="width: 95%;"></div>
 <form onsubmit="event.preventDefault(); submitcode();">
-  <span id="linknote" hidden>Note: Please leave card on reader to link it.</span>
+  <span id="linknote" hidden>Note: Please leave card on reader to link it.</span><br>
   <input type="button" id="link" hidden value="Link Card to Email">
   <input id="linkingemail" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" hidden oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')"><br>
   
