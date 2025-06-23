@@ -393,7 +393,7 @@ input[type=text]:focus, input[type=email]:focus{
 <div id="contain" style="width: 95%;"></div>
   
 <span id="linknote" style="visibility: hidden;">Note: Please leave card on reader to link it.</span><br>
-<input id="linkingemail" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" style="visibility: hidden;" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')"><br>
+<input id="linkingemail" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" style="visibility: hidden;" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')">
 <input type="button" id="link" style="visibility: hidden;" value="Link Card to Email"><br>
 
 <form onsubmit="event.preventDefault(); submitcode();">
