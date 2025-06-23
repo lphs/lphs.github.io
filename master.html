@@ -426,7 +426,7 @@ input[type=text]:focus, input[type=email]:focus{
 <script>
 var isDown = false;
 var initWidth = parseInt(document.getElementsByClassName("left")[0].clientWidth)+30;
-var address;
+var address = "none";
 var cards = null;
 var linkTimeout;
 var linkAddress;
@@ -647,8 +647,8 @@ async function getCard(){
     }
   }
   try{
-    const response = await fetch("/address");
-    address = await response.text();
+    // const response = await fetch("/address");
+    // address = await response.text();
     var card;
     var found = 0;
     for(var i = 0; i < cards.length; i++){
@@ -660,7 +660,7 @@ async function getCard(){
         }
       }
     }
-    if(found == 0){
+    if(found == 0 && address != "none"){
       linkAddress = address;
       document.getElementById("link").hidden = false;
       document.getElementById("linknote").hidden = false;
