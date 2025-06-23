@@ -406,14 +406,14 @@ input[type=text]:focus, input[type=email]:focus{
   <input id="email" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" style="visibility: hidden;" required oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')"><br>
   
   <select name="inreason" id="inreason" onchange="reasonChange(1)" required style="visibility: hidden;" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
-    <option value="" id="indef" selected disabled style="visibility: hidden;">-- Reason --</option>
+    <option value="" id="indef" selected disabled>-- Reason --</option>
     <option value="Late">Late</option>
     <option value="Appointment">Appointment</option>
     <option value="other">Other</option>
   </select>
   
   <select name="outreason" id="outreason" onchange="reasonChange(2)" required style="visibility: hidden;" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
-    <option value="" id="outdef" selected disabled style="visibility: hidden;">-- Reason --</option>
+    <option value="" id="outdef" selected disabled>-- Reason --</option>
     <option value="Year 13">Year 13</option>
     <option value="Appointment">Appointment</option>
     <option value="other">Other</option>
