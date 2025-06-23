@@ -670,9 +670,9 @@ async function getCard(){
     }
     if(found == 0 && address != "none"){
       linkAddress = address;
-      document.getElementById("link").hidden = false;
-      document.getElementById("linknote").hidden = false;
-      document.getElementById("linkingemail").hidden = false;
+      document.getElementById("link").style.display = "initial";
+      document.getElementById("linknote").style.display = "initial";
+      document.getElementById("linkingemail").style.display = "initial";
       document.getElementById("link").onclick = async function(){
         if(document.getElementById("linkingemail").reportValidity()){
           emailink = document.getElementById("linkingemail").value;
@@ -687,9 +687,9 @@ async function getCard(){
             aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span><strong>Successfully linked card to '+emailink+'.';
             document.getElementById("contain").appendChild(aler);
             removeElemDelay(aler, 4000);
-            document.getElementById("link").hidden = true;
-            document.getElementById("linknote").hidden = true;
-            document.getElementById("linkingemail").hidden = true;
+            document.getElementById("link").style.display = "none";
+            document.getElementById("linknote").style.display = "none";
+            document.getElementById("linkingemail").style.display = "none";
           }else{
             removeElemDelay(aler, 0);
             aler = document.createElement("div");
@@ -704,9 +704,9 @@ async function getCard(){
       };
       clearTimeout(linkTimeout);
       linkTimeout = setTimeout(function(){
-        document.getElementById("link").hidden = true;
-        document.getElementById("linknote").hidden = true;
-        document.getElementById("linkingemail").hidden = true;
+        document.getElementById("link").style.display = "none";
+        document.getElementById("linknote").style.display = "none";
+        document.getElementById("linkingemail").style.display = "none";
       }, 2000);
     }
   }catch(error){
