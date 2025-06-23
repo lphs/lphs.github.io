@@ -391,11 +391,11 @@ input[type=text]:focus, input[type=email]:focus{
 <div class="left">
 <h1>Sign-in/sign-out</h1>
 <div id="contain" style="width: 95%;"></div>
-  
+
 <span id="linknote" style="visibility: hidden;">Note: Please leave card on reader to link it.</span><br>
 <input id="linkingemail" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" style="visibility: hidden;" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')">
 <input type="button" id="link" style="visibility: hidden;" value="Link Card to Email"><br>
-
+  
 <form onsubmit="event.preventDefault(); submitcode();">
   <select name="sign" id="sign" onchange="signChange()" required>
     <option value="" selected disabled hidden>-- Signin or signout --</option>
@@ -403,24 +403,25 @@ input[type=text]:focus, input[type=email]:focus{
     <option value="out">Sign out</option>
   </select><br>
   
-  <input id="email" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" style="visibility: hidden;" required oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')"><br>
+  <input id="email" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" hidden required oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')"><br>
   
-  <select name="inreason" id="inreason" onchange="reasonChange(1)" required style="visibility: hidden;" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
+  <select name="inreason" id="inreason" onchange="reasonChange(1)" required hidden oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
     <option value="" id="indef" selected disabled hidden>-- Reason --</option>
     <option value="Late">Late</option>
     <option value="Appointment">Appointment</option>
     <option value="other">Other</option>
   </select>
   
-  <select name="outreason" id="outreason" onchange="reasonChange(2)" required style="visibility: hidden;" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
+  
+  <select name="outreason" id="outreason" onchange="reasonChange(2)" required hidden oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
     <option value="" id="outdef" selected disabled hidden>-- Reason --</option>
     <option value="Year 13">Year 13</option>
     <option value="Appointment">Appointment</option>
     <option value="other">Other</option>
   </select>
-  <input placeholder="Reason" id="other" style="visibility: hidden;" type="text" oninvalid="this.setCustomValidity('Please enter a reason.')">
+  <input placeholder="Reason" id="other" hidden type="text" oninvalid="this.setCustomValidity('Please enter a reason.')">
   <br>
-  <input type="submit" id="submit" style="visibility: hidden;">
+  <input type="submit" id="submit" hidden>
 </form><br>
 </div>
 <script>
@@ -481,6 +482,13 @@ function initDragBar(){
   document.addEventListener('touchmove', (e) => {mmove(e)}, true);
   
   document.getElementById("dragbar").click();
+  
+  document.getElementById("link").style.visibility = "visible";
+  document.getElementById("linknote").style.visibility = "visible";
+  document.getElementById("linkingemail").style.visibility = "visible";
+  document.getElementById("link").hidden = true;
+  document.getElementById("linknote").hidden = true;
+  document.getElementById("linkingemail").hidden = true;
 }
 
 function removeElemDelay(element, delay) {
@@ -504,19 +512,19 @@ function signChange(){
   }else{
     outinstr = "in";
   }
-  document.getElementById(inoutstr+"reason").style.visibility = "visible";
+  document.getElementById(inoutstr+"reason").hidden = false;
   document.getElementById(inoutstr+"reason").required = true;
 
-  document.getElementById(outinstr+"reason").style.visibility = "hidden";
+  document.getElementById(outinstr+"reason").hidden = true;
   document.getElementById(outinstr+"reason").required = false;
   
-  document.getElementById("other").style.visibility = "hidden";
+  document.getElementById("other").hidden = true;
   document.getElementById("other").required = false;
   
-  document.getElementById("email").style.visibility = "visible";
+  document.getElementById("email").hidden = false;
   document.getElementById("outdef").selected = true;
   document.getElementById("indef").selected = true;
-  document.getElementById("submit").style.visibility = "visible";
+  document.getElementById("submit").hidden = false;
 }
 
 function reasonChange(inout){
@@ -527,11 +535,11 @@ function reasonChange(inout){
     inoutstr = "out";
   }
   if(document.getElementById(inoutstr+"reason").value == "other"){
-    document.getElementById("other").style.visibility = "visible";
+    document.getElementById("other").hidden = false;
     document.getElementById("other").required = true;
     document.getElementById("other").value = "";
   }else{
-    document.getElementById("other").style.visibility = "hidden";
+    document.getElementById("other").hidden = true;
     document.getElementById("other").required = false;
   }
 }
@@ -662,11 +670,9 @@ async function getCard(){
     }
     if(found == 0 && address != "none"){
       linkAddress = address;
-      document.getElementById("link").style.visibility = "visible";
-      document.getElementById("linknote").style.visibility = "visible";
-      document.getElementById("linkingemail").style.visibility = "visible";
-      document.getElementById("linkingemail").value = "";
-      document.getElementById("linkingemail").setCustomValidity('');
+      document.getElementById("link").hidden = false;
+      document.getElementById("linknote").hidden = false;
+      document.getElementById("linkingemail").hidden = false;
       document.getElementById("link").onclick = async function(){
         if(document.getElementById("linkingemail").reportValidity()){
           emailink = document.getElementById("linkingemail").value;
@@ -681,9 +687,9 @@ async function getCard(){
             aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span><strong>Successfully linked card to '+emailink+'.';
             document.getElementById("contain").appendChild(aler);
             removeElemDelay(aler, 4000);
-            document.getElementById("link").style.visibility = "hidden";
-            document.getElementById("linknote").style.visibility = "hidden";
-            document.getElementById("linkingemail").style.visibility = "hidden";
+            document.getElementById("link").hidden = true;
+            document.getElementById("linknote").hidden = true;
+            document.getElementById("linkingemail").hidden = true;
           }else{
             removeElemDelay(aler, 0);
             aler = document.createElement("div");
@@ -698,9 +704,9 @@ async function getCard(){
       };
       clearTimeout(linkTimeout);
       linkTimeout = setTimeout(function(){
-        document.getElementById("link").style.visibility = "hidden";
-        document.getElementById("linknote").style.visibility = "hidden";
-        document.getElementById("linkingemail").style.visibility = "hidden";
+        document.getElementById("link").hidden = true;
+        document.getElementById("linknote").hidden = true;
+        document.getElementById("linkingemail").hidden = true;
       }, 2000);
     }
   }catch(error){
