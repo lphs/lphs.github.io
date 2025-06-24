@@ -103,7 +103,7 @@ function update(){
       }
     }
     if(status == 0){
-      if(interval != null){
+      if(interval == null){
         interval = setInterval(function(){explode(Math.random()*75+12.5, Math.random()*75+12.5);}, 500);
       }
       document.getElementById("time").innerText = "End of school!";
