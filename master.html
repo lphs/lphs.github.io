@@ -219,6 +219,29 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
     return this.$next(25) * 2097152 + this.$next(25);
   };
   } class__MersenneTwister__();
+
+function convertBase(value, from_base, to_base) {
+  var range = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  var from_range = range.slice(0, from_base);
+  var to_range = range.slice(0, to_base);
+  var dec_value = value.split('').reverse().reduce(function (carry, digit, index) {
+    if (from_range.indexOf(digit) === -1) throw new Error('Invalid digit `'+digit+'` for base '+from_base+'.');
+    return carry += from_range.indexOf(digit) * (Math.pow(from_base, index));
+  }, 0);
+  var new_value = '';
+  while (dec_value > 0) {
+    new_value = to_range[dec_value % to_base] + new_value;
+    dec_value = (dec_value - (dec_value % to_base)) / to_base;
+  }
+  return new_value || '0';
+}
+
+function generateCode(){
+  var d = new Date();
+  let seed = d.getDate()+d.getMonth()*31+d.getFullYear()*372;
+  var MT = new MersenneTwister(seed);
+  return convertBase(String(MT.nextLong()), 10, 36).slice(-4);
+}
 </script>
 <style>
 body,html { 
@@ -282,33 +305,7 @@ body {
 
 .alert {
   padding: 10px;
-  background-color: #00B000;
   border-style: solid;
-  border-color: #009600;
-  border-width: 3px;
-  border-radius: 15px;
-  color: white;
-  opacity: 1;
-  animation: fade-in 0.5s ease-in;
-}
-
-.sendingalert {
-  padding: 10px;
-  background-color: #D0D000;
-  border-style: solid;
-  border-color: #B0B000;
-  border-width: 3px;
-  border-radius: 15px;
-  color: white;
-  opacity: 1;
-  animation: fade-in 0.5s ease-in;
-}
-
-.failalert {
-  padding: 10px;
-  background-color: #B00000;
-  border-style: solid;
-  border-color: #750000;
   border-width: 3px;
   border-radius: 15px;
   color: white;
@@ -392,9 +389,9 @@ input[type=text]:focus, input[type=email]:focus{
 <h1>Sign-in/sign-out</h1>
 <div id="contain" style="width: 95%;"></div>
 
-<span id="linknote" style="visibility: hidden;">Note: Please leave card on reader to link it.</span><br>
-<input id="linkingemail" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" style="visibility: hidden;" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')">
-<input type="button" id="link" style="visibility: hidden;" value="Link Card to Email"><br>
+<span id="linknote" class="link">Note: Please leave card on reader to link it.</span><br class="link">
+<input id="linkingemail" class="link" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')">
+<input type="button" id="link" class="link" value="Link Card to Email"><br class="link">
   
 <form onsubmit="event.preventDefault(); submitcode();">
   <select name="sign" id="sign" onchange="signChange()" required>
@@ -467,6 +464,13 @@ function mmove(e){
   }
 }
 
+function hideLink(state){
+  var link = document.getElementsByClassName("link");
+  for(var i = 0; i < link.length; i++){
+    link[i].style.display = state;
+  }
+}
+  
 function initDragBar(){
   document.getElementById("dragbar").style.left = initWidth+"px";
   document.getElementsByClassName("left")[0].style.width = initWidth+"px";
@@ -482,13 +486,7 @@ function initDragBar(){
   document.addEventListener('touchmove', (e) => {mmove(e)}, true);
   
   document.getElementById("dragbar").click();
-  
-  document.getElementById("link").style.visibility = "visible";
-  document.getElementById("linknote").style.visibility = "visible";
-  document.getElementById("linkingemail").style.visibility = "visible";
-  document.getElementById("link").style.display = "none";
-  document.getElementById("linknote").style.display = "none";
-  document.getElementById("linkingemail").style.display = "none";
+  hideLink("none");
 }
 
 function removeElemDelay(element, delay) {
@@ -504,6 +502,16 @@ function removeElemDelay(element, delay) {
   }, delay);
 }
 
+createAlert(backgroundcolor, bordercolor, html){
+  var aler = document.createElement("div");
+  aler.className = "alert";
+  aler.style.backgroundColor = backgroundcolor;
+  aler.style.borderColor = bordercolor;
+  aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span>'+html;
+  document.getElementById("contain").appendChild(aler);
+  return aler;
+}
+  
 function signChange(){
   var inoutstr = document.getElementById("sign").value;
   var outinstr;
@@ -551,50 +559,16 @@ async function submitcode(){
   if(reason == "other"){
     reason = document.getElementById("other").value;
   }
-  var aler = document.createElement("div");
-  aler.className = "sendingalert";
-  aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span><strong>Sending...</strong>';
-  document.getElementById("contain").appendChild(aler);
+  var aler = createAlert("#D0D000", "#B0B000", "<strong>Sending...</strong>");
   if(await sheetLog(inout, email, reason)){
     removeElemDelay(aler, 0);
-    aler = document.createElement("div");
-    aler.className = "alert";
-    aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span><strong>Successfully signed '+inout+'!</strong> Email: '+email+', Reason: '+reason+'.';
-    document.getElementById("contain").appendChild(aler);
+    aler = createAlert("#00B000", "#009600", '<strong>Successfully signed '+inout+'!</strong> Email: '+email+', Reason: '+reason+'.</strong>');
     removeElemDelay(aler, 4000);
   }else{
     removeElemDelay(aler, 0);
-    aler = document.createElement("div");
-    aler.className = "failalert";
-    aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span><strong>Failed to sign in! Please try again.';
-    document.getElementById("contain").appendChild(aler);
+    aler = createAlert("#B00000", "#750000", "<strong>Failed to sign in! Please try again.</strong>");
     removeElemDelay(aler, 4000);
   }
-}
-
-function convertBase(value, from_base, to_base) {
-  var range = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-  var from_range = range.slice(0, from_base);
-  var to_range = range.slice(0, to_base);
-  
-  var dec_value = value.split('').reverse().reduce(function (carry, digit, index) {
-    if (from_range.indexOf(digit) === -1) throw new Error('Invalid digit `'+digit+'` for base '+from_base+'.');
-    return carry += from_range.indexOf(digit) * (Math.pow(from_base, index));
-  }, 0);
-  
-  var new_value = '';
-  while (dec_value > 0) {
-    new_value = to_range[dec_value % to_base] + new_value;
-    dec_value = (dec_value - (dec_value % to_base)) / to_base;
-  }
-  return new_value || '0';
-}
-
-function generateCode(){
-  var d = new Date();
-  let seed = d.getDate()+d.getMonth()*31+d.getFullYear()*372;
-  var MT = new MersenneTwister(seed);
-  return convertBase(String(MT.nextLong()), 10, 36).slice(-4);
 }
 
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6l7S2KUZZG_v6Ks1nLkFMGOZRrxmIVK6B2g3rSN0bHsBp82ss2MmiUAgrwqYBC08R/exec";
@@ -670,32 +644,19 @@ async function getCard(){
     }
     if(found == 0 && address != "none"){
       linkAddress = address;
-      document.getElementById("link").style.display = "initial";
-      document.getElementById("linknote").style.display = "initial";
-      document.getElementById("linkingemail").style.display = "initial";
+      hideLink("initial");
       document.getElementById("link").onclick = async function(){
         if(document.getElementById("linkingemail").reportValidity()){
           emailink = document.getElementById("linkingemail").value;
-          var aler = document.createElement("div");
-          aler.className = "sendingalert";
-          aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span><strong>Linking...</strong>';
-          document.getElementById("contain").appendChild(aler);
+          var aler = createAlert("#D0D000", "#B0B000", "<strong>Linking...</strong>");
           if(await logCard(emailink, linkAddress)){
             removeElemDelay(aler, 0);
-            aler = document.createElement("div");
-            aler.className = "alert";
-            aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span><strong>Successfully linked card to '+emailink+'.';
-            document.getElementById("contain").appendChild(aler);
+            aler = createAlert("#00B000", "#009600", '<strong>Successfully linked card to '+emailink+'.</strong>');
             removeElemDelay(aler, 4000);
-            document.getElementById("link").style.display = "none";
-            document.getElementById("linknote").style.display = "none";
-            document.getElementById("linkingemail").style.display = "none";
+            hideLink("none");
           }else{
             removeElemDelay(aler, 0);
-            aler = document.createElement("div");
-            aler.className = "failalert";
-            aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span><strong>Failed to link card! Please try again.';
-            document.getElementById("contain").appendChild(aler);
+            aler = createAlert("#B00000", "#750000", '<strong>Failed to link card! Please try again.</strong>');
             removeElemDelay(aler, 4000);
           }
         }else{
@@ -704,9 +665,7 @@ async function getCard(){
       };
       clearTimeout(linkTimeout);
       linkTimeout = setTimeout(function(){
-        document.getElementById("link").style.display = "none";
-        document.getElementById("linknote").style.display = "none";
-        document.getElementById("linkingemail").style.display = "none";
+        hideLink("none");
       }, 2000);
     }
   }catch(error){
