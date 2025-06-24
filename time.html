@@ -17,6 +17,7 @@ progress {color: #34B233; border-radius: 20px;}
 const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 var timings;
 var timeRE = /.*?(\d+):(\d+).*?(AM|PM).*?-.*?"(.*)"/g;
+var interval = null;
   
 function explode(x, y){
   confetti("tsparticles", {
@@ -48,7 +49,7 @@ function load(){
   document.getElementById("percent").innerText = "";
   var now = new Date();
   if(now.getDay() >= 5 || now.getDay() == 0){
-  	setInterval(function(){explode(Math.random()*75+12.5, Math.random()*75+12.5);}, 500);
+  	interval = setInterval(function(){explode(Math.random()*75+12.5, Math.random()*75+12.5);}, 500);
   }
 }
 
@@ -102,10 +103,13 @@ function update(){
       }
     }
     if(status == 0){
+      if(interval != null){
+        interval = setInterval(function(){explode(Math.random()*75+12.5, Math.random()*75+12.5);}, 500);
+      }
       document.getElementById("time").innerText = "End of school!";
       document.getElementById("prog").value = 100;
       document.getElementById("percent").innerText = "100%";
-    document.getElementById("title").innerText = "End of school!";
+      document.getElementById("title").innerText = "End of school!";
     }
   }else{
     document.getElementById("time").innerText = "No timetable for today";
