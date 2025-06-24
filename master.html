@@ -579,6 +579,9 @@ async function getCard(){
       linkTimeout = setTimeout(function(){
         hideLink("none");
       }, 2000);
+    }else{
+      hideLink("none");
+      clearTimeout(linkTimeout);
     }
   }catch(error){
     console.error(error.message);
