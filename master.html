@@ -413,7 +413,7 @@ function removeElemDelay(element, delay) {
   }, delay);
 }
 
-createAlert(backgroundcolor, bordercolor, html){
+function createAlert(backgroundcolor, bordercolor, html){
   var aler = document.createElement("div");
   aler.className = "alert";
   aler.style.backgroundColor = backgroundcolor;
@@ -565,6 +565,7 @@ async function getCard(){
             aler = createAlert("#00B000", "#009600", '<strong>Successfully linked card to '+emailink+'.</strong>');
             removeElemDelay(aler, 4000);
             hideLink("none");
+            document.getElementById("linkingemail").value = "";
           }else{
             removeElemDelay(aler, 0);
             aler = createAlert("#B00000", "#750000", '<strong>Failed to link card! Please try again.</strong>');
