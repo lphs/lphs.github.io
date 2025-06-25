@@ -478,6 +478,12 @@ async function submitcode(){
     document.getElementById("sign").value = "";
     document.getElementById("email").value = "";
     document.getElementById(inout+"reason").value = "";
+    document.getElementById("email").hidden = true;
+    document.getElementById("outdef").selected = true;
+    document.getElementById("indef").selected = true;
+    document.getElementById("submit").hidden = true;
+    document.getElementById(inout+"reason").hidden = true;
+    document.getElementById(inout+"reason").required = false;
   }else{
     removeElemDelay(aler, 0);
     aler = createAlert("#B00000", "#750000", "<strong>Failed to sign in! Please try again.</strong>");
@@ -566,8 +572,8 @@ async function getCard(){
           if(await logCard(emailink, linkAddress)){
             removeElemDelay(aler, 0);
             aler = createAlert("#00B000", "#009600", '<strong>Successfully linked card to '+emailink+'.</strong>');
-            removeElemDelay(aler, 4000);
             hideLink("none");
+            removeElemDelay(aler, 4000);
             document.getElementById("linkingemail").value = "";
           }else{
             removeElemDelay(aler, 0);
