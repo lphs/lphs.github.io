@@ -334,7 +334,7 @@ input[type=text]:focus, input[type=email]:focus{
 </div>
 <script>
 var isDown = false;
-var initWidth = parseInt(document.getElementsByClassName("left")[0].clientWidth)+30;
+var initWidth = Math.max(parseInt(document.body.offsetWidth)-parseInt(document.getElementById("dragbar").getBoundingClientRect().height)-100, parseInt(document.getElementsByClassName("left")[0].clientWidth)+30);
 var address = "none";
 var cards = null;
 var linkTimeout;
