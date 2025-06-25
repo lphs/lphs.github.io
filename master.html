@@ -474,7 +474,7 @@ async function submitcode(){
   if(await sheetLog(inout, email, reason)){
     removeElemDelay(aler, 0);
     aler = createAlert("#00B000", "#009600", '<strong>Successfully signed '+inout+'!</strong> Email: '+email+', Reason: '+reason+'.</strong>');
-    removeElemDelay(aler, 4000);
+    removeElemDelay(aler, 3000);
     document.getElementById("sign").value = "";
     document.getElementById("email").value = "";
     document.getElementById(inout+"reason").value = "";
@@ -487,7 +487,7 @@ async function submitcode(){
   }else{
     removeElemDelay(aler, 0);
     aler = createAlert("#B00000", "#750000", "<strong>Failed to sign in! Please try again.</strong>");
-    removeElemDelay(aler, 4000);
+    removeElemDelay(aler, 3000);
   }
 }
 
@@ -573,12 +573,12 @@ async function getCard(){
             removeElemDelay(aler, 0);
             aler = createAlert("#00B000", "#009600", '<strong>Successfully linked card to '+emailink+'.</strong>');
             hideLink("none");
-            removeElemDelay(aler, 4000);
+            removeElemDelay(aler, 3000);
             document.getElementById("linkingemail").value = "";
           }else{
             removeElemDelay(aler, 0);
             aler = createAlert("#B00000", "#750000", '<strong>Failed to link card! Please try again.</strong>');
-            removeElemDelay(aler, 4000);
+            removeElemDelay(aler, 3000);
           }
         }else{
           document.getElementById("linkingemail").setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz');
