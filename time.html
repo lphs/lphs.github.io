@@ -21,17 +21,19 @@ var interval = null;
 var lPeriod = null;
   
 function explode(x, y){
-  confetti("tsparticles", {
-    angle: 0,
-    count: 30,
-    position: {
-      x: x,
-      y: y,
-    },
-    spread: 360,
-    startVelocity: 6,
-    decay: 0.97,
-  });
+  if(!document.hidden){
+    confetti("tsparticles", {
+      angle: 0,
+      count: 30,
+      position: {
+        x: x,
+        y: y,
+      },
+      spread: 360,
+      startVelocity: 6,
+      decay: 0.97,
+    });
+  }
 }
 
 function ring(x, y){
