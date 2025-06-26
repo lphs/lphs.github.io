@@ -33,7 +33,21 @@ function explode(x, y){
     decay: 0.97,
   });
 }
-  
+
+function ring(x, y){
+  confetti("tsparticles", {
+    angle: 0,
+    count: 300,
+    position: {
+      x: x,
+      y: y,
+    },
+    spread: 360,
+    startVelocity: 10,
+    decay: 0.94,
+  });
+}
+
 function load(){
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "/timings.txt", true);
@@ -50,7 +64,7 @@ function load(){
   document.getElementById("percent").innerText = "";
   var now = new Date();
   if(now.getDay() >= 5 || now.getDay() == 0){
-  	interval = setInterval(function(){explode(Math.random()*75+12.5, Math.random()*75+12.5);}, 500);
+    interval = setInterval(function(){explode(Math.random()*75+12.5, Math.random()*75+12.5);}, 500);
   }
 }
 
@@ -68,7 +82,7 @@ function update(){
   var timeTableRE = new RegExp("\\|"+day+"\\|.*\n([\\S\\s]*?)\\|.*\\|");
   if(timeTableRE.test(timings)){
     var status = 0;
-  	var timeTable = timings.match(timeTableRE)[1];
+    var timeTable = timings.match(timeTableRE)[1];
     const timeArray = [...timeTable.matchAll(timeRE)];
     for(let i = 0; i < timeArray.length; i++){
       var etimeHour = getHour(timeArray[i][3], timeArray[i][1]);
@@ -103,7 +117,7 @@ function update(){
           document.getElementById("title").innerText = minLeft+"min "+secLeft+"s; "+Math.round((periodLength-timeLeft)/periodLength*100)+"%";
           if(lPeriod != timeArray[i-1][4] && lPeriod != null){
             lPeriod = timeArray[i-1][4];
-            explode(50, 50);
+            ring(50, 25);
           }
           if(lPeriod == null){
             lPeriod = timeArray[i-1][4];
