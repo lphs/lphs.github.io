@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -301,7 +302,7 @@ input[type=text]:focus, input[type=email]:focus{
 <div id="contain" style="width: 95%;"></div>
 
 <!-- Linking -->
-<span id="linknote" class="link">Note: Please leave card on reader to link it.</span><br class="link">
+<span id="linknote" class="link" style="display: inline-block;">This card has not been linked to an email. Please leave card on reader and enter your email to link your card to an email address:</span><br class="link">
 <input id="linkingemail" class="link" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')">
 <input type="button" id="link" class="link" value="Link Card to Email"><br class="link">
   
@@ -348,6 +349,7 @@ var cards = null;
 var linkTimeout;
 var linkAddress;
 var emailink;
+var lastUnknown = Date.now();
   
 function mdown(e){
   isDown = true;
@@ -570,7 +572,10 @@ async function getCard(){
         }
       }
     }
-    if(found == 0 && address != "none"){
+    if(found == 0 && address != "none" || Date.now()-lastUnknown >= 1500){
+      if(found == 0 && address != "none"){
+      	lastUnknown = Date.now();
+      }
       linkAddress = address;
       hideLink("initial");
       document.getElementById("link").onclick = async function(){
