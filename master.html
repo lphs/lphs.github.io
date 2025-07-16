@@ -4,22 +4,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sign-in</title>
 <script>
-function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(';');
-  for(let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
+let name = "pass=";
+let decodedCookie = decodeURIComponent(document.cookie);
+let ca = decodedCookie.split(';');
+let found = 0;
+for(let i = 0; i < ca.length; i++) {
+  let c = ca[i];
+  while (c.charAt(0) == ' ') {
+    c = c.substring(1);
   }
-  return "";
+  if (c.indexOf(name) == 0) {
+    if(c.substring(name.length, c.length) == "password"){
+      found = 1;
+    }
+    break;
+  }
 }
-if(getCookie("pass") != "password"){
+if(found == 0){
   document.childNodes[1].remove();
 }
 </script>
@@ -302,43 +303,43 @@ input[type=text]:focus, input[type=email]:focus{
 
 <!-- Linking -->
 <span id="linknote" class="link" style="display: inline-block;">This card has not been linked to an email. Please leave card on reader and enter your email to link your card to an email address:</span><br class="link">
-<input id="linkingemail" class="link" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')">
+<input id="linkingemail" class="link" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')" autocomplete="off">
 <input type="button" id="link" class="link" value="Link Card to Email"><br class="link">
 
 <!-- Form -->
-<form onsubmit="event.preventDefault(); submitcode();">
+<form onsubmit="event.preventDefault(); submitcode();" autocomplete="off">
   <!-- Sign in/sign out -->
-  <select name="sign" id="sign" onchange="signChange()" required>
-    <option value="" selected disabled hidden>-- Sign in/sign out --</option>
+  <select name="sign" id="sign" onchange="signChange()">
+    <option value="" disabled hidden>-- Sign in/sign out --</option>
     <option value="in">Sign in</option>
     <option value="out">Sign out</option>
   </select><br>
   
   <!-- School Email -->
-  <input id="email" class="in out" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" required oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')"><br>
+  <input id="email" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')"><br>
   
   <!-- Reason(Sign in) -->
-  <select name="inreason" id="inreason" class="in" onchange="reasonChange(1)" required oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
-    <option value="" id="indef" selected disabled hidden>-- Reason --</option>
+  <select name="inreason" id="inreason" onchange="reasonChange(1)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
+    <option value="" id="indef" disabled hidden>-- Reason --</option>
     <option value="Late">Late</option>
     <option value="Appointment">Appointment</option>
     <option value="other">Other</option>
   </select>
   
   <!-- Reason(Sign out) -->
-  <select name="outreason" id="outreason" class="out" onchange="reasonChange(2)" required oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
-    <option value="" id="outdef" selected disabled hidden>-- Reason --</option>
+  <select name="outreason" id="outreason" onchange="reasonChange(2)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
+    <option value="" id="outdef" disabled hidden>-- Reason --</option>
     <option value="Year 13">Year 13</option>
     <option value="Appointment">Appointment</option>
     <option value="other">Other</option>
   </select>
   
   <!-- Other reason -->
-  <input placeholder="Reason" style="visibility: hidden;" class="in out" id="other" type="text" oninvalid="this.setCustomValidity('Please enter a reason.')">
+  <input placeholder="Reason" id="other" type="text" oninvalid="this.setCustomValidity('Please enter a reason.')">
   <br>
   
   <!-- Submit -->
-  <input type="submit" id="submit" class="in out">
+  <input type="submit" id="submit">
 </form><br>
 </div>
 <script>
@@ -349,9 +350,105 @@ var cards = null;
 var linkTimeout;
 var linkAddress;
 var emailink;
-formState("in", "hidden");
-formState("out", "hidden");
+hideAndResetForm();
 linkState("none");
+
+function linkState(state){
+  var link = document.getElementsByClassName("link");
+  for(var i = 0; i < link.length; i++){
+    link[i].style.display = state;
+  }
+}
+
+function hide(id){
+  document.getElementById(id).style.display = "none";
+  document.getElementById(id).required = false;
+}
+
+function show(id){
+  document.getElementById(id).style.display = "initial";
+  document.getElementById(id).required = true;
+}
+
+function showReason(inout){
+  if(inout == "in"){
+    document.getElementById("inreason").value = "";
+    show("inreason");
+    hide("outreason");
+  }else{
+    document.getElementById("outreason").value = "";
+    show("outreason");
+    hide("inreason");
+  }
+  hide("other");
+}
+
+function hideAndResetForm(){
+  //Sign in/out
+  document.getElementById("sign").value = "";
+  //Email
+  hide("email");
+  document.getElementById("email").value = "";
+  //Sign in reason
+  hide("inreason");
+  document.getElementById("inreason").value = "";
+  //Sign out reason
+  hide("outreason");
+  document.getElementById("outreason").value = "";
+  //Other reason
+  hide("other");
+  document.getElementById("other").value = "";
+  //Submit
+  hide("submit");
+}
+
+function signChange(){
+  var inoutstr = document.getElementById("sign").value;
+  var outinstr;
+  if(inoutstr == "in"){
+    outinstr = "out";
+  }else{
+    outinstr = "in";
+  }
+  show("email");
+  showReason(inoutstr);
+  show("submit");
+}
+
+function reasonChange(inout){
+  var inoutstr;
+  if(inout == 1){
+    inoutstr = "in";
+  }else{
+    inoutstr = "out";
+  }
+  if(document.getElementById(inoutstr+"reason").value == "other"){
+    show("other");
+    document.getElementById("other").value = "";
+  }else{
+    hide("other");
+  }
+}
+
+async function submitcode(){
+  var inout = document.getElementById("sign").value;
+  var email = document.getElementById("email").value;
+  var reason = document.getElementById(inout+"reason").value;
+  if(reason == "other"){
+    reason = document.getElementById("other").value;
+  }
+  var aler = createAlert("#D0D000", "#B0B000", "<strong>Sending...</strong>");
+  if(await sheetLog(inout, email, reason)){
+    removeElemDelay(aler, 0);
+    aler = createAlert("#00B000", "#009600", '<strong>Successfully signed '+inout+'!</strong> Email: '+email+', Reason: '+reason+'.</strong>');
+    removeElemDelay(aler, 3000);
+    hideAndResetForm();
+  }else{
+    removeElemDelay(aler, 0);
+    aler = createAlert("#B00000", "#750000", "<strong>Failed to sign in! Please try again.</strong>");
+    removeElemDelay(aler, 3000);
+  }
+}
 
 function mdown(e){
   isDown = true;
@@ -387,20 +484,6 @@ function mmove(e){
   }
 }
 
-function linkState(state){
-  var link = document.getElementsByClassName("link");
-  for(var i = 0; i < link.length; i++){
-    link[i].style.display = state;
-  }
-}
-
-function formState(inout, state){
-  var link = document.getElementsByClassName(inout);
-  for(var i = 0; i < link.length; i++){
-    link[i].style.visibility = state;
-  }
-}
-
 function initDragBar(){
   document.getElementById("dragbar").style.left = initWidth+"px";
   document.getElementsByClassName("left")[0].style.width = initWidth+"px";
@@ -416,7 +499,6 @@ function initDragBar(){
   document.addEventListener('touchmove', (e) => {mmove(e)}, true);
   
   document.getElementById("dragbar").click();
-  linkState("none");
 }
 
 function removeElemDelay(element, delay) {
@@ -442,74 +524,6 @@ function createAlert(backgroundcolor, bordercolor, html){
   return aler;
 }
   
-function signChange(){
-  var inoutstr = document.getElementById("sign").value;
-  var outinstr;
-  if(inoutstr == "in"){
-    outinstr = "out";
-  }else{
-    outinstr = "in";
-  }
-  document.getElementById(inoutstr+"reason").hidden = false;
-  document.getElementById(inoutstr+"reason").required = true;
-
-  document.getElementById(outinstr+"reason").hidden = true;
-  document.getElementById(outinstr+"reason").required = false;
-  
-  document.getElementById("other").hidden = true;
-  document.getElementById("other").required = false;
-  
-  document.getElementById("email").hidden = false;
-  document.getElementById("outdef").selected = true;
-  document.getElementById("indef").selected = true;
-  document.getElementById("submit").hidden = false;
-}
-
-function reasonChange(inout){
-  var inoutstr;
-  if(inout == 1){
-    inoutstr = "in";
-  }else{
-    inoutstr = "out";
-  }
-  if(document.getElementById(inoutstr+"reason").value == "other"){
-    document.getElementById("other").hidden = false;
-    document.getElementById("other").required = true;
-    document.getElementById("other").value = "";
-  }else{
-    document.getElementById("other").hidden = true;
-    document.getElementById("other").required = false;
-  }
-}
-
-async function submitcode(){
-  var inout = document.getElementById("sign").value;
-  var email = document.getElementById("email").value;
-  var reason = document.getElementById(inout+"reason").value;
-  if(reason == "other"){
-    reason = document.getElementById("other").value;
-  }
-  var aler = createAlert("#D0D000", "#B0B000", "<strong>Sending...</strong>");
-  if(await sheetLog(inout, email, reason)){
-    removeElemDelay(aler, 0);
-    aler = createAlert("#00B000", "#009600", '<strong>Successfully signed '+inout+'!</strong> Email: '+email+', Reason: '+reason+'.</strong>');
-    removeElemDelay(aler, 3000);
-    document.getElementById("sign").value = "";
-    document.getElementById("email").value = "";
-    document.getElementById(inout+"reason").value = "";
-    document.getElementById("email").hidden = true;
-    document.getElementById("outdef").selected = true;
-    document.getElementById("indef").selected = true;
-    document.getElementById("submit").hidden = true;
-    document.getElementById(inout+"reason").hidden = true;
-    document.getElementById(inout+"reason").required = false;
-  }else{
-    removeElemDelay(aler, 0);
-    aler = createAlert("#B00000", "#750000", "<strong>Failed to sign in! Please try again.</strong>");
-    removeElemDelay(aler, 3000);
-  }
-}
-
 var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6l7S2KUZZG_v6Ks1nLkFMGOZRrxmIVK6B2g3rSN0bHsBp82ss2MmiUAgrwqYBC08R/exec";
 
 async function sheetLog(inout, name, reason){
