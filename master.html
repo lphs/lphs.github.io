@@ -309,7 +309,7 @@ input[type=text]:focus, input[type=email]:focus{
 <!-- Form -->
 <form onsubmit="event.preventDefault(); submitcode();" autocomplete="off">
   <!-- Sign in/sign out -->
-  <select name="sign" id="sign" onchange="signChange()">
+  <select name="sign" id="sign" onchange="signChange(this.value)">
     <option value="" disabled hidden>-- Sign in/sign out --</option>
     <option value="in">Sign in</option>
     <option value="out">Sign out</option>
@@ -319,7 +319,7 @@ input[type=text]:focus, input[type=email]:focus{
   <input id="email" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')"><br>
   
   <!-- Reason(Sign in) -->
-  <select name="inreason" id="inreason" onchange="reasonChange(1)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
+  <select name="inreason" id="inreason" onchange="reasonChange(this.value)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
     <option value="" id="indef" disabled hidden>-- Reason --</option>
     <option value="Late">Late</option>
     <option value="Appointment">Appointment</option>
@@ -327,7 +327,7 @@ input[type=text]:focus, input[type=email]:focus{
   </select>
   
   <!-- Reason(Sign out) -->
-  <select name="outreason" id="outreason" onchange="reasonChange(2)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
+  <select name="outreason" id="outreason" onchange="reasonChange(this.value)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
     <option value="" id="outdef" disabled hidden>-- Reason --</option>
     <option value="Year 13">Year 13</option>
     <option value="Appointment">Appointment</option>
@@ -343,6 +343,7 @@ input[type=text]:focus, input[type=email]:focus{
 </form><br>
 </div>
 <script>
+var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6l7S2KUZZG_v6Ks1nLkFMGOZRrxmIVK6B2g3rSN0bHsBp82ss2MmiUAgrwqYBC08R/exec";
 var isDown = false;
 var initWidth = Math.max(parseInt(document.body.offsetWidth)-parseInt(document.getElementById("dragbar").getBoundingClientRect().height)+100, parseInt(document.getElementsByClassName("left")[0].clientWidth)+30);
 var address = "none";
@@ -351,278 +352,262 @@ var linkTimeout;
 var linkAddress;
 var emailink;
 hideAndResetForm();
-linkState("none");
+hideLink();
 
-function linkState(state){
-  var link = document.getElementsByClassName("link");
-  for(var i = 0; i < link.length; i++){
-    link[i].style.display = state;
-  }
-}
-
-function hide(id){
-  document.getElementById(id).style.display = "none";
-  document.getElementById(id).required = false;
-}
-
-function show(id){
-  document.getElementById(id).style.display = "initial";
-  document.getElementById(id).required = true;
-}
-
-function showReason(inout){
-  if(inout == "in"){
-    document.getElementById("inreason").value = "";
-    show("inreason");
-    hide("outreason");
-  }else{
-    document.getElementById("outreason").value = "";
-    show("outreason");
-    hide("inreason");
-  }
-  hide("other");
-}
-
-function hideAndResetForm(){
-  //Sign in/out
-  document.getElementById("sign").value = "";
-  //Email
-  hide("email");
-  document.getElementById("email").value = "";
-  //Sign in reason
-  hide("inreason");
-  document.getElementById("inreason").value = "";
-  //Sign out reason
-  hide("outreason");
-  document.getElementById("outreason").value = "";
-  //Other reason
-  hide("other");
-  document.getElementById("other").value = "";
-  //Submit
-  hide("submit");
-}
-
-function signChange(){
-  var inoutstr = document.getElementById("sign").value;
-  var outinstr;
-  if(inoutstr == "in"){
-    outinstr = "out";
-  }else{
-    outinstr = "in";
-  }
-  show("email");
-  showReason(inoutstr);
-  show("submit");
-}
-
-function reasonChange(inout){
-  var inoutstr;
-  if(inout == 1){
-    inoutstr = "in";
-  }else{
-    inoutstr = "out";
-  }
-  if(document.getElementById(inoutstr+"reason").value == "other"){
-    show("other");
-    document.getElementById("other").value = "";
-  }else{
-    hide("other");
-  }
-}
-
-async function submitcode(){
-  var inout = document.getElementById("sign").value;
-  var email = document.getElementById("email").value;
-  var reason = document.getElementById(inout+"reason").value;
-  if(reason == "other"){
-    reason = document.getElementById("other").value;
-  }
-  var aler = createAlert("#D0D000", "#B0B000", "<strong>Sending...</strong>");
-  if(await sheetLog(inout, email, reason)){
-    removeElemDelay(aler, 0);
-    aler = createAlert("#00B000", "#009600", '<strong>Successfully signed '+inout+'!</strong> Email: '+email+', Reason: '+reason+'.</strong>');
-    removeElemDelay(aler, 3000);
-    hideAndResetForm();
-  }else{
-    removeElemDelay(aler, 0);
-    aler = createAlert("#B00000", "#750000", "<strong>Failed to sign in! Please try again.</strong>");
-    removeElemDelay(aler, 3000);
-  }
-}
-
-function mdown(e){
-  isDown = true;
-}
-
-function mup(e){
-  isDown = false;
-}
-
-function mmove(e){
-  var ex, ey;
-  if(e.type == 'touchmove'){
-    var touch = event.touches[0];
-    ex = touch.pageX;
-    ey = touch.pageY;
-  } else if (e.type == 'mousemove') {
-    ex = e.clientX;
-    ey = e.clientY;
-  }
-  e.preventDefault();
-  if(isDown){
-    var x = Math.min(Math.max(ex, initWidth), parseInt(document.body.offsetWidth)-350);
-    document.getElementById("dragbar").style.left = x+"px";
-    document.getElementsByClassName("left")[0].style.width = x+"px";
-    var size = parseInt(document.body.offsetWidth)-x-50;
-    document.getElementsByClassName("right")[0].style.width = parseInt(document.body.offsetWidth)-x+"px";
-    document.getElementById("qrcode").innerHTML = "";
-    new QRCode(document.getElementById("qrcode"), {
-      text: "https://lphs.github.io/?code="+generateCode(),
-      width: size,
-      height: size
-    });
-  }
-}
-
-function initDragBar(){
-  document.getElementById("dragbar").style.left = initWidth+"px";
-  document.getElementsByClassName("left")[0].style.width = initWidth+"px";
-  document.getElementsByClassName("right")[0].style.width = parseInt(document.body.offsetWidth)-initWidth-30+"px";
-  
-  document.getElementById("dragbar").addEventListener('mousedown', (e) => {mdown(e)}, true);
-  document.getElementById("dragbar").addEventListener('touchstart', (e) => {mdown(e)}, true);
-  
-  document.addEventListener('mouseup', (e) => {mup(e)}, true);
-  document.addEventListener('touchend', (e) => {mup(e)}, true);
-  
-  document.addEventListener('mousemove', (e) => {mmove(e)}, true);
-  document.addEventListener('touchmove', (e) => {mmove(e)}, true);
-  
-  document.getElementById("dragbar").click();
-}
-
-function removeElemDelay(element, delay) {
-  setTimeout(() => {
-    element.style.animation = "fade-out 0.5s ease-in";
-    element.style.opacity = 1;
-    setTimeout(() => {
-      if(element && element.parentNode){
-        element.style.display = "none";
-        element.remove();
+//CSS handling
+  //Link element functions
+    function hideLink(){
+      var link = document.getElementsByClassName("link");
+      for(var i = 0; i < link.length; i++){
+        link[i].style.display = "none";
       }
-    }, 500);
-  }, delay);
-}
+    }
+    function showLink(){
+      var link = document.getElementsByClassName("link");
+      for(var i = 0; i < link.length; i++){
+        link[i].style.display = "initial";
+      }
+    }
+  //Form element functions
+    function hide(id){
+      if(document.getElementById(id)){
+        document.getElementById(id).style.display = "none";
+        document.getElementById(id).required = false;
+      }
+    }
+    function show(id){
+      if(document.getElementById(id)){
+        document.getElementById(id).style.display = "initial";
+        document.getElementById(id).required = true;
+      }
+    }
+    function hideAndResetForm(){
+      //Sign in/out
+      document.getElementById("sign").value = "";
+      //Email
+      hide("email");
+      document.getElementById("email").value = "";
+      //Sign in reason
+      hide("inreason");
+      document.getElementById("inreason").value = "";
+      //Sign out reason
+      hide("outreason");
+      document.getElementById("outreason").value = "";
+      //Other reason
+      hide("other");
+      document.getElementById("other").value = "";
+      //Submit
+      hide("submit");
+    }
+    function signChange(val){
+      show("email");
+      document.getElementById(val+"reason").value = "";
+      show(val+"reason");
+      hide((val == "in") ? "outreason" : "inreason");
+      hide("other");
+      show("submit");
+    }
+    function reasonChange(val){
+      document.getElementById("other").value = "";
+      (val == "other") ? show("other") : hide("other");
+    }
 
-function createAlert(backgroundcolor, bordercolor, html){
-  var aler = document.createElement("div");
-  aler.className = "alert";
-  aler.style.backgroundColor = backgroundcolor;
-  aler.style.borderColor = bordercolor;
-  aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span>'+html;
-  document.getElementById("contain").appendChild(aler);
-  return aler;
-}
-  
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6l7S2KUZZG_v6Ks1nLkFMGOZRrxmIVK6B2g3rSN0bHsBp82ss2MmiUAgrwqYBC08R/exec";
+//Form handling
+  async function submitcode(){
+    var inout = document.getElementById("sign").value;
+    var email = document.getElementById("email").value;
+    var reason = document.getElementById(inout+"reason").value;
+    if(reason == "other"){
+      reason = document.getElementById("other").value;
+    }
+    var aler = createAlert("#D0D000", "#B0B000", "<strong>Sending...</strong>");
+    if(await sheetLog(inout, email, reason)){
+      removeElement(aler, 0);
+      aler = createAlert("#00B000", "#009600", '<strong>Successfully signed '+inout+'!</strong> Email: '+email+', Reason: '+reason+'.</strong>');
+      removeElement(aler, 3000);
+      hideAndResetForm();
+    }else{
+      removeElement(aler, 0);
+      aler = createAlert("#B00000", "#750000", "<strong>Failed to sign in! Please try again.</strong>");
+      removeElement(aler, 3000);
+    }
+  }
 
-async function sheetLog(inout, name, reason){
-  try {
-    const response = await fetch(SCRIPT_URL+"?met=1&inout="+inout+"&name="+name+"&reason="+reason, {mode: 'no-cors'});
-    const tex = await response.text();
-    if(tex == "ERROR"){
-      console.error("Error occured form google sheets api when calling function sheetLog");
+//Dragbar handling
+  function mdown(e){
+    isDown = true;
+  }
+  function mup(e){
+    isDown = false;
+  }
+  function mmove(e){
+    var ex, ey;
+    if(e.type == 'touchmove'){
+      var touch = event.touches[0];
+      ex = touch.pageX;
+      ey = touch.pageY;
+    } else if (e.type == 'mousemove') {
+      ex = e.clientX;
+      ey = e.clientY;
+    }
+    e.preventDefault();
+    if(isDown){
+      var x = Math.min(Math.max(ex, initWidth), parseInt(document.body.offsetWidth)-350);
+      document.getElementById("dragbar").style.left = x+"px";
+      document.getElementsByClassName("left")[0].style.width = x+"px";
+      var size = parseInt(document.body.offsetWidth)-x-50;
+      document.getElementsByClassName("right")[0].style.width = parseInt(document.body.offsetWidth)-x+"px";
+      document.getElementById("qrcode").innerHTML = "";
+      new QRCode(document.getElementById("qrcode"), {
+        text: "https://lphs.github.io/?code="+generateCode(),
+        width: size,
+        height: size
+      });
+    }
+  }
+  function initDragBar(){
+    document.getElementById("dragbar").style.left = initWidth+"px";
+    document.getElementsByClassName("left")[0].style.width = initWidth+"px";
+    document.getElementsByClassName("right")[0].style.width = parseInt(document.body.offsetWidth)-initWidth-30+"px";
+
+    document.getElementById("dragbar").addEventListener('mousedown', (e) => {mdown(e)}, true);
+    document.getElementById("dragbar").addEventListener('touchstart', (e) => {mdown(e)}, true);
+
+    document.addEventListener('mouseup', (e) => {mup(e)}, true);
+    document.addEventListener('touchend', (e) => {mup(e)}, true);
+
+    document.addEventListener('mousemove', (e) => {mmove(e)}, true);
+    document.addEventListener('touchmove', (e) => {mmove(e)}, true);
+
+    document.getElementById("dragbar").click();
+  }
+
+//Alert handling
+  function removeElement(element, delay) {
+    setTimeout(() => {
+      element.style.animation = "fade-out 0.5s ease-in";
+      element.style.opacity = 1;
+      setTimeout(() => {
+        if(element && element.parentNode){
+          element.style.display = "none";
+          element.remove();
+        }
+      }, 500);
+    }, delay);
+  }
+  function createAlert(backgroundcolor, bordercolor, html){
+    var aler = document.createElement("div");
+    aler.className = "alert";
+    aler.style.backgroundColor = backgroundcolor;
+    aler.style.borderColor = bordercolor;
+    aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElement(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span>'+html;
+    document.getElementById("contain").appendChild(aler);
+    return aler;
+  }
+
+//Api handling
+  async function sheetLog(inout, name, reason){
+    try {
+      const response = await fetch(SCRIPT_URL+"?met=1&inout="+inout+"&name="+name+"&reason="+reason, {
+      redirect: "follow",
+      method: "GET", 
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+    });
+      const tex = await response.text();
+      if(tex == "ERROR"){
+        console.error("Error occured form google sheets api when calling function sheetLog");
+        return false;
+      }
+      return true;
+    } catch (error) {
+      console.error(error.message);
       return false;
     }
     return true;
-  } catch (error) {
-    console.error(error.message);
+  }
+  async function logCard(name, data){
+    try{
+      const response = await fetch(SCRIPT_URL+"?met=2&name="+name+"&data="+data, {mode: 'no-cors'});
+      const tex = await response.text();
+      if(tex == "ERROR"){
+        console.error("Error occured form google sheets api when calling function sheetLog");
+        return false;
+      }else{
+        return true;
+      }
+    } catch (error) {
+      console.error(error.message);
+    }
     return false;
   }
-  return true;
-}
 
-async function logCard(name, data){
-  try{
-    const response = await fetch(SCRIPT_URL+"?met=2&name="+name+"&data="+data, {mode: 'no-cors'});
-    const tex = await response.text();
-    if(tex == "ERROR"){
-      console.error("Error occured form google sheets api when calling function sheetLog");
-      return false;
-    }else{
+  async function getCardList(){
+    try{
+      const response = await fetch(SCRIPT_URL+"?met=0");
+      const tex = await response.text();
+      if(tex == "ERROR"){
+        console.error("Error occured form google sheets api when calling function getData");
+        return;
+      }
+      cards = JSON.parse(tex);
       return true;
+    } catch (error) {
+      console.error(error.message);
     }
-  } catch (error) {
-    console.error(error.message);
+    return false;
   }
-  return false;
-}
 
-async function getCardList(){
-  try{
-    const response = await fetch(SCRIPT_URL+"?met=0");
-    const tex = await response.text();
-    if(tex == "ERROR"){
-      console.error("Error occured form google sheets api when calling function getData");
-      return;
-    }
-    cards = JSON.parse(tex);
-    return true;
-  } catch (error) {
-    console.error(error.message);
-  }
-  return false;
-}
-  
-async function getCard(){
-  try{
-    const response = await fetch("/address");
-    address = await response.text();
-    var card;
-    var found = 0;
-    for(var i = 0; i < cards.length; i++){
-      if(cards[i].includes("|||")){
-        card = cards[i].split("|||");
-        if(card[1] == address){
-          found = 1;
-          document.getElementById("email").value = card[0];
+  async function getCard(){
+    try{
+      const response = await fetch("/address");
+      address = await response.text();
+      var card;
+      var found = 0;
+      for(var i = 0; i < cards.length; i++){
+        if(cards[i].includes("|||")){
+          card = cards[i].split("|||");
+          if(card[1] == address){
+            found = 1;
+            document.getElementById("email").value = card[0];
+          }
         }
       }
-    }
-    if(found == 0 && address != "none"){
-      linkAddress = address;
-      linkState("initial");
-      document.getElementById("link").onclick = async function(){
-        if(document.getElementById("linkingemail").reportValidity()){
-          emailink = document.getElementById("linkingemail").value;
-          var aler = createAlert("#D0D000", "#B0B000", "<strong>Linking...</strong>");
-          if(await logCard(emailink, linkAddress)){
-            removeElemDelay(aler, 0);
-            aler = createAlert("#00B000", "#009600", '<strong>Successfully linked card to '+emailink+'.</strong>');
-            linkState("none");
-            removeElemDelay(aler, 3000);
-            document.getElementById("linkingemail").value = "";
+      if(found == 0 && address != "none"){
+        linkAddress = address;
+        showLink();
+        document.getElementById("link").onclick = async function(){
+          if(document.getElementById("linkingemail").reportValidity()){
+            emailink = document.getElementById("linkingemail").value;
+            var aler = createAlert("#D0D000", "#B0B000", "<strong>Linking...</strong>");
+            if(await logCard(emailink, linkAddress)){
+              removeElement(aler, 0);
+              aler = createAlert("#00B000", "#009600", '<strong>Successfully linked card to '+emailink+'.</strong>');
+              hideLink();
+              removeElement(aler, 3000);
+              document.getElementById("linkingemail").value = "";
+            }else{
+              removeElement(aler, 0);
+              aler = createAlert("#B00000", "#750000", '<strong>Failed to link card! Please try again.</strong>');
+              removeElement(aler, 3000);
+            }
           }else{
-            removeElemDelay(aler, 0);
-            aler = createAlert("#B00000", "#750000", '<strong>Failed to link card! Please try again.</strong>');
-            removeElemDelay(aler, 3000);
+            document.getElementById("linkingemail").setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz');
           }
-        }else{
-          document.getElementById("linkingemail").setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz');
-        }
-      };
-      clearTimeout(linkTimeout);
-      linkTimeout = setTimeout(function(){
-        linkState("none");
-      }, 2000);
-    }else{
-      linkState("none");
-      clearTimeout(linkTimeout);
+        };
+        clearTimeout(linkTimeout);
+        linkTimeout = setTimeout(function(){
+          hideLink();
+        }, 2000);
+      }else{
+        hideLink();
+        clearTimeout(linkTimeout);
+      }
+    }catch(error){
+      console.error(error.message);
     }
-  }catch(error){
-    console.error(error.message);
   }
-}
 
 var height = parseInt(document.body.offsetWidth)-initWidth-50;
 new QRCode(document.getElementById("qrcode"), {
