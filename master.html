@@ -304,7 +304,8 @@ input[type=text]:focus, input[type=email]:focus{
 <span id="linknote" class="link" style="display: inline-block;">This card has not been linked to an email. Please leave card on reader and enter your email to link your card to an email address:</span><br class="link">
 <input id="linkingemail" class="link" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')">
 <input type="button" id="link" class="link" value="Link Card to Email"><br class="link">
-  
+
+<!-- Form -->
 <form onsubmit="event.preventDefault(); submitcode();">
   <!-- Sign in/sign out -->
   <select name="sign" id="sign" onchange="signChange()" required>
@@ -314,10 +315,10 @@ input[type=text]:focus, input[type=email]:focus{
   </select><br>
   
   <!-- School Email -->
-  <input id="email" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" hidden required oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')"><br>
+  <input id="email" class="in out" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" required oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')"><br>
   
   <!-- Reason(Sign in) -->
-  <select name="inreason" id="inreason" onchange="reasonChange(1)" required hidden oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
+  <select name="inreason" id="inreason" class="in" onchange="reasonChange(1)" required oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
     <option value="" id="indef" selected disabled hidden>-- Reason --</option>
     <option value="Late">Late</option>
     <option value="Appointment">Appointment</option>
@@ -325,7 +326,7 @@ input[type=text]:focus, input[type=email]:focus{
   </select>
   
   <!-- Reason(Sign out) -->
-  <select name="outreason" id="outreason" onchange="reasonChange(2)" required hidden oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
+  <select name="outreason" id="outreason" class="out" onchange="reasonChange(2)" required oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
     <option value="" id="outdef" selected disabled hidden>-- Reason --</option>
     <option value="Year 13">Year 13</option>
     <option value="Appointment">Appointment</option>
@@ -333,11 +334,11 @@ input[type=text]:focus, input[type=email]:focus{
   </select>
   
   <!-- Other reason -->
-  <input placeholder="Reason" id="other" hidden type="text" oninvalid="this.setCustomValidity('Please enter a reason.')">
+  <input placeholder="Reason" style="visibility: hidden;" class="in out" id="other" type="text" oninvalid="this.setCustomValidity('Please enter a reason.')">
   <br>
   
   <!-- Submit -->
-  <input type="submit" id="submit" hidden>
+  <input type="submit" id="submit" class="in out">
 </form><br>
 </div>
 <script>
@@ -348,6 +349,9 @@ var cards = null;
 var linkTimeout;
 var linkAddress;
 var emailink;
+formState("in", "hidden");
+formState("out", "hidden");
+linkState("none");
 
 function mdown(e){
   isDown = true;
@@ -383,13 +387,20 @@ function mmove(e){
   }
 }
 
-function hideLink(state){
+function linkState(state){
   var link = document.getElementsByClassName("link");
   for(var i = 0; i < link.length; i++){
     link[i].style.display = state;
   }
 }
-  
+
+function formState(inout, state){
+  var link = document.getElementsByClassName(inout);
+  for(var i = 0; i < link.length; i++){
+    link[i].style.visibility = state;
+  }
+}
+
 function initDragBar(){
   document.getElementById("dragbar").style.left = initWidth+"px";
   document.getElementsByClassName("left")[0].style.width = initWidth+"px";
@@ -405,7 +416,7 @@ function initDragBar(){
   document.addEventListener('touchmove', (e) => {mmove(e)}, true);
   
   document.getElementById("dragbar").click();
-  hideLink("none");
+  linkState("none");
 }
 
 function removeElemDelay(element, delay) {
@@ -566,7 +577,7 @@ async function getCard(){
     }
     if(found == 0 && address != "none"){
       linkAddress = address;
-      hideLink("initial");
+      linkState("initial");
       document.getElementById("link").onclick = async function(){
         if(document.getElementById("linkingemail").reportValidity()){
           emailink = document.getElementById("linkingemail").value;
@@ -574,7 +585,7 @@ async function getCard(){
           if(await logCard(emailink, linkAddress)){
             removeElemDelay(aler, 0);
             aler = createAlert("#00B000", "#009600", '<strong>Successfully linked card to '+emailink+'.</strong>');
-            hideLink("none");
+            linkState("none");
             removeElemDelay(aler, 3000);
             document.getElementById("linkingemail").value = "";
           }else{
@@ -588,10 +599,10 @@ async function getCard(){
       };
       clearTimeout(linkTimeout);
       linkTimeout = setTimeout(function(){
-        hideLink("none");
+        linkState("none");
       }, 2000);
     }else{
-      hideLink("none");
+      linkState("none");
       clearTimeout(linkTimeout);
     }
   }catch(error){
