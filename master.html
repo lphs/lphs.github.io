@@ -302,7 +302,7 @@ input[type=text]:focus, input[type=email]:focus{
 <div id="contain" style="width: 95%;"></div>
 
 <!-- Linking -->
-<span id="linknote" class="link" style="display: inline-block;">This card has not been linked to an email. Please leave card on reader and enter your email to link your card to an email address:</span><br class="link">
+<span id="linknote" class="link" style="display: inline-block;"></span><br class="link">
 <input id="linkingemail" class="link" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')" autocomplete="off">
 <input type="button" id="link" class="link" value="Link Card to Email"><br class="link">
 
@@ -351,6 +351,7 @@ var cards = null;
 var linkTimeout;
 var linkAddress;
 var emailink;
+document.getElementById("linknote").innerText = "This card has not been linked to an email. Please leave card on reader and enter your email to link your card to an email address:";
 hideAndResetForm();
 hideLink();
 
@@ -529,7 +530,13 @@ hideLink();
   }
   async function logCard(name, data){
     try{
-      const response = await fetch(SCRIPT_URL+"?met=2&name="+name+"&data="+data, {mode: 'no-cors'});
+      const response = await fetch(SCRIPT_URL+"?met=2&name="+name+"&data="+data, {
+      redirect: "follow",
+      method: "GET", 
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+    });
       const tex = await response.text();
       if(tex == "ERROR"){
         console.error("Error occured form google sheets api when calling function sheetLog");
@@ -542,10 +549,15 @@ hideLink();
     }
     return false;
   }
-
   async function getCardList(){
     try{
-      const response = await fetch(SCRIPT_URL+"?met=0");
+      const response = await fetch(SCRIPT_URL+"?met=0", {
+        redirect: "follow",
+        method: "GET", 
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8",
+        },
+      });
       const tex = await response.text();
       if(tex == "ERROR"){
         console.error("Error occured form google sheets api when calling function getData");
@@ -561,7 +573,13 @@ hideLink();
 
   async function getCard(){
     try{
-      const response = await fetch("/address");
+      const response = await fetch("/address", {
+        redirect: "follow",
+        method: "GET", 
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8",
+        },
+      });
       address = await response.text();
       var card;
       var found = 0;
