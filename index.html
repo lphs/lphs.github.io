@@ -225,16 +225,23 @@ function generateCode(){
 </head>
 <body>
 <h1>Sign-in/sign-out</h1>
+
+<!-- Alert -->
 <div id="contain"></div>
+
+<!-- Form -->
 <form onsubmit="event.preventDefault(); submitcode();">
+  <!-- Sign in/out -->
   <select name="sign" id="sign" onchange="signChange()" required>
-    <option value="" selected disabled hidden>-- Signin or signout --</option>
+    <option value="" selected disabled hidden>-- Sign in/out --</option>
     <option value="in">Sign in</option>
     <option value="out">Sign out</option>
   </select><br>
-  
+
+  <!-- Email -->
   <input id="email" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" hidden required oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')"><br>
-  
+
+  <!-- Reason(Sign in) -->
   <select name="inreason" id="inreason" onchange="reasonChange(1)" required hidden oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
     <option value="" id="indef" selected disabled hidden>-- Reason --</option>
     <option value="Late">Late</option>
@@ -242,18 +249,23 @@ function generateCode(){
     <option value="other">Other</option>
   </select>
   
-  
+  <!-- Reason(Sign out) -->
   <select name="outreason" id="outreason" onchange="reasonChange(2)" required hidden oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
     <option value="" id="outdef" selected disabled hidden>-- Reason --</option>
     <option value="Year 13">Year 13</option>
     <option value="Appointment">Appointment</option>
     <option value="other">Other</option>
   </select>
+
+  <!-- Other reason -->
   <input placeholder="Reason" id="other" hidden type="text" oninvalid="this.setCustomValidity('Please enter a reason.')" oninput="this.setCustomValidity('')">
   <br>
-  <input placeholder="Verification code" id="verify" type="text" pattern=".{4}" maxlength="4" oninvalid="this.setCustomValidity('Please enter verification code. E.g. AB12'); this.style.display = 'initial';" oninput="handleInput(event); this.setCustomValidity('');" required hidden>
+
+  <!-- Verification code -->
+  <input placeholder="Verification code" id="verify" type="text" pattern=".{4}" maxlength="4" oninvalid="this.setCustomValidity('Please enter verification code. E.g. AB12'); this.style.display = 'initial'; document.getElementById('verifybr').style.display = 'initial';" oninput="handleInput(event); this.setCustomValidity('');" required hidden>
+  <br id="verifybr">
   
-  <br>
+  <!-- Submit -->
   <input type="submit" id="submit" hidden>
 </form><br>
 
@@ -278,6 +290,7 @@ function getVerifyCodeFromURL(){
   if(urlParams.has('code')){
     document.getElementById("verify").value = urlParams.get('code');
     document.getElementById("verify").style.display = "none";
+    document.getElementById('verifybr').style.display = 'none';
   }
 }
 
