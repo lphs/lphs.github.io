@@ -303,7 +303,7 @@ input[type=text]:focus, input[type=email]:focus{
 
 <!-- Linking -->
 <span id="linknote" class="link" style="display: inline-block;"></span><br class="link">
-<input id="linkingemail" class="link" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')" autocomplete="off">
+<input id="linkingemail" required class="link" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')" autocomplete="off">
 <input type="button" id="link" class="link" value="Link Card to Email"><br class="link">
 
 <!-- Form -->
@@ -367,6 +367,11 @@ hideLink();
       var link = document.getElementsByClassName("link");
       for(var i = 0; i < link.length; i++){
         link[i].style.display = "initial";
+      }
+    }
+    function clearLink(){
+      if(document.getElementsById("linkingemail").style.display == "none"){
+        document.getElementById("linkingemail").value = "";
       }
     }
   //Form element functions
@@ -637,6 +642,7 @@ document.getElementById("verifycode").innerHTML = "Verification code: "+generate
 initDragBar();
 getCardList();
 setInterval(getCard, 250);
+setInterval(clearLink, 500);
 setInterval(getCardList, 10000);
 </script>
 </body>
