@@ -379,6 +379,8 @@ async function submitcode(){
       removeElemDelay(aler, 4000);
     }
   }else{
+    document.getElementById("verify").style.display = 'initial';
+    document.getElementById('verifybr').style.display = 'initial';
     var aler = createAlert("#B00000", "#990000", "<strong>Incorrect verification code!</strong>");
     document.getElementById("contain").appendChild(aler);
     removeElemDelay(aler, 4000);
@@ -410,7 +412,13 @@ function generateCode(){
 
 async function sheetLog(inout, name, reason){
   try {
-    const response = await fetch(SCRIPT_URL+"?met=1&inout="+inout+"&name="+name+"&reason="+reason, {mode: 'no-cors'});
+    const response = await fetch(SCRIPT_URL+"?met=1&inout="+inout+"&name="+name+"&reason="+reason, {
+      redirect: "follow",
+      method: "GET", 
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+    });
     const tex = await response.text();
     if(tex == "ERROR"){
       console.error("Error occured form google sheets api when calling function sheetLog");
@@ -422,36 +430,6 @@ async function sheetLog(inout, name, reason){
     return false;
   }
   return true;
-}
-
-async function cardLog(name, data){
-  try {
-    const response = await fetch(SCRIPT_URL+"?met=2&name="+name+"&data="+data, {mode: 'no-cors'});
-    const tex = await response.text();
-    if(tex == "ERROR"){
-      console.error("Error occured form google sheets api when calling function sheetLog");
-      return false;
-    }else{
-      return true;
-    }
-  } catch (error) {
-    console.error(error.message);
-  }
-  return false;
-}
-
-async function getData() {
-  try {
-    const response = await fetch(SCRIPT_URL+"?met=0");
-    const tex = await response.text();
-    if(tex == "ERROR"){
-      console.error("Error occured form google sheets api when calling function getData");
-      return;
-    }
-    document.getElementById("content").innerHTML = tex;
-  } catch (error) {
-    console.error(error.message);
-  }
 }
 
 getVerifyCodeFromURL();
