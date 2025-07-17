@@ -161,11 +161,11 @@ body,html {
 }
 
 html {
-    min-height:100%;
-    position:relative;
+  min-height:100%;
+  position:relative;
 }
 body {
-    height:100%;
+  height:100%;
 }
 
 #dragbar {
@@ -277,7 +277,7 @@ select{
 input[type=text], input[type=email]{
   outline: none;
   margin: 3px 0px 3px 0px;
-  padding: 3px;
+  padding: 3px 0px 3px 3px;
   border: 2px solid #555555;
   border-radius: 20px;
 }
@@ -285,7 +285,18 @@ input[type=text], input[type=email]{
 input[type=text]:focus, input[type=email]:focus{
   box-shadow: 0px 0px 10px 1.5px #555555;
   border-radius: 10px;
-  padding: 5px;
+  padding: 5px 0px 5px 5px;
+}
+
+.container {
+  position: relative;
+}
+
+.container span {
+  position: absolute;
+  margin: 3px 0px 3px 0px;
+  padding: 3px 0px 3px 3px;
+  right: 5px;
 }
 </style>
 </head>
@@ -303,7 +314,10 @@ input[type=text]:focus, input[type=email]:focus{
 
 <!-- Linking -->
 <span id="linknote" class="link" style="display: inline-block;"></span><br class="link">
-<input id="linkingemail" required class="link" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')" autocomplete="off">
+<label class="link container">
+  <input id="linkingemail" required class="link" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')" autocomplete="off">
+  <span>@lphs.school.nz</span>
+</label>
 <input type="button" id="link" class="link" value="Link Card to Email"><br class="link">
 
 <!-- Form -->
@@ -316,7 +330,10 @@ input[type=text]:focus, input[type=email]:focus{
   </select><br>
   
   <!-- School Email -->
-  <input id="email" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')"><br>
+  <label id="emailContainer" class="container">
+    <input id="email" type="email" name="email" size="30" maxlength="20" pattern=".+\..+" placeholder="john.doe" oninvalid="this.setCustomValidity('Please enter the start of your school email. E.g. john.doe')" oninput="this.setCustomValidity('')">
+    <span>@lphs.school.nz</span>
+  </label><br>
   
   <!-- Reason(Sign in) -->
   <select name="inreason" id="inreason" onchange="reasonChange(this.value)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
@@ -391,7 +408,7 @@ hideLink();
       //Sign in/out
       document.getElementById("sign").value = "";
       //Email
-      hide("email");
+      hide("emailContainer");
       document.getElementById("email").value = "";
       //Sign in reason
       hide("inreason");
@@ -406,7 +423,7 @@ hideLink();
       hide("submit");
     }
     function signChange(val){
-      show("email");
+      show("emailContainer");
       document.getElementById(val+"reason").value = "";
       show(val+"reason");
       hide((val == "in") ? "outreason" : "inreason");
@@ -421,7 +438,7 @@ hideLink();
 //Form handling
   async function submitcode(){
     var inout = document.getElementById("sign").value;
-    var email = document.getElementById("email").value;
+    var email = document.getElementById("email").value+"@lphs.school.nz";
     var reason = document.getElementById(inout+"reason").value;
     if(reason == "other"){
       reason = document.getElementById("other").value;
