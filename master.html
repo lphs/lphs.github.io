@@ -335,7 +335,7 @@ input[type=text]:focus, input[type=email]:focus{
   </select>
   
   <!-- Other reason -->
-  <input placeholder="Reason" id="other" type="text" oninvalid="this.setCustomValidity('Please enter a reason.')">
+  <input placeholder="Reason" id="other" type="text" oninvalid="this.setCustomValidity('Please enter a reason.')" oninput="this.setCustomValidity('')">
   <br>
   
   <!-- Submit -->
