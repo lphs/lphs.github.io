@@ -351,7 +351,7 @@ var cards = null;
 var linkTimeout;
 var linkAddress;
 var emailink;
-document.getElementById("linknote").innerText = "This card has not been linked to an email. Please leave card on reader and enter your email to link your card to an email address:";
+document.getElementById("linknote").innerText = "Enter your email to link card to email address: ";
 hideAndResetForm();
 hideLink();
 
@@ -370,7 +370,7 @@ hideLink();
       }
     }
     function clearLink(){
-      if(document.getElementsById("linkingemail").style.display == "none"){
+      if(document.getElementById("linkingemail").style.display == "none"){
         document.getElementById("linkingemail").value = "";
       }
     }
@@ -607,6 +607,8 @@ hideLink();
             if(await logCard(emailink, linkAddress)){
               removeElement(aler, 0);
               aler = createAlert("#00B000", "#009600", '<strong>Successfully linked card to '+emailink+'.</strong>');
+              cards.push(emailink+"|||"+linkAddress);
+              getCardList();
               hideLink();
               removeElement(aler, 3000);
               document.getElementById("linkingemail").value = "";
@@ -642,7 +644,7 @@ document.getElementById("verifycode").innerHTML = "Verification code: "+generate
 initDragBar();
 getCardList();
 setInterval(getCard, 250);
-setInterval(clearLink, 500);
+setInterval(clearLink, 200);
 setInterval(getCardList, 10000);
 </script>
 </body>
