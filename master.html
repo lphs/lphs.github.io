@@ -4,6 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sign-in</title>
 <script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6l7S2KUZZG_v6Ks1nLkFMGOZRrxmIVK6B2g3rSN0bHsBp82ss2MmiUAgrwqYBC08R/exec";
 let name = "pass=";
 let decodedCookie = decodeURIComponent(document.cookie);
 let ca = decodedCookie.split(';');
@@ -283,7 +284,6 @@ input[type=text]:focus, input[type=email]:focus{
 </div>
 <div id="widthTester"></div>
 <script>
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6l7S2KUZZG_v6Ks1nLkFMGOZRrxmIVK6B2g3rSN0bHsBp82ss2MmiUAgrwqYBC08R/exec";
 var isDown = false;
 var initWidth = Math.max(parseInt(document.body.offsetWidth)-parseInt(document.getElementById("dragbar").getBoundingClientRect().height)+100, parseInt(document.getElementsByClassName("left")[0].clientWidth)+30);
 var address = "none";
