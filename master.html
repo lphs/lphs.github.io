@@ -57,6 +57,13 @@ async function check(){
     if(tex != "VERIFY" && tex != "ERROR"){
       verifyCode = tex;
     }
+    var height = parseInt(document.body.offsetWidth)-initWidth-50;
+    new QRCode(document.getElementById("qrcode"), {
+      text: "https://lphs.github.io/?code="+verifyCode,
+      width: height,
+      height: height
+    });
+    document.getElementById("verifycode").innerHTML = "Verification code: "+verifyCode;
   } catch (error) {
     console.error(error.message);
   }
@@ -595,14 +602,6 @@ hideLink();
       console.error(error.message);
     }
   }
-
-var height = parseInt(document.body.offsetWidth)-initWidth-50;
-new QRCode(document.getElementById("qrcode"), {
-  text: "https://lphs.github.io/?code="+verifyCode,
-  width: height,
-  height: height
-});
-document.getElementById("verifycode").innerHTML = "Verification code: "+verifyCode;
 initDragBar();
 getCardList();
 setInterval(getCard, 250);
