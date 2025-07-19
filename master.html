@@ -12,6 +12,7 @@ let found = 0;
 let pass;
 var verifyCode;
 async function check(){
+  document.childNodes[1].style.visibility = "hidden";
   for(let i = 0; i < ca.length; i++) {
     let c = ca[i];
     while (c.charAt(0) == ' ') {
@@ -27,8 +28,9 @@ async function check(){
           },
         });
         const tex = await response.text();
-        if(tex == "True"){
+        if(tex.substring(0, 4) == "True"){
           pass = c.substring(name.length, c.length);
+          verifyCode = tex.substring(4, tex.length);
           found = 1;
         }else if(tex == "ERROR"){
           console.error("Error occured form google sheets api when calling function check");
@@ -45,28 +47,14 @@ async function check(){
   if(found == 0){
     document.childNodes[1].remove();
   }
-  try{
-    const response = await fetch(SCRIPT_URL+"?met=4&pass="+pass, {
-      redirect: "follow",
-      method: "GET", 
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8",
-      },
-    });
-    const tex = await response.text();
-    if(tex != "VERIFY" && tex != "ERROR"){
-      verifyCode = tex;
-    }
-    var height = parseInt(document.body.offsetWidth)-initWidth-50;
-    new QRCode(document.getElementById("qrcode"), {
-      text: "https://lphs.github.io/?code="+verifyCode,
-      width: height,
-      height: height
-    });
-    document.getElementById("verifycode").innerHTML = "Verification code: "+verifyCode;
-  } catch (error) {
-    console.error(error.message);
-  }
+  document.childNodes[1].style.visibility = "visible";
+  var height = parseInt(document.body.offsetWidth)-initWidth-50;
+  new QRCode(document.getElementById("qrcode"), {
+    text: "https://lphs.github.io/?code="+verifyCode,
+    width: height,
+    height: height
+  });
+  document.getElementById("verifycode").innerHTML = "Verification code: "+verifyCode;
 }
 check();
 </script>
