@@ -261,7 +261,7 @@ input[type=text]:focus, input[type=email]:focus{
 //Bigger of: Bodywidth-bodyHeight+100 or leftWidth+30
 //QR code is trying to minimize space.
 //QR code will be smaller than the height of page or the leftover space.
-var initWidth = Math.max(parseInt(document.body.offsetWidth)-document.documentElement.getBoundingClientRect().height)+100, parseInt(document.getElementsByClassName("left")[0].clientWidth)+30);
+var initWidth = Math.max(parseInt(document.body.offsetWidth)-document.documentElement.getBoundingClientRect().height+100, parseInt(document.getElementsByClassName("left")[0].clientWidth)+30)
 var address = "none";
 var cards = null;
 var linkTimeout;
