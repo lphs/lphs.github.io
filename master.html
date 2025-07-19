@@ -270,7 +270,7 @@ input[type=text]:focus, input[type=email]:focus{
   </select>
   
   <!-- Other reason -->
-  <input placeholder="Reason" id="other" type="text" oninvalid="this.setCustomValidity('Please enter a reason.')" oninput="this.setCustomValidity('')">
+  <input placeholder="Reason" id="other" type="text" minlength="3" oninvalid="this.setCustomValidity('Please enter a reason greater than 3 letters.')" oninput="this.setCustomValidity('')">
   <br>
   
   <!-- Submit -->
