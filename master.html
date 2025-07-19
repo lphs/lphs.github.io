@@ -66,26 +66,6 @@ body,html {
   font-family: Georgia, serif;
 }
 
-html {
-  min-height:100%;
-  position:relative;
-}
-body {
-  height:100%;
-}
-
-#dragbar {
-  top: 0;
-  bottom: 0;
-  width: 7px;
-  left: 30px;
-  height: 100%;
-  position: absolute;
-  cursor: col-resize;
-  background-color: #E7E9EB;
-  overflow:hidden;
-}
-
 .left, .right {
   user-select: none;
 }
@@ -225,7 +205,6 @@ input[type=text]:focus, input[type=email]:focus{
     <div id="verifycode" style="font-size: 25px; padding: 5px 0"></div>
   </div>
 </div>
-<div id="dragbar"></div>
 <div class="left">
 <h1>Sign-in/sign-out</h1>
 <div id="contain" style="width: 95%;"></div>
@@ -279,16 +258,15 @@ input[type=text]:focus, input[type=email]:focus{
 </div>
 <div id="widthTester"></div>
 <script>
-var isDown = false;
-var initWidth = Math.max(parseInt(document.body.offsetWidth)-parseInt(document.getElementById("dragbar").getBoundingClientRect().height)+100, parseInt(document.getElementsByClassName("left")[0].clientWidth)+30);
+//Bigger of: Bodywidth-bodyHeight+100 or leftWidth+30
+//QR code is trying to minimize space.
+//QR code will be smaller than the height of page or the leftover space.
+var initWidth = Math.max(parseInt(document.body.offsetWidth)-document.documentElement.getBoundingClientRect().height)+100, parseInt(document.getElementsByClassName("left")[0].clientWidth)+30);
 var address = "none";
 var cards = null;
 var linkTimeout;
 var linkAddress;
 var emailink;
-document.getElementById("linknote").innerText = "Enter your email to link card to email address: ";
-hideAndResetForm();
-hideLink();
 
 //CSS handling
   //Link element functions
@@ -383,55 +361,6 @@ hideLink();
       aler = createAlert("#B00000", "#750000", "<strong>Failed to sign in! Please try again.</strong>");
       removeElement(aler, 3000);
     }
-  }
-
-//Dragbar handling
-  function mdown(e){
-    isDown = true;
-  }
-  function mup(e){
-    isDown = false;
-  }
-  function mmove(e){
-    var ex, ey;
-    if(e.type == 'touchmove'){
-      var touch = event.touches[0];
-      ex = touch.pageX;
-      ey = touch.pageY;
-    } else if (e.type == 'mousemove') {
-      ex = e.clientX;
-      ey = e.clientY;
-    }
-    e.preventDefault();
-    if(isDown){
-      var x = Math.min(Math.max(ex, initWidth), parseInt(document.body.offsetWidth)-350);
-      document.getElementById("dragbar").style.left = x+"px";
-      document.getElementsByClassName("left")[0].style.width = x+"px";
-      var size = parseInt(document.body.offsetWidth)-x-50;
-      document.getElementsByClassName("right")[0].style.width = parseInt(document.body.offsetWidth)-x+"px";
-      document.getElementById("qrcode").innerHTML = "";
-      new QRCode(document.getElementById("qrcode"), {
-        text: "https://lphs.github.io/?code="+verifyCode,
-        width: size,
-        height: size
-      });
-    }
-  }
-  function initDragBar(){
-    document.getElementById("dragbar").style.left = initWidth+"px";
-    document.getElementsByClassName("left")[0].style.width = initWidth+"px";
-    document.getElementsByClassName("right")[0].style.width = parseInt(document.body.offsetWidth)-initWidth-30+"px";
-
-    document.getElementById("dragbar").addEventListener('mousedown', (e) => {mdown(e)}, true);
-    document.getElementById("dragbar").addEventListener('touchstart', (e) => {mdown(e)}, true);
-
-    document.addEventListener('mouseup', (e) => {mup(e)}, true);
-    document.addEventListener('touchend', (e) => {mup(e)}, true);
-
-    document.addEventListener('mousemove', (e) => {mmove(e)}, true);
-    document.addEventListener('touchmove', (e) => {mmove(e)}, true);
-
-    document.getElementById("dragbar").click();
   }
 
 //Alert handling
@@ -590,6 +519,10 @@ hideLink();
       console.error(error.message);
     }
   }
+
+document.getElementById("linknote").innerText = "Enter your email to link card to email address: ";
+hideAndResetForm();
+hideLink();
 getCardList();
 setInterval(getCard, 250);
 setInterval(clearLink, 200);
