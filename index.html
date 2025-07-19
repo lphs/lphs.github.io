@@ -69,7 +69,7 @@ input[type=submit] {
 
 input, select{
   font-family:inherit;
-  transition: all 150ms linear;
+  transition: all 800ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 select{
@@ -78,20 +78,43 @@ select{
   padding: 1px;
   border: 2px solid #555555;
   border-radius: 20px;
+  font-size: 15px;
 }
 
-input[type=text], input[type=email]{
+input[type=text]{
   outline: none;
   margin: 3px 0px 3px 0px;
   padding: 3px;
   border: 2px solid #555555;
   border-radius: 20px;
+  font-size: 15px;
 }
 
 input[type=text]:focus, input[type=email]:focus{
   box-shadow: 0px 0px 10px 1.5px #555555;
   border-radius: 10px;
   padding: 5px;
+}
+
+.container {
+  position: relative;
+}
+
+.container span {
+  font-size: 15px;
+  position: absolute;
+  margin: 6px 0px 6px 0px;
+  padding: 3px 0px 3px 3px;
+  right: 5px;
+}
+
+#widthTester {
+  width: auto;
+  display: inline-block;
+  visibility: hidden;
+  position: fixed;
+  overflow:auto;
+  font-size: 15px;
 }
 </style>
 </head>
@@ -104,177 +127,206 @@ input[type=text]:focus, input[type=email]:focus{
 <!-- Form -->
 <form onsubmit="event.preventDefault(); submitcode();">
   <!-- Sign in/out -->
-  <select name="sign" id="sign" onchange="signChange()" required>
-    <option value="" selected disabled hidden>-- Sign in/out --</option>
+  <select name="sign" id="sign" onchange="signChange(this.value)" >
+    <option value="" disabled hidden>-- Sign in/out --</option>
     <option value="in">Sign in</option>
     <option value="out">Sign out</option>
   </select><br>
 
   <!-- Email -->
-  <input id="email" type="email" name="email" pattern=".+\..+@lphs\.school\.nz" placeholder="School Email" hidden required oninvalid="this.setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz')" oninput="this.setCustomValidity('')"><br>
-
+  <label id="emailContainer" class="container">
+    <input id="email" type="text" name="email" pattern=".+\..+" placeholder="john.doe" oninvalid="this.setCustomValidity('Please enter the start of your school email. E.g. john.doe')" oninput="this.setCustomValidity(''); dynamicWidth('email', 117);">
+    <span>@lphs.school.nz</span>
+  </label><br>
+  
   <!-- Reason(Sign in) -->
-  <select name="inreason" id="inreason" onchange="reasonChange(1)" required hidden oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
-    <option value="" id="indef" selected disabled hidden>-- Reason --</option>
+  <select name="inreason" id="inreason" onchange="reasonChange(this.value)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
+    <option value="" disabled hidden>-- Reason --</option>
     <option value="Late">Late</option>
     <option value="Appointment">Appointment</option>
     <option value="other">Other</option>
   </select>
   
   <!-- Reason(Sign out) -->
-  <select name="outreason" id="outreason" onchange="reasonChange(2)" required hidden oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
-    <option value="" id="outdef" selected disabled hidden>-- Reason --</option>
+  <select name="outreason" id="outreason" onchange="reasonChange(this.value)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
+    <option value="" disabled hidden>-- Reason --</option>
     <option value="Year 13">Year 13</option>
     <option value="Appointment">Appointment</option>
     <option value="other">Other</option>
   </select>
 
   <!-- Other reason -->
-  <input placeholder="Reason" id="other" hidden type="text" oninvalid="this.setCustomValidity('Please enter a reason.')" oninput="this.setCustomValidity('')">
+  <input placeholder="Reason" id="other" type="text" minlength="3" oninvalid="this.setCustomValidity('Please enter a reason greater than 3 letters.')" oninput="this.setCustomValidity('')">
   <br>
 
   <!-- Verification code -->
-  <input placeholder="Verification code" id="verify" type="text" pattern=".{4}" maxlength="4" oninvalid="this.setCustomValidity('Please enter verification code. E.g. AB12'); this.style.display = 'initial'; document.getElementById('verifybr').style.display = 'initial';" oninput="handleInput(event); this.setCustomValidity('');" required hidden>
+  <input placeholder="Verification code" id="verify" type="text" pattern=".{4}" maxlength="4" oninvalid="this.setCustomValidity('Please enter verification code. E.g. AB12'); this.style.display = 'initial'; document.getElementById('verifybr').style.display = 'initial';" oninput="handleInput(event); this.setCustomValidity('');"  >
   <br id="verifybr">
   
   <!-- Submit -->
-  <input type="submit" id="submit" hidden>
+  <input type="submit" id="submit" >
 </form><br>
 
+<div id="widthTester"></div>
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6l7S2KUZZG_v6Ks1nLkFMGOZRrxmIVK6B2g3rSN0bHsBp82ss2MmiUAgrwqYBC08R/exec";
+let verifyCode = 0;
 
-function handleInput(e) {
-  var ss = e.target.selectionStart;
-  var se = e.target.selectionEnd;
-  if(/[^A-z0-9]/.test(e.target.value)){
-    e.target.value = e.target.value.replaceAll(/[^A-z0-9]/g, "");
-  }else{
-    e.target.value = e.target.value.toUpperCase();
+//CSS handling
+  function hide(id){
+    if(document.getElementById(id)){
+      document.getElementById(id).style.display = "none";
+      document.getElementById(id).required = false;
+    }
   }
-  e.target.selectionStart = ss;
-  e.target.selectionEnd = se;
-}
-
-function getVerifyCodeFromURL(){
-  const queryString = window.location.search;
-  const urlParams = new URLSearchParams(queryString);
-  if(urlParams.has('code')){
-    document.getElementById("verify").value = urlParams.get('code');
-    document.getElementById("verify").style.display = "none";
-    document.getElementById('verifybr').style.display = 'none';
+  function show(id){
+    if(document.getElementById(id)){
+      document.getElementById(id).style.display = "initial";
+      document.getElementById(id).required = true;
+    }
   }
-}
-
-function removeElemDelay(element, delay) {
-  setTimeout(() => {
-    element.style.animation = "fade-out 0.5s ease-in";
-    element.style.opacity = 1;
-    setTimeout(() => {
-      if(element && element.parentNode){
-        element.style.display = "none";
-        element.remove();
-      }
-    }, 500);
-  }, delay);
-}
-
-function signChange(){
-  var inoutstr = document.getElementById("sign").value;
-  var outinstr;
-  if(inoutstr == "in"){
-    outinstr = "out";
-  }else{
-    outinstr = "in";
-  }
-  document.getElementById(inoutstr+"reason").hidden = false;
-  document.getElementById(inoutstr+"reason").required = true;
-
-  document.getElementById(outinstr+"reason").hidden = true;
-  document.getElementById(outinstr+"reason").required = false;
-  
-  document.getElementById("other").hidden = true;
-  document.getElementById("other").required = false;
-  
-  document.getElementById("email").hidden = false;
-  document.getElementById("verify").hidden = false;
-  document.getElementById("outdef").selected = true;
-  document.getElementById("indef").selected = true;
-  document.getElementById("submit").hidden = false;
-}
-
-function reasonChange(inout){
-  var inoutstr;
-  if(inout == 1){
-    inoutstr = "in";
-  }else{
-    inoutstr = "out";
-  }
-  if(document.getElementById(inoutstr+"reason").value == "other"){
-    document.getElementById("other").hidden = false;
-    document.getElementById("other").required = true;
+  function hideAndResetForm(){
+    //Sign in/out
+    document.getElementById("sign").value = "";
+    //Email
+    hide("emailContainer");
+    document.getElementById("email").value = "";
+    dynamicWidth('email', 117);
+    //Sign in reason
+    hide("inreason");
+    document.getElementById("inreason").value = "";
+    //Sign out reason
+    hide("outreason");
+    document.getElementById("outreason").value = "";
+    //Other reason
+    hide("other");
     document.getElementById("other").value = "";
-  }else{
-    document.getElementById("other").hidden = true;
-    document.getElementById("other").required = false;
+    //Verify code
+    hide("verify");
+    hide("verifybr");
+    //Submit
+    hide("submit");
   }
-}
-
-function createAlert(borderColor, backgroundColor, HTML){
-  var aler = document.createElement("div");
-  aler.className = "alert";
-  aler.style.borderColor = borderColor;
-  aler.style.backgroundColor = backgroundColor;
-  aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span>'+HTML;
-  return aler;
-}
-
-async function submitcode(){
-  var inout = document.getElementById("sign").value;
-  var email = document.getElementById("email").value;
-  var reason = document.getElementById(inout+"reason").value;
-  var verifyCode = document.getElementById("verify").value;
-  if(reason == "other"){
-    reason = document.getElementById("other").value;
+  function signChange(val){
+    show("emailContainer");
+    document.getElementById(val+"reason").value = "";
+    show(val+"reason");
+    hide((val == "in") ? "outreason" : "inreason");
+    hide("other");
+    if(verifyCode == 0){
+      show("verify");
+      show("verifybr");
+    }
+    show("submit");
   }
-  var aler = createAlert("#B0B000", "#D0D000", "<strong>Sending...</strong>");
-  document.getElementById("contain").appendChild(aler);
-  const tex = await sheetLog(inout, email, reason, verifyCode);
-  removeElemDelay(aler, 0);
-  if(tex == "Success"){
-    aler = createAlert("#00B000", "#009600", '<strong>Successfully signed '+inout+'!</strong> Email: '+email+', Reason: '+reason+'.');
+  function reasonChange(val){
+    document.getElementById("other").value = "";
+    (val == "other") ? show("other") : hide("other");
+  }
+  
+//Dynamic width for inputs
+  function dynamicWidth(id, width){
+    document.getElementById("widthTester").innerText = document.getElementById(id).value;
+    if(document.getElementById(id).value == ""){
+      document.getElementById("widthTester").innerText = document.getElementById(id).placeholder;
+    }
+    document.getElementById(id).style.width = (document.getElementById("widthTester").clientWidth+width)+"px";
+    document.getElementById("widthTester").innerText = "";
+  }
+
+// Verification code handling
+  function handleInput(e) {
+    var ss = e.target.selectionStart;
+    var se = e.target.selectionEnd;
+    if(/[^A-z0-9]/.test(e.target.value)){
+      e.target.value = e.target.value.replaceAll(/[^A-z0-9]/g, "");
+    }else{
+      e.target.value = e.target.value.toUpperCase();
+    }
+    e.target.selectionStart = ss;
+    e.target.selectionEnd = se;
+  }
+  function getVerifyCodeFromURL(){
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    if(urlParams.has('code')){
+      document.getElementById("verify").value = urlParams.get('code');
+      document.getElementById("verify").style.display = "none";
+      document.getElementById('verifybr').style.display = 'none';
+      verifyCode = 1;
+    }
+  }
+
+//Alert handling
+  function removeElemDelay(element, delay) {
+    setTimeout(() => {
+      element.style.animation = "fade-out 0.5s ease-in";
+      element.style.opacity = 1;
+      setTimeout(() => {
+        if(element && element.parentNode){
+          element.style.display = "none";
+          element.remove();
+        }
+      }, 500);
+    }, delay);
+  }
+  function createAlert(backgroundcolor, bordercolor, html){
+    var aler = document.createElement("div");
+    aler.className = "alert";
+    aler.style.backgroundColor = backgroundcolor;
+    aler.style.borderColor = bordercolor;
+    aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElement(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span>'+html;
     document.getElementById("contain").appendChild(aler);
-    removeElemDelay(aler, 4000);
-  }else if(tex == "VERIFY"){
-    document.getElementById("verify").style.display = 'initial';
-    document.getElementById('verifybr').style.display = 'initial';
-    var aler = createAlert("#B00000", "#990000", "<strong>Incorrect verification code!</strong>");
-    document.getElementById("contain").appendChild(aler);
-    removeElemDelay(aler, 4000);
-  }else{
-    aler = createAlert("#B00000", "#990000", "<strong>Failed to sign in! Please try again.</strong>");
-    document.getElementById("contain").appendChild(aler);
-    removeElemDelay(aler, 4000);
+    return aler;
   }
-}
 
-async function sheetLog(inout, name, reason, verifyCode){
-  try {
-    const response = await fetch(SCRIPT_URL+"?met=1&inout="+inout+"&name="+name+"&reason="+reason+"&verify="+verifyCode, {
-      redirect: "follow",
-      method: "GET", 
-      headers: {
-        "Content-Type": "text/plain;charset=utf-8",
-      },
-    });
-    const tex = await response.text();
-    return tex;
-  } catch (error) {
-    console.error(error.message);
-    return "ERROR";
+//Form handling
+  async function submitcode(){
+    var inout = document.getElementById("sign").value;
+    var email = document.getElementById("email").value+"@lphs.school.nz";
+    var reason = document.getElementById(inout+"reason").value;
+    var verifyCode = document.getElementById("verify").value;
+    if(reason == "other"){
+      reason = document.getElementById("other").value;
+    }
+    var aler = createAlert("#D0D000", "#B0B000", "<strong>Sending...</strong>");
+    const tex = await sheetLog(inout, email, reason, verifyCode);
+    removeElemDelay(aler, 0);
+    if(tex == "Success"){
+      hideAndResetForm();
+      aler = createAlert("#00B000", "#009600", '<strong>Successfully signed '+inout+'!</strong> Email: '+email+', Reason: '+reason+'.');
+      removeElemDelay(aler, 3000);
+    }else if(tex == "VERIFY"){
+      document.getElementById("verify").style.display = 'initial';
+      document.getElementById('verifybr').style.display = 'initial';
+      var aler = createAlert("#B00000", "#750000", "<strong>Incorrect verification code!</strong>");
+      removeElemDelay(aler, 3000);
+      verifyCode = 0;
+    }else{
+      aler = createAlert("#B00000", "#750000", "<strong>Failed to sign in! Please try again.</strong>");
+      removeElemDelay(aler, 3000);
+    }
   }
-}
 
+//Api handling
+  async function sheetLog(inout, name, reason, verifyCode){
+    try {
+      const response = await fetch(SCRIPT_URL+"?met=1&inout="+inout+"&name="+name+"&reason="+reason+"&verify="+verifyCode, {
+        redirect: "follow",
+        method: "GET", 
+        headers: {
+          "Content-Type": "text/plain;charset=utf-8",
+        },
+      });
+      const tex = await response.text();
+      return tex;
+    } catch (error) {
+      console.error(error.message);
+      return "ERROR";
+    }
+  }
+
+hideAndResetForm();
 getVerifyCodeFromURL();
 </script>
 </body>
