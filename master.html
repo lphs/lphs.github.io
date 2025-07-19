@@ -34,7 +34,7 @@ async function check(){
           console.error("Error occured form google sheets api when calling function check");
         }else if(tex == "False"){
           console.error("Incorrect password");
-          return false;
+          document.childNodes[1].remove();
         }
       } catch (error) {
         console.error(error.message);
