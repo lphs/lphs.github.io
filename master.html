@@ -306,7 +306,7 @@ var emailink;
       //Sign in/out
       document.getElementById("sign").value = "";
       //Email
-      hide("emailContainer");
+      show("emailContainer");
       document.getElementById("email").value = "";
       dynamicWidth('email', 117);
       //Sign in reason
@@ -319,15 +319,13 @@ var emailink;
       hide("other");
       document.getElementById("other").value = "";
       //Submit
-      hide("submit");
+      show("submit");
     }
     function signChange(val){
-      show("emailContainer");
       document.getElementById(val+"reason").value = "";
       show(val+"reason");
       hide((val == "in") ? "outreason" : "inreason");
       hide("other");
-      show("submit");
     }
     function reasonChange(val){
       document.getElementById("other").value = "";
