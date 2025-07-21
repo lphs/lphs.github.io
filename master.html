@@ -202,7 +202,7 @@ input[type=text]:focus, input[type=email]:focus{
 <div class="right">
   <div id="rightcon">
     <div id="qrcode"></div>
-    <div id="verifycode" style="font-size: 25px; padding: 5px 0"></div>
+    <div id="verifycode" style="font-size: 50px; padding: 5px 0"></div>
   </div>
 </div>
 <div class="left">
@@ -221,7 +221,7 @@ input[type=text]:focus, input[type=email]:focus{
 <form onsubmit="event.preventDefault(); submitcode();" autocomplete="off">
   <!-- Sign in/sign out -->
   <select name="sign" id="sign" onchange="signChange(this.value)">
-    <option value="" disabled hidden>-- Sign in/sign out --</option>
+    <option value="" disabled hidden>-- Sign in/out --</option>
     <option value="in">Sign in</option>
     <option value="out">Sign out</option>
   </select><br>
@@ -475,6 +475,7 @@ var emailink;
           if(card[1] == address){
             found = 1;
             document.getElementById("email").value = card[0];
+            show("emailContainer");
           }
         }
       }
