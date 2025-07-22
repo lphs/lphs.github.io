@@ -525,6 +525,7 @@ var linkAddress;
         showLink();
         document.getElementById("link").onclick = async function(){
           if(document.getElementById("linkingemail").reportValidity()){
+            hideLink();
             var emailink = document.getElementById("linkingemail").value;
             var aler = createAlert("#D0D000", "#B0B000", "<strong>Linking...</strong>");
             if(await logCard(emailink, linkAddress)){
@@ -538,7 +539,6 @@ var linkAddress;
               aler = createAlert("#B00000", "#750000", '<strong>Failed to link card! Please try again.</strong>');
               removeElement(aler, 3000);
             }
-            hideLink();
           }else{
             document.getElementById("linkingemail").setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz');
           }
