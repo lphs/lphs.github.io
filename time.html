@@ -78,8 +78,8 @@ function getHour(ampm, hour){
 }
   
 function update(){
-  // Added 12 seconds to date because bell is 12 seconds early
-  var now = new Date(new Date().valueOf()+12*1000); // new Date(0, 0, D(SUN, MUN), H, M, 0)
+  // Added 12.5 seconds to date because bell is 12.5 seconds early
+  var now = new Date(new Date().valueOf()+12500); // new Date(0, 0, D(SUN, MUN), H, M, 0)
   var day = days[now.getDay()];
   var timeTableRE = new RegExp("\\|"+day+"\\|.*\n([\\S\\s]*?)\\|.*\\|");
   if(timeTableRE.test(timings)){
