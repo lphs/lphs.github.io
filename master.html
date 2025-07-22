@@ -309,16 +309,14 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 var initWidth = Math.max(parseInt(document.body.offsetWidth)-document.documentElement.getBoundingClientRect().height+100, parseInt(document.getElementsByClassName("left")[0].clientWidth)+30)
 var address = "none";
 var cards = null;
-var linkTimeout;
 var linkAddress;
-var emailink;
 
 //CSS handling
   //Link element functions
     function hideLink(){
+      document.getElementById("linkingemail").value = "";
       dynamicWidth('linkingemail', 117);
       document.getElementById("popup").style.display = "none";
-      document.getElementById("linkingemail").value = "";
     }
     function showLink(){
       document.getElementById("popup").style.display = "initial";
@@ -522,38 +520,32 @@ var emailink;
         }
       }
       dynamicWidth('email', 117);
-      if(found == 0 && address != "none"){
+      if(found == 0 && address != "none" && address != linkAddress){
         linkAddress = address;
         showLink();
         document.getElementById("link").onclick = async function(){
           if(document.getElementById("linkingemail").reportValidity()){
-            emailink = document.getElementById("linkingemail").value;
+            var emailink = document.getElementById("linkingemail").value;
             var aler = createAlert("#D0D000", "#B0B000", "<strong>Linking...</strong>");
             if(await logCard(emailink, linkAddress)){
               removeElement(aler, 0);
               aler = createAlert("#00B000", "#009600", '<strong>Successfully linked card to '+emailink+'.</strong>');
               cards.push(emailink+"|||"+linkAddress);
               getCardList();
-              hideLink();
               removeElement(aler, 3000);
-              document.getElementById("linkingemail").value = "";
-              dynamicWidth('linkingemail', 111);
             }else{
               removeElement(aler, 0);
               aler = createAlert("#B00000", "#750000", '<strong>Failed to link card! Please try again.</strong>');
               removeElement(aler, 3000);
             }
+            hideLink();
           }else{
             document.getElementById("linkingemail").setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz');
           }
-        };
-        clearTimeout(linkTimeout);
-        linkTimeout = setTimeout(function(){
-          hideLink();
-        }, 2000);
-      }else{
+        }
+      }else if(found == 1){
+        linkAddress = "none";
         hideLink();
-        clearTimeout(linkTimeout);
       }
     }catch(error){
       console.error(error.message);
