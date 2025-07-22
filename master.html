@@ -324,7 +324,7 @@ var linkAddress;
     function initLink(){
       hideLink();
       window.onclick = function(e) {
-        if (e.target == modal) {
+        if (e.target == document.getElementById("popup")) {
            hideLink();
         }
       }
