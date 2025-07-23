@@ -310,6 +310,7 @@ var initWidth = Math.max(parseInt(document.body.offsetWidth)-document.documentEl
 var address = "none";
 var cards = null;
 var linkAddress;
+var linkEmail;
 
 //CSS handling
   //Link element functions
@@ -526,12 +527,12 @@ var linkAddress;
         document.getElementById("link").onclick = async function(){
           if(document.getElementById("linkingemail").reportValidity()){
             hideLink();
-            var emailink = document.getElementById("linkingemail").value;
+            linkEmail = document.getElementById("linkingemail").value;
             var aler = createAlert("#D0D000", "#B0B000", "<strong>Linking...</strong>");
-            if(await logCard(emailink, linkAddress)){
+            if(await logCard(linkEmail, linkAddress)){
               removeElement(aler, 0);
-              aler = createAlert("#00B000", "#009600", '<strong>Successfully linked card to '+emailink+'.</strong>');
-              cards.push(emailink+"|||"+linkAddress);
+              aler = createAlert("#00B000", "#009600", '<strong>Successfully linked card to '+linkEmail+'.</strong>');
+              cards.push(linkEmail+"|||"+linkAddress);
               getCardList();
               removeElement(aler, 3000);
             }else{
