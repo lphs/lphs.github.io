@@ -37,6 +37,12 @@ async function check(){
         }else if(tex == "False"){
           console.error("Incorrect password");
           document.childNodes[1].remove();
+          const highestId = window.setTimeout(() => {
+            for (let i = highestId; i >= 0; i--) {
+              window.clearInterval(i);
+            }
+          }, 0);
+          return;
         }
       } catch (error) {
         console.error(error.message);
@@ -46,6 +52,11 @@ async function check(){
   }
   if(found == 0){
     document.childNodes[1].remove();
+    const highestId = window.setTimeout(() => {
+      for (let i = highestId; i >= 0; i--) {
+        window.clearInterval(i);
+      }
+    }, 0);
   }
   document.childNodes[1].style.visibility = "visible";
   var height = parseInt(document.body.offsetWidth)-initWidth-50;
