@@ -507,6 +507,10 @@ var linkEmail;
   async function getCard(){
     try{
       const response = await fetch("/address");
+      if(!response.ok){
+        console.error("Not able to access card reader");
+        return;
+      }
       address = await response.text();
       var card;
       var found = 0;
