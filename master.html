@@ -255,7 +255,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       <!-- Link card -->
       <span id="linknote" class="link" style="display: inline-block;"></span><br class="link">
       <label class="link container">
-        <input id="linkingemail" required class="link" type="text" name="email" pattern=".+\..+" placeholder="john.doe" oninvalid="this.setCustomValidity('Please enter the start of your school email. E.g. john.doe')" oninput="this.setCustomValidity(''); dynamicWidth('linkingemail', 117);" autocomplete="off" spellcheck="false">
+        <input id="linkingemail" required class="link" type="text" pattern=".+\..+" placeholder="john.doe" oninvalid="this.setCustomValidity('Please enter the start of your school email. E.g. john.doe')" oninput="this.setCustomValidity(''); dynamicWidth('linkingemail', 117);" autocomplete="off" spellcheck="false">
         <span>@lphs.school.nz</span>
       </label>
       <input type="button" id="link" class="link" value="Link Card to Email"><br class="link">
@@ -265,7 +265,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 <!-- Form -->
 <form onsubmit="event.preventDefault(); submitcode();" autocomplete="off">
   <!-- Sign in/sign out -->
-  <select name="sign" id="sign" onchange="signChange(this.value)">
+  <select id="sign" onchange="signChange(this.value)">
     <option value="" disabled hidden>-- Sign in/out --</option>
     <option value="in">Sign in</option>
     <option value="out">Sign out</option>
@@ -273,12 +273,12 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
   
   <!-- School Email -->
   <label id="emailContainer" class="container">
-    <input id="email" type="text" name="email" pattern=".+\..+" placeholder="john.doe" oninvalid="this.setCustomValidity('Please enter the start of your school email. E.g. john.doe')" oninput="this.setCustomValidity(''); dynamicWidth('email', 117);" spellcheck="false">
+    <input id="email" type="text" pattern=".+\..+" placeholder="john.doe" oninvalid="this.setCustomValidity('Please enter the start of your school email. E.g. john.doe')" oninput="this.setCustomValidity(''); dynamicWidth('email', 117);" spellcheck="false">
     <span>@lphs.school.nz</span>
   </label><br>
   
   <!-- Reason(Sign in) -->
-  <select name="inreason" id="inreason" onchange="reasonChange(this.value)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
+  <select id="inreason" onchange="reasonChange(this.value)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
     <option value="" disabled hidden>-- Reason --</option>
     <option value="Late">Late</option>
     <option value="Appointment">Appointment</option>
@@ -286,7 +286,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
   </select>
   
   <!-- Reason(Sign out) -->
-  <select name="outreason" id="outreason" onchange="reasonChange(this.value)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
+  <select id="outreason" onchange="reasonChange(this.value)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
     <option value="" disabled hidden>-- Reason --</option>
     <option value="Year 13">Year 13</option>
     <option value="Appointment">Appointment</option>
@@ -526,8 +526,8 @@ var linkEmail;
         showLink();
         document.getElementById("link").onclick = async function(){
           if(document.getElementById("linkingemail").reportValidity()){
-            hideLink();
             linkEmail = document.getElementById("linkingemail").value;
+            hideLink();
             var aler = createAlert("#D0D000", "#B0B000", "<strong>Linking...</strong>");
             if(await logCard(linkEmail, linkAddress)){
               removeElement(aler, 0);
