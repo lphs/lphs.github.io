@@ -23,7 +23,7 @@ function doGet(e) {
       try {
         var ss = SpreadsheetApp.openById(spreadsheetId);
         var sheet = ss.getSheetByName('Stats');
-        var range = sheet.getRange(4, 1, Number(max[0][0])+2, 2);
+        var range = sheet.getRange(4, 1, Number(max[0][0])+1, 2);
         const device_uids = range.getValues();
         const uid = e.parameter.uid;
         var date = new Date();
