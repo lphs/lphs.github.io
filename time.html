@@ -150,5 +150,49 @@ function update(){
 <label id="percent" for="prog"></label>
 <progress id="prog" name="prog" value="0" max="100"></progress><br>
 <span id="time">Loading...</span>
+<>
+<script>
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzh2QLktbNIcd3Rt66hLDqTH4pdKqUQO6OVAyJ_UDVNyaM6zzr5dkuhtr9Iv5BFSFGvDA/exec";
+async function getVisits(){
+  try {
+    const response = await fetch(SCRIPT_URL+"?met=0", {
+      redirect: "follow",
+      method: "GET", 
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+    });
+    const tex = await response.text();
+    document.getElementById("visits").innerText = "Total visits: "+tex;
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+async function getDevices(){
+  let machineId = localStorage.getItem('MachineId');
+  if (!machineId) {
+      machineId = crypto.randomUUID();
+      localStorage.setItem('MachineId', machineId);
+  }
+  try {
+    const response = await fetch(SCRIPT_URL+"?met=1&uid="+machineId, {
+      redirect: "follow",
+      method: "GET", 
+      headers: {
+        "Content-Type": "text/plain;charset=utf-8",
+      },
+    });
+    const tex = await response.text();
+    document.getElementById("visits").innerText = "Current devices: "+tex;
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+  
+getVisits();
+getDevices();
+setInterval(getDevices, 10000);
+</script>
 </body>
 </html>
