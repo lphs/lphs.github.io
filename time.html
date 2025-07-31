@@ -95,13 +95,13 @@ function update(){
       if(nTime <= eTime){
         status = 1;
         if(i == 0){
-          var timeTo = (eTime-nTime)/(60*1000);
-          var minLeft = (((eTime-nTime)-(eTime-nTime)%(60*1000))/(60*1000));
-          var secLeft = Math.round(((eTime-nTime)%(60*1000))/(1000));
+          var minLeft = Math.floor((eTime-nTime)/(60*1000));
+          var secLeft = Math.floor(((eTime-nTime)%(60*1000))/1000);
           document.getElementById("time").innerText = "Nothing happening yet. "+timeArray[0][4]+" is starting in "+minLeft+"min "+secLeft+"s.";
           document.getElementById("prog").value = 0;
           document.getElementById("percent").innerText = "0%";
           document.getElementById("title").innerText = minLeft+"min "+secLeft+"s; 0%";
+          document.getElementById("aud").currentTime = (eTime-nTime)/1000;
           if(lPeriod == null){
             lPeriod = "Nothing";
           }
@@ -117,6 +117,7 @@ function update(){
           document.getElementById("prog").value = ((periodLength-timeLeft)/periodLength*100);
           document.getElementById("percent").innerText = Math.round((periodLength-timeLeft)/periodLength*100)+"%";
           document.getElementById("title").innerText = minLeft+"min "+secLeft+"s; "+Math.round((periodLength-timeLeft)/periodLength*100)+"%";
+          document.getElementById("aud").currentTime = (eTime-nTime)/1000;
           if(lPeriod != timeArray[i-1][4] && lPeriod != null){
             lPeriod = timeArray[i-1][4];
             ring(50, 25);
@@ -136,12 +137,14 @@ function update(){
       document.getElementById("prog").value = 100;
       document.getElementById("percent").innerText = "100%";
       document.getElementById("title").innerText = "End of school!";
+      document.getElementById("aud").currentTime = 60*60;
     }
   }else{
     document.getElementById("time").innerText = "No timetable for today";
     document.getElementById("prog").value = 100;
     document.getElementById("percent").innerText = "100%";
     document.getElementById("title").innerText = "No timetable for today";
+    document.getElementById("aud").currentTime = 60*60;
   }
 }
 </script>
@@ -151,7 +154,7 @@ function update(){
 <progress id="prog" name="prog" value="0" max="100"></progress><br>
 <span id="time">Loading...</span>
 <br><br>
-<audio autoplay loop controls>
+<audio autoplay loop controls id="aud">
   <source src="https://github.com/anars/blank-audio/raw/refs/heads/master/1-hour-of-silence.mp3" type="audio/mpeg">
   Your browser does not support the audio element.
 </audio>
