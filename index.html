@@ -173,7 +173,7 @@ input[type=text]:focus, input[type=email]:focus{
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx6l7S2KUZZG_v6Ks1nLkFMGOZRrxmIVK6B2g3rSN0bHsBp82ss2MmiUAgrwqYBC08R/exec";
 let verifyCode = 0;
 
-//CSS handling
+// CSS handling
   function hide(id){
     if(document.getElementById(id)){
       document.getElementById(id).style.display = "none";
@@ -187,25 +187,25 @@ let verifyCode = 0;
     }
   }
   function hideAndResetForm(){
-    //Sign in/out
+    // Sign in/out
     document.getElementById("sign").value = "";
-    //Email
+    // Email
     hide("emailContainer");
     document.getElementById("email").value = "";
     dynamicWidth('email', 117);
-    //Sign in reason
+    // Sign in reason
     hide("inreason");
     document.getElementById("inreason").value = "";
-    //Sign out reason
+    // Sign out reason
     hide("outreason");
     document.getElementById("outreason").value = "";
-    //Other reason
+    // Other reason
     hide("other");
     document.getElementById("other").value = "";
-    //Verify code
+    // Verify code
     hide("verify");
     hide("verifybr");
-    //Submit
+    // Submit
     hide("submit");
   }
   function signChange(val){
@@ -225,7 +225,7 @@ let verifyCode = 0;
     (val == "other") ? show("other") : hide("other");
   }
   
-//Dynamic width for inputs
+// Dynamic width for inputs
   function dynamicWidth(id, width){
     document.getElementById("widthTester").innerText = document.getElementById(id).value;
     if(document.getElementById(id).value == ""){
@@ -258,7 +258,7 @@ let verifyCode = 0;
     }
   }
 
-//Alert handling
+// Alert handling
   function removeElemDelay(element, delay) {
     setTimeout(() => {
       element.style.animation = "fade-out 0.5s ease-in";
@@ -281,7 +281,7 @@ let verifyCode = 0;
     return aler;
   }
 
-//Form handling
+// Form handling
   async function submitcode(){
     var inout = document.getElementById("sign").value;
     var email = document.getElementById("email").value+"@lphs.school.nz";
@@ -309,7 +309,7 @@ let verifyCode = 0;
     }
   }
 
-//Api handling
+// Api handling
   async function sheetLog(inout, name, reason, verifyCode){
     try {
       const response = await fetch(SCRIPT_URL+"?met=1&inout="+inout+"&name="+name+"&reason="+reason+"&verify="+verifyCode, {
