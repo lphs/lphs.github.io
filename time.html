@@ -56,7 +56,7 @@ function ring(x, y){
 function delayExplode(x, y){
   setTimeout(function(){
     explode(x, y);
-  }, 500);
+  }, 250);
 }
 
 function createFun(){
@@ -82,9 +82,7 @@ function createFun(){
   window.addEventListener('mouseup', function(event) {
     if(event.button === 2){
       clearInterval(holdTimer);
-      if(interval == null){
-        interval = setInterval(function(){explode(Math.random()*75+12.5, Math.random()*75+12.5);}, 500);
-      }
+      holdTimer = null;
     }
   });
 }
@@ -172,7 +170,7 @@ function update(){
       if(interval == null){
         interval = setInterval(function(){explode(Math.random()*75+12.5, Math.random()*75+12.5);}, 500);
       }
-      if(fun == null{
+      if(fun == null){
         createFun();
         fun = "yay";
       }
@@ -186,7 +184,7 @@ function update(){
     if(interval == null){
       interval = setInterval(function(){explode(Math.random()*75+12.5, Math.random()*75+12.5);}, 500);
     }
-    if(fun == null{
+    if(fun == null){
       createFun();
       fun = "yay";
     }
