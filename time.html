@@ -79,7 +79,7 @@ function getHour(ampm, hour){
   
 function update(){
   // Added 12.5 seconds to date because bell is 12.5 seconds early
-  var now = new Date(new Date().valueOf()+12500); // new Date(0, 0, D(SUN, MUN), H, M, 0)
+  var now = new Date(new Date().valueOf()); // new Date(0, 0, D(SUN, MUN), H, M, 0)
   var day = days[now.getDay()];
   var timeTableRE = new RegExp("\\|"+day+"\\|.*\n([\\S\\s]*?)\\|.*\\|");
   if(timeTableRE.test(timings)){
@@ -101,7 +101,7 @@ function update(){
           document.getElementById("prog").value = 0;
           document.getElementById("percent").innerText = "0%";
           document.getElementById("title").innerText = minLeft+"min "+secLeft+"s; 0%";
-          document.getElementById("aud").currentTime = (eTime-nTime)/1000;
+          document.getElementById("aud").currentTime = 0;
           if(lPeriod == null){
             lPeriod = "Nothing";
           }
