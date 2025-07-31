@@ -19,6 +19,9 @@ var timings;
 var timeRE = /.*?(\d+):(\d+).*?(AM|PM).*?-.*?"(.*)"/g;
 var interval = null;
 var lPeriod = null;
+var fun = null;
+let holdTimer;
+let mx, my;
   
 function explode(x, y){
   if(!document.hidden){
@@ -50,6 +53,42 @@ function ring(x, y){
   });
 }
 
+function delayExplode(x, y){
+  setTimeout(function(){
+    explode(x, y);
+  }, 500);
+}
+
+function createFun(){
+  window.addEventListener('click', function(event) {
+    if(interval != null){
+      clearInterval(interval);
+    }
+    explode(event.pageX/document.documentElement.clientWidth*100, event.pageY/document.documentElement.clientHeight*100);
+  });
+  window.addEventListener('mousemove', function(event) {
+    mx = event.clientX;
+    my = event.clientY;
+  });
+  window.addEventListener('contextmenu', function(event) {
+    if(interval != null){
+      clearInterval(interval);
+    }
+    event.preventDefault();
+    holdTimer = setInterval(() => {
+      delayExplode(mx/document.documentElement.clientWidth*100, my/document.documentElement.clientHeight*100);
+    }, 50);
+  });
+  window.addEventListener('mouseup', function(event) {
+    if(event.button === 2){
+      clearInterval(holdTimer);
+      if(interval == null){
+        interval = setInterval(function(){explode(Math.random()*75+12.5, Math.random()*75+12.5);}, 500);
+      }
+    }
+  });
+}
+  
 function load(){
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "/timings.txt", true);
@@ -133,6 +172,10 @@ function update(){
       if(interval == null){
         interval = setInterval(function(){explode(Math.random()*75+12.5, Math.random()*75+12.5);}, 500);
       }
+      if(fun == null{
+        createFun();
+        fun = "yay";
+      }
       document.getElementById("time").innerText = "End of school!";
       document.getElementById("prog").value = 100;
       document.getElementById("percent").innerText = "100%";
@@ -140,6 +183,13 @@ function update(){
       document.getElementById("aud").currentTime = 60*60;
     }
   }else{
+    if(interval == null){
+      interval = setInterval(function(){explode(Math.random()*75+12.5, Math.random()*75+12.5);}, 500);
+    }
+    if(fun == null{
+      createFun();
+      fun = "yay";
+    }
     document.getElementById("time").innerText = "No timetable for today";
     document.getElementById("prog").value = 100;
     document.getElementById("percent").innerText = "100%";
