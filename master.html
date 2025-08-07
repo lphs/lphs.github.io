@@ -287,7 +287,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       <!-- Close button -->
       <span class="close" onclick="hideLink();">&times;</span>
       <!-- Link card instruction/explanation -->
-      <span id="linknote" class="link" style="display: inline-block;"></span><br class="link">
+      <span id="linknote" class="link" style="display: inline-block;">Card has not been linked to an email before! Please enter your email to link card to email address: </span><br class="link">
       <!-- School email -->
       <label class="link container">
         <input id="linkingemail" required class="link" type="text" pattern=".+\..+" placeholder="john.doe" oninvalid="this.setCustomValidity('Please enter the start of your school email. E.g. john.doe')" oninput="this.setCustomValidity(''); dynamicWidth('linkingemail', 117);" autocomplete="off" spellcheck="false">
@@ -532,9 +532,9 @@ var linkEmail;
         console.error("Incorrect password");
         return false;
       }else{ // Successfully sent
+        cards = JSON.parse(tex);
         return true;
       }
-      cards = JSON.parse(tex);
     } catch (error) { // Other errors
       console.error(error.message);
       return false;
@@ -561,6 +561,7 @@ var linkEmail;
           }
         }
       }
+      // Alert handling for linking card
       dynamicWidth('email', 117);
       if(found == 0 && address != "none" && address != linkAddress){
         linkAddress = address;
@@ -594,7 +595,7 @@ var linkEmail;
     }
   }
 
-document.getElementById("linknote").innerText = "Card has not been linked to an email before! Please enter your email to link card to email address: ";
+// Reset everything
 hideAndResetForm();
 initLink();
 document.getElementsByClassName("left")[0].style.width = parseInt(document.body.offsetWidth)-initWidth-100+"px";
