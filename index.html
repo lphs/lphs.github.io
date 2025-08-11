@@ -143,17 +143,14 @@ input[type=text]:focus, input[type=email]:focus{
   <!-- Reason(Sign in) -->
   <select name="inreason" id="inreason" onchange="reasonChange(this.value)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
     <option value="" disabled hidden>-- Reason --</option>
-    <option value="Late">Late</option>
-    <option value="Appointment">Appointment</option>
-    <option value="other">Other</option>
+    <option value="Sick bay">Sick bay</option>
   </select>
   
   <!-- Reason(Sign out) -->
   <select name="outreason" id="outreason" onchange="reasonChange(this.value)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
     <option value="" disabled hidden>-- Reason --</option>
-    <option value="Year 13">Year 13</option>
-    <option value="Appointment">Appointment</option>
-    <option value="other">Other</option>
+    <option value="Sick bay">Sick bay</option>
+    <option value="Home and back to class">Home and back to class</option>
   </select>
 
   <!-- Other reason -->
