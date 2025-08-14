@@ -283,12 +283,12 @@ let verifyCode = 0;
     var inout = document.getElementById("sign").value;
     var email = document.getElementById("email").value+"@lphs.school.nz";
     var reason = document.getElementById(inout+"reason").value;
-    var verifyCode = document.getElementById("verify").value;
+    var verify = document.getElementById("verify").value;
     if(reason == "other"){
       reason = document.getElementById("other").value;
     }
     var aler = createAlert("#D0D000", "#B0B000", "<strong>Sending...</strong>");
-    const tex = await sheetLog(inout, email, reason, verifyCode);
+    const tex = await sheetLog(inout, email, reason, verify);
     removeElemDelay(aler, 0);
     if(tex == "Success"){
       hideAndResetForm();
@@ -307,9 +307,9 @@ let verifyCode = 0;
   }
 
 // Api handling
-  async function sheetLog(inout, name, reason, verifyCode){ // Sends sign in/out data using fetch
+  async function sheetLog(inout, name, reason, verify){ // Sends sign in/out data using fetch
     try{
-      const response = await fetch(SCRIPT_URL+"?met=1&inout="+inout+"&name="+name+"&reason="+reason+"&verify="+verifyCode, {
+      const response = await fetch(SCRIPT_URL+"?met=1&inout="+inout+"&name="+name+"&reason="+reason+"&verify="+verify, {
         redirect: "follow",
         method: "GET", 
         headers: {
@@ -318,17 +318,14 @@ let verifyCode = 0;
       });
       const tex = await response.text();
       if(tex == "ERROR"){ // Error in back end
-        console.error("Error occured form google sheets api when calling function sheetLog");
-        return false;
+        console.log("Error occured form google sheets api when calling function sheetLog");
       }else if(tex == "VERIFY"){ // Incorrect verification code
-        console.error("Incorrect verification code");
-        return false;
-      }else{ // Successfully sent
-        return true;
+        console.log("Incorrect verification code");
       }
+      return tex;
     }catch(error){ // Other errors
       console.error(error.message);
-      return false;
+      return "ERROR";
     }
   }
 
