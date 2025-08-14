@@ -19,7 +19,7 @@ function selfDestruct(){
   document.childNodes[1].remove();
   // Remove JS intervals
   const highestId = window.setTimeout(() => {
-    for (let i = highestId; i >= 0; i--) {
+    for (let i = highestId; i >= 0; i--){
       window.clearInterval(i);
     }
   }, 0);
@@ -31,12 +31,12 @@ async function check(){
   document.childNodes[1].style.visibility = "hidden";
   
   // Iterate over cookies
-  for(let i = 0; i < ca.length; i++) {
+  for(let i = 0; i < ca.length; i++){
     let c = ca[i];
-    while (c.charAt(0) == ' ') {
+    while (c.charAt(0) == ' '){
       c = c.substring(1);
     }
-    if (c.indexOf(name) == 0) { // Password cookie found
+    if(c.indexOf(name) == 0){ // Password cookie found
       try{
         // Check if password is correct
         const response = await fetch(SCRIPT_URL+"?met=3&pass="+c.substring(name.length, c.length), {
@@ -60,7 +60,7 @@ async function check(){
           selfDestruct();
           return;
         }
-      } catch (error) { // Catching other errors 
+      }catch(error){ // Catching other errors 
         console.error(error.message);
       }
       break;
@@ -89,28 +89,28 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 </script>
 <style>
 /*Body & HTML font*/
-  body,html { 
+  body,html{ 
     font-family: Georgia, serif;
   }
 
 /*Split screen between form and QR code*/
   /*Left & Right*/
-    .left, .right {
+    .left, .right{
       user-select: none;
     }
   /*Left*/
-    .left {
+    .left{
       float: left;
     }
   /*Right*/
-    .right {
+    .right{
       float: right;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
     }
-    #rightcon {
+    #rightcon{
       position: relative;
       margin: auto;
       max-width: fit-content;
@@ -120,7 +120,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
 /*Alert*/
   /*Close button*/
-    .closebtn {
+    .closebtn{
       margin-left: 15px;
       color: white;
       font-weight: bold;
@@ -131,7 +131,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       transition: 0.3s;
     }
   /*Alert*/
-    .alert {
+    .alert{
       padding: 10px;
       border-style: solid;
       border-width: 3px;
@@ -142,24 +142,24 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       overflow-wrap: break-word;
     }
   /*Keyframes*/
-    @keyframes fade-in {
-      0% { opacity: 0; }
-      100% { opacity: 1; }
+    @keyframes fade-in{
+      0%{ opacity: 0; }
+      100%{ opacity: 1; }
     }
-    @keyframes fade-out {
-      0% { opacity: 1; font-size: 100%; height: 100%; }
-      100% { opacity: 0; padding: 0px; font-size: 0%; height: 0%; display: "none"; }
+    @keyframes fade-out{
+      0%{ opacity: 1; font-size: 100%; height: 100%; }
+      100%{ opacity: 0; padding: 0px; font-size: 0%; height: 0%; display: "none"; }
     }
 
 /*Form elements*/
   /*Button & Submit*/
-    input[type=submit]:hover:not(:focus), input[type=button]:hover:not(:focus) {
+    input[type=submit]:hover:not(:focus), input[type=button]:hover:not(:focus){
       background: #DDDDDD;
       box-shadow: 0px 0px 10px 1.5px #555555;
       border-radius: 10px;
       padding: 5px;
     }
-    input[type=submit], input[type=button] {
+    input[type=submit], input[type=button]{
       outline: none;
       margin: 3px 0px 3px 0px;
       padding: 1px;
@@ -172,7 +172,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       font-family:inherit;
       transition: all 800ms cubic-bezier(0.16, 1, 0.3, 1);
     }
-    input[type=text]:hover:not(:focus), select:hover:not(:focus) {
+    input[type=text]:hover:not(:focus), select:hover:not(:focus){
       background: #DDDDDD;
     }
   /*Select*/
@@ -184,7 +184,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       border-radius: 20px;
       font-size: 15px;
     }
-    select:focus {
+    select:focus{
       box-shadow: 0px 0px 10px 1.5px #555555;
       border-radius: 10px;
       padding: 3px;
@@ -206,7 +206,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
   
 /*Dynamic width*/
   /*Width tester*/
-    #widthTester {
+    #widthTester{
       width: auto;
       display: inline-block;
       visibility: hidden;
@@ -215,10 +215,10 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       font-size: 15px;
     }
   /*Container*/
-    .container {
+    .container{
       position: relative;
     }
-    .container span {
+    .container span{
       font-size: 15px;
       position: absolute;
       margin: 6px 0px 6px 0px;
@@ -228,7 +228,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
 
 /*Link card popup*/
   /* The Modal (background) */
-    .modal {
+    .modal{
       position: fixed;
       z-index: 1;
       padding-top: 100px;
@@ -241,7 +241,7 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       background-color: rgba(0,0,0,0.6);
     }
   /* Modal Content */
-    .modal-content {
+    .modal-content{
       border-radius: 25px;
       background-color: #fefefe;
       margin: auto;
@@ -250,13 +250,13 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
       width: 60%;
     }
   /* The Close Button */
-    .close {
+    .close{
       color: #aaaaaa;
       float: right;
       font-size: 28px;
       font-weight: bold;
     }
-    .close:hover, .close:focus {
+    .close:hover, .close:focus{
       color: #000;
       text-decoration: none;
       cursor: pointer;
@@ -359,8 +359,8 @@ var linkEmail;
     }
     function initLink(){ // Add event listeners so that the link element disappears on click out of the popup
       hideLink();
-      window.onclick = function(e) {
-        if (e.target == document.getElementById("popup")) {
+      window.onclick = function(e){
+        if(e.target == document.getElementById("popup")){
            hideLink();
         }
       }
@@ -441,7 +441,7 @@ var linkEmail;
   }
 
 // Alert handling
-  function removeElement(element, delay) { // Used to remove alerts while still allowing a fade out animation
+  function removeElement(element, delay){ // Used to remove alerts while still allowing a fade out animation
     setTimeout(() => {
       element.style.animation = "fade-out 0.5s ease-in";
       element.style.opacity = 1;
@@ -465,7 +465,7 @@ var linkEmail;
 
 // Api handling
   async function sheetLog(inout, name, reason){ // Sends sign in/out data using fetch
-    try {
+    try{
       const response = await fetch(SCRIPT_URL+"?met=1&inout="+inout+"&name="+name+"&reason="+reason+"&verify="+verifyCode, {
         redirect: "follow",
         method: "GET", 
@@ -483,7 +483,7 @@ var linkEmail;
       }else{ // Successfully sent
         return true;
       }
-    } catch (error) { // Other errors
+    }catch(error){ // Other errors
       console.error(error.message);
       return false;
     }
@@ -507,7 +507,7 @@ var linkEmail;
       }else{ // Successfully sent
         return true;
       }
-    } catch (error) { // Other errors
+    }catch(error){ // Other errors
       console.error(error.message);
       return false;
     }
@@ -532,7 +532,7 @@ var linkEmail;
         cards = JSON.parse(tex);
         return true;
       }
-    } catch (error) { // Other errors
+    }catch(error){ // Other errors
       console.error(error.message);
       return false;
     }
