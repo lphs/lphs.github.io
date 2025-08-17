@@ -582,11 +582,9 @@ var linkEmail;
               aler = createAlert("#B00000", "#750000", "<strong>Failed to link card! Please try again.</strong>");
               removeElemDelay(aler, 3000);
             }
-            
-              removeElement(aler, 0);
-              aler = createAlert("#B00000", "#750000", '<strong>Failed to link card! Please try again.</strong>');
-              removeElement(aler, 3000);
-            }
+            removeElement(aler, 0);
+            aler = createAlert("#B00000", "#750000", '<strong>Failed to link card! Please try again.</strong>');
+            removeElement(aler, 3000);
           }else{
             document.getElementById("linkingemail").setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz');
           }
