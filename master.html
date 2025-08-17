@@ -446,7 +446,7 @@ var linkEmail;
   }
 
 // Alert handling
-  function removeElement(element, delay){ // Used to remove alerts while still allowing a fade out animation
+  function removeElemDelay(element, delay){ // Used to remove alerts while still allowing a fade out animation
     setTimeout(() => {
       element.style.animation = "fade-out 0.5s ease-in";
       element.style.opacity = 1;
@@ -463,7 +463,7 @@ var linkEmail;
     aler.className = "alert";
     aler.style.backgroundColor = backgroundcolor;
     aler.style.borderColor = bordercolor;
-    aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElement(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span>'+html;
+    aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span>'+html;
     document.getElementById("contain").appendChild(aler);
     return aler;
   }
@@ -582,9 +582,9 @@ var linkEmail;
               aler = createAlert("#B00000", "#750000", "<strong>Failed to link card! Please try again.</strong>");
               removeElemDelay(aler, 3000);
             }
-            removeElement(aler, 0);
+            removeElemDelay(aler, 0);
             aler = createAlert("#B00000", "#750000", '<strong>Failed to link card! Please try again.</strong>');
-            removeElement(aler, 3000);
+            removeElemDelay(aler, 3000);
           }else{
             document.getElementById("linkingemail").setCustomValidity('Please use your school email. E.g. john.doe@lphs.school.nz');
           }
