@@ -273,7 +273,7 @@ let verifyCode = 0;
     aler.className = "alert";
     aler.style.backgroundColor = backgroundcolor;
     aler.style.borderColor = bordercolor;
-    aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElement(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span>'+html;
+    aler.innerHTML = '<span class="closebtn" onclick=\'this.style.display = "none"; removeElemDelay(this.parentElement, 0); this.parentElement.style.animation = "fade-out 0.5s ease-in"; \'>&times;</span>'+html;
     document.getElementById("contain").appendChild(aler);
     return aler;
   }
