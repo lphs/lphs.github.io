@@ -377,14 +377,14 @@ var QRCode;!function(){function a(a){this.mode=c.MODE_8BIT_BYTE,this.data=a,this
   <!-- Reason(Sign in) -->
   <select id="inreason" onchange="reasonChange(this.value)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
     <option value="" disabled hidden>-- Reason --</option>
-    <option value="Sick bay">Sick bay</option>
+    <option value="Counselling">Counselling</option>
+    <option value="Waiting room">Waiting room</option>
   </select>
   
   <!-- Reason(Sign out) -->
   <select id="outreason" onchange="reasonChange(this.value)" oninvalid="this.setCustomValidity('Please select a reason.')" oninput="this.setCustomValidity('')">
     <option value="" disabled hidden>-- Reason --</option>
-    <option value="Sick bay">Sick bay</option>
-    <option value="Home and back to class">Home and back to class</option>
+    <option value="Back to class">Back to class</option>
   </select>
   
   <!-- Other reason -->
